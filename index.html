@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Personal Hub</title>
+    <title>Android Niagara Launcher fav apps</title>
     <style>
         :root {
             --bg-color: #121214;
@@ -109,6 +109,20 @@
             font-size: 0.85rem;
         }
 
+        .tag-risky {
+            color: #f87171;
+            font-size: 0.75rem;
+            border: 1px solid #f87171;
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .tag-dead {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            text-decoration: line-through;
+        }
+
         /* Script runner block */
         .full-script-container {
             margin-bottom: 1rem;
@@ -165,7 +179,32 @@
     </div>
 
     <div class="grid">
-        <!-- CATEGORY 1: MEDIA & FILM -->
+        <!-- CATEGORY 1: NIAGARA LAUNCHER FAV APPS -->
+        <div class="category">
+            <h2>📱 Niagara Launcher Fav Apps</h2>
+            <ul>
+                <li><strong>Phone</strong> <span class="subtext">(default)</span></li>
+                <li><strong>Messaging</strong> <span class="subtext">(default)</span> v <a href="https://github.com/FossifyOrg/Messages" target="_blank">Fossify Messages</a></li>
+                <li><strong>Messenger</strong></li>
+                <li><strong>Shazam</strong></li>
+                <li><strong>BeatFind</strong></li>
+                <li><strong>Song Finder: Music Identifier</strong></li>
+                <li><strong>Morphe</strong> v <strong>RVX Music</strong></li>
+                <li><strong>GoneMAD Music Player</strong> <span class="subtext"><a href="https://gonemadmusicplayer.blogspot.com/p/downloads.html" target="_blank">gonemadmusicplayer.blogspot.com</a> // Split View (if local opus file n YTM can't see them)</span></li>
+                <li><strong>Ultimatum</strong> v <strong>Quetta</strong></li>
+                <li><strong>Calculator</strong></li>
+                <li><strong>Gmail</strong></li>
+                <li><strong>PersonalDNSFilter</strong> <span class="subtext">(IF NOT A10+)</span></li>
+                <li><strong>Ente Auth</strong></li>
+                <li>
+                    <strong>Niagara Button Shortcut:</strong><br>
+                    <span class="subtext">G Wallet (IF u got NFC, if not, put AI Hub v geminiAssist webview v Gmail)<br>
+                    <strong>Location:</strong> Niagara settings - Productivity - Shortcuts & Gestures</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- CATEGORY 2: MEDIA & FILM -->
         <div class="category">
             <h2>🎬 Film & Media</h2>
             <ul>
@@ -175,11 +214,10 @@
             </ul>
         </div>
 
-        <!-- CATEGORY 2: DESKTOP APPS & WINGET -->
+        <!-- CATEGORY 3: DESKTOP APPS & WINGET -->
         <div class="category">
             <h2>💻 Winget Apps (Fresh Install)</h2>
             
-            <!-- One-click full script box -->
             <div class="full-script-container">
                 <details>
                     <summary>🚀 Click to view/copy full installer script</summary>
@@ -304,17 +342,76 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             </ul>
         </div>
 
-        <!-- CATEGORY 3: ANDROID APPS -->
+        <!-- CATEGORY 4: ANDROID APPS & ALTSTORES -->
         <div class="category">
-            <h2>📱 Android Apps</h2>
+            <h2>📱 Android Altstores & Tools</h2>
             <ul>
                 <li>
-                    <strong>Niagara Launcher</strong> [<a href="https://github.com/8BitKit/Niagara-Issues" target="_blank">GitHub</a>]<br>
-                    <span class="subtext">Minimal homescreen replacement</span>
+                    <strong>Split APK Formats:</strong> <span class="subtext">.apks, .xapk, .apkm (need split installer)</span>
                 </li>
                 <li>
-                    <strong>Ente Auth</strong> [<a href="https://github.com/ente-io/ente" target="_blank">GitHub</a>]<br>
-                    <span class="subtext">Open-source 2FA manager</span>
+                    <strong>ADB Split Install:</strong><br>
+                    <code>adb install-multiple base.apk split_config.arm64_v8a.apk</code>
+                </li>
+                <li>
+                    <strong>Split APK Installers:</strong><br>
+                    <span class="subtext">
+                        • Universal Installer (<code>app.pwhs.universalinstaller</code>)<br>
+                        • Aurora Store<br>
+                        • Install with Options [<a href="https://github.com/zacharee/InstallWithOptions" target="_blank">GitHub</a>]<br>
+                        • AntiSplit-M [<a href="https://github.com/AbdurazaaqMohammed/AntiSplit-M" target="_blank">GitHub</a>]<br>
+                        • SAI (Split APKs Installer) | UnApkm<br>
+                        • App Manager | MiXplorer | X-plore<br>
+                        • APKMirror Installer
+                    </span>
+                </li>
+                <li>
+                    <strong>FLOSS Repos & Stores:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://apt.izzysoft.de/fdroid/index/apk/com.machiav3lli.fdroid" target="_blank">Neo Store</a><br>
+                        • Komi Store / GitHub Store [<a href="https://github.com/kurikomi-labs/komi-store" target="_blank">GH</a>]<br>
+                        • Droid-ify [<a href="https://apt.izzysoft.de/fdroid/index/apk/com.looker.droidify" target="_blank">Izzy</a>]<br>
+                        • F-Droid Basic & <a href="https://f-droid.org" target="_blank">F-Droid</a><br>
+                        • IzzyOnDroid [<a href="https://apt.izzysoft.de/fdroid/index/apk/in.sunilpaulmathew.izzyondroid" target="_blank">Izzy</a>]<br>
+                        • Accrescent [<a href="https://accrescent.app" target="_blank">Web</a>]<br>
+                        • Obtainium (by ImranR98) <span class="subtext">- EZ update altstore apps</span><br>
+                        • Zapstore [<a href="https://zapstore.dev" target="_blank">Web</a>]<br>
+                        • OpenApk [<a href="https://openapk.net" target="_blank">Web</a>]<br>
+                        • Orion Store [<a href="https://github.com/RookieEnough/Orion-Store" target="_blank">GitHub</a>]<br>
+                        • Aurora Droid [<a href="https://gitlab.com/AuroraOSS/auroradroid" target="_blank">GitLab</a>]<br>
+                        • Privacium [<a href="https://github.com/kaleedtc/Privacium" target="_blank">GitHub</a>]<br>
+                        • LibreFind [<a href="https://github.com/jksalcedo/librefind" target="_blank">GitHub</a>]<br>
+                        • Flicky
+                    </span>
+                </li>
+                <li>
+                    <strong>Play Store Alternatives / Official:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://f-droid.org/en/packages/com.aurora.store" target="_blank">Aurora Store</a> (Play Store fork)<br>
+                        • Petal Search <span class="tag-risky">risky</span><br>
+                        • AppBrain App Market<br>
+                        • APKMirror Installer (Official)<br>
+                        • APKPure | slideme.org | Amazon | Galaxy
+                    </span>
+                </li>
+                <li>
+                    <strong>Modded & Alternative:</strong><br>
+                    <span class="subtext">
+                        • Orion Store [<a href="https://github.com/RookieEnough/Orion-Store" target="_blank">GitHub</a>]<br>
+                        • Update Me [<a href="https://github.com/anfreire/updateMe-Mobile" target="_blank">GitHub</a>]<br>
+                        • Blackmart <span class="tag-risky">risky</span><br>
+                        • Aptoide <span class="tag-risky">risky</span><br>
+                        • Huawei App Gallery <span class="tag-risky">risky</span><br>
+                        • <span class="tag-dead">Yalp Store (dead)</span> <span class="tag-risky">risky</span>
+                    </span>
+                </li>
+                <li>
+                    <strong>Useful Links & References:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://android.izzysoft.de/applists/category/named/apps_markets" target="_blank">IzzySoft App Markets</a><br>
+                        • <a href="https://www.androidpolice.com/best-google-play-store-alternatives" target="_blank">Android Police Alternatives</a><br>
+                        • GitHub Topics: <a href="https://github.com/topics/appstore" target="_blank">#appstore</a>, <a href="https://github.com/topics/playstore" target="_blank">#playstore</a>, <a href="https://github.com/topics/apk" target="_blank">#apk</a>
+                    </span>
                 </li>
             </ul>
         </div>
@@ -351,7 +448,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                     }
                 });
 
-                // Hide empty categories when filtering
                 if (hasVisibleItem) {
                     category.style.display = '';
                 } else {
