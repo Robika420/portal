@@ -18,7 +18,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
@@ -59,7 +59,7 @@
         
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
@@ -78,11 +78,12 @@
             padding-bottom: 0.5rem;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
         }
 
         ul { list-style: none; padding: 0; margin: 0; }
-        li { margin-bottom: 0.75rem; font-size: 0.95rem; }
+        li { margin-bottom: 0.85rem; font-size: 0.95rem; }
 
         a {
             color: #61dafb;
@@ -93,24 +94,69 @@
         code {
             background-color: var(--code-bg);
             color: #00ff66;
-            padding: 2px 6px;
+            padding: 3px 8px;
             border-radius: 4px;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             display: inline-block;
             margin-top: 4px;
             user-select: all;
+            word-break: break-all;
         }
 
         .subtext {
             color: var(--text-sub);
             font-size: 0.85rem;
         }
+
+        /* Script runner block */
+        .full-script-container {
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #323238;
+        }
+
+        .full-script-container details summary {
+            cursor: pointer;
+            color: #61dafb;
+            font-size: 0.9rem;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .full-script-container textarea {
+            width: 100%;
+            height: 120px;
+            margin-top: 0.5rem;
+            background-color: var(--code-bg);
+            color: #00ff66;
+            border: 1px solid #323238;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+        .copy-btn:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
 
-<h1>Dashboard Hub</h1>
+    <h1>Dashboard Hub</h1>
     <div id="clock"></div>
     
     <!-- Live Search Filter -->
@@ -131,15 +177,129 @@
 
         <!-- CATEGORY 2: DESKTOP APPS & WINGET -->
         <div class="category">
-            <h2>💻 Desktop Apps</h2>
+            <h2>💻 Winget Apps (Fresh Install)</h2>
+            
+            <!-- One-click full script box -->
+            <div class="full-script-container">
+                <details>
+                    <summary>🚀 Click to view/copy full installer script</summary>
+                    <textarea id="fullScriptText" readonly>winget install GlennDelahoy.SnappyDriverInstallerOrigin --accept-source-agreements --accept-package-agreements
+winget install Wagnardsoft.DisplayDriverUninstaller --accept-source-agreements --accept-package-agreements
+winget install OO-Software.ShutUp10 --accept-source-agreements --accept-package-agreements
+winget install geekuninstaller --accept-source-agreements --accept-package-agreements
+winget install bulkcrap --accept-source-agreements --accept-package-agreements
+winget install ente-io.auth-desktop --accept-source-agreements --accept-package-agreements
+winget install Google.Chrome --accept-source-agreements --accept-package-agreements
+winget install 9WZDNCRF0083 --accept-source-agreements --accept-package-agreements
+winget install 7zip.7zip --accept-source-agreements --accept-package-agreements
+winget install VB-Audio.Voicemeeter.Potato --accept-source-agreements --accept-package-agreements
+winget install Rainmeter.Rainmeter --accept-source-agreements --accept-package-agreements
+winget install Betterbird.Betterbird --accept-source-agreements --accept-package-agreements
+winget install IrfanSkiljan.IrfanView.PlugIns --accept-source-agreements --accept-package-agreements
+winget install File-New-Project.EarTrumpet --accept-source-agreements --accept-package-agreements
+winget install xanderfrangos.twinkletray --accept-source-agreements --accept-package-agreements
+winget install Valve.Steam --accept-source-agreements --accept-package-agreements
+winget install Discord.Discord --accept-source-agreements --accept-package-agreements
+winget install RazerInc.RazerInstaller --accept-source-agreements --accept-package-agreements
+winget install voidtools.Everything --accept-source-agreements --accept-package-agreements
+winget install AntibodySoftware.WizTree --accept-source-agreements --accept-package-agreements
+winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --accept-package-agreements</textarea>
+                    <button class="copy-btn" onclick="copyFullScript()">Copy All Commands</button>
+                </details>
+            </div>
+
             <ul>
                 <li>
-                    <strong>MPV Player</strong> [<a href="https://github.com/mpv-player/mpv" target="_blank">GitHub</a>]<br>
-                    <code>winget install --id io.mpv.mpv</code>
+                    <strong>Snappy Driver Installer Origin</strong> [<a href="https://www.glenn.delahoy.com/snappy-driver-installer-origin/" target="_blank">Web</a>]<br>
+                    <code>winget install GlennDelahoy.SnappyDriverInstallerOrigin</code>
                 </li>
                 <li>
-                    <strong>Process Lasso</strong><br>
-                    <code>winget install --id Bitsum.ProcessLasso</code>
+                    <strong>Display Driver Uninstaller (DDU)</strong> [<a href="https://github.com/Wagnard/display-driver-uninstaller" target="_blank">GitHub</a>]<br>
+                    <code>winget install Wagnardsoft.DisplayDriverUninstaller</code>
+                </li>
+                <li>
+                    <strong>O&O ShutUp10++</strong> [<a href="https://www.oo-software.com/en/shutup10" target="_blank">Web</a>]<br>
+                    <code>winget install OO-Software.ShutUp10</code>
+                </li>
+                <li>
+                    <strong>Geek Uninstaller</strong> [<a href="https://geekuninstaller.com" target="_blank">Web</a>]<br>
+                    <code>winget install geekuninstaller</code>
+                </li>
+                <li>
+                    <strong>Bulk Crap Uninstaller</strong> [<a href="https://github.com/Klocman/Bulk-Crap-Uninstaller" target="_blank">GitHub</a>]<br>
+                    <code>winget install bulkcrap</code>
+                </li>
+                <li>
+                    <strong>Ente Auth Desktop</strong> [<a href="https://github.com/ente-io/ente" target="_blank">GitHub</a>]<br>
+                    <code>winget install ente-io.auth-desktop</code>
+                </li>
+                <li>
+                    <strong>Google Chrome</strong><br>
+                    <code>winget install Google.Chrome</code>
+                </li>
+                <li>
+                    <strong>Publisher ID / Store App (9WZDNCRF0083)</strong><br>
+                    <code>winget install 9WZDNCRF0083</code>
+                </li>
+                <li>
+                    <strong>7-Zip</strong> [<a href="https://www.7-zip.org/" target="_blank">Web</a>]<br>
+                    <code>winget install 7zip.7zip</code>
+                </li>
+                <li>
+                    <strong>Voicemeeter Potato</strong> [<a href="https://vb-audio.com/Voicemeeter/potato.htm" target="_blank">Web</a>]<br>
+                    <code>winget install VB-Audio.Voicemeeter.Potato</code>
+                </li>
+                <li>
+                    <strong>Rainmeter</strong> [<a href="https://github.com/rainmeter/rainmeter" target="_blank">GitHub</a>]<br>
+                    <code>winget install Rainmeter.Rainmeter</code>
+                </li>
+                <li>
+                    <strong>Betterbird</strong> [<a href="https://github.com/Betterbird/thunderbird-patches" target="_blank">GitHub</a>]<br>
+                    <code>winget install Betterbird.Betterbird</code>
+                </li>
+                <li>
+                    <strong>IrfanView PlugIns</strong> [<a href="https://www.irfanview.com" target="_blank">Web</a>]<br>
+                    <code>winget install IrfanSkiljan.IrfanView.PlugIns</code>
+                </li>
+                <li>
+                    <strong>EarTrumpet</strong> [<a href="https://github.com/File-New-Project/EarTrumpet" target="_blank">GitHub</a>]<br>
+                    <code>winget install File-New-Project.EarTrumpet</code>
+                </li>
+                <li>
+                    <strong>Twinkle Tray</strong> [<a href="https://github.com/xanderfrangos/twinkle-tray" target="_blank">GitHub</a>]<br>
+                    <code>winget install xanderfrangos.twinkletray</code>
+                </li>
+                <li>
+                    <strong>Steam</strong><br>
+                    <code>winget install Valve.Steam</code>
+                </li>
+                <li>
+                    <strong>Discord</strong><br>
+                    <code>winget install Discord.Discord</code>
+                </li>
+                <li>
+                    <strong>Razer Synapse / Installer</strong><br>
+                    <code>winget install RazerInc.RazerInstaller</code>
+                </li>
+                <li>
+                    <strong>Everything (voidtools)</strong> [<a href="https://www.voidtools.com" target="_blank">Web</a>]<br>
+                    <code>winget install voidtools.Everything</code>
+                </li>
+                <li>
+                    <strong>WizTree</strong> [<a href="https://diskanalyzer.com" target="_blank">Web</a>]<br>
+                    <code>winget install AntibodySoftware.WizTree</code>
+                </li>
+                <li>
+                    <strong>Universal ADB Driver</strong> [<a href="https://github.com/koush/UniversalAdbDriver" target="_blank">GitHub</a>]<br>
+                    <code>winget install ClockworkMod.UniversalADBDriver</code>
+                </li>
+                <li>
+                    <strong>Process Lasso</strong> [<a href="https://bitsum.com/" target="_blank">Web</a>]<br>
+                    <code>winget install Bitsum.ProcessLasso</code>
+                </li>
+                <li>
+                    <strong>MPV Player</strong> [<a href="https://github.com/mpv-player/mpv" target="_blank">GitHub</a>]<br>
+                    <code>winget install io.mpv.mpv</code>
                 </li>
             </ul>
         </div>
@@ -199,6 +359,14 @@
                 }
             });
         });
+
+        // Copy full winget script
+        function copyFullScript() {
+            const text = document.getElementById('fullScriptText').value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('All winget install commands copied to clipboard!');
+            });
+        }
     </script>
 </body>
 </html>
