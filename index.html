@@ -23,7 +23,39 @@
             padding: 2rem 1rem;
         }
 
-        h1 { text-align: center; margin-bottom: 2rem; }
+        h1 { text-align: center; margin-bottom: 0.25rem; }
+        
+        #clock {
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-sub);
+            margin-bottom: 1.5rem;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 2.5rem auto;
+            text-align: center;
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #323238;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-container input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(121, 82, 179, 0.3);
+        }
         
         .grid {
             display: grid;
@@ -44,6 +76,9 @@
             color: var(--accent);
             border-bottom: 1px solid #323238;
             padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         ul { list-style: none; padding: 0; margin: 0; }
@@ -64,7 +99,7 @@
             font-size: 0.85rem;
             display: inline-block;
             margin-top: 4px;
-            user-select: all; /* Easy copying */
+            user-select: all;
         }
 
         .subtext {
@@ -76,11 +111,17 @@
 <body>
 
     <h1>Dashboard Hub</h1>
+    <div id="clock">19:28:00</div>
+
+    <!-- Live Search Filter -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
+    </div>
 
     <div class="grid">
         <!-- CATEGORY 1: MEDIA & FILM -->
         <div class="category">
-            <h2>Film & Media</h2>
+            <h2>🎬 Film & Media</h2>
             <ul>
                 <li><a href="https://letterboxd.com" target="_blank">Letterboxd</a> <span class="subtext">- Tracker</span></li>
                 <li><a href="https://imdb.com" target="_blank">IMDb</a> <span class="subtext">- Info</span></li>
@@ -90,7 +131,7 @@
 
         <!-- CATEGORY 2: DESKTOP APPS & WINGET -->
         <div class="category">
-            <h2>Desktop Apps</h2>
+            <h2>💻 Desktop Apps</h2>
             <ul>
                 <li>
                     <strong>MPV Player</strong> [<a href="https://github.com/mpv-player/mpv" target="_blank">GitHub</a>]<br>
@@ -105,7 +146,7 @@
 
         <!-- CATEGORY 3: ANDROID APPS -->
         <div class="category">
-            <h2>Android Apps</h2>
+            <h2>📱 Android Apps</h2>
             <ul>
                 <li>
                     <strong>Niagara Launcher</strong> [<a href="https://github.com/8BitKit/Niagara-Issues" target="_blank">GitHub</a>]<br>
@@ -119,5 +160,45 @@
         </div>
     </div>
 
+    <script>
+        // Clock Script
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Instant Filter Script
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const categories = document.querySelectorAll('.category');
+
+            categories.forEach(category => {
+                const items = category.querySelectorAll('li');
+                let hasVisibleItem = false;
+
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        item.style.display = '';
+                        hasVisibleItem = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Hide empty categories when filtering
+                if (hasVisibleItem) {
+                    category.style.display = '';
+                } else {
+                    category.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
