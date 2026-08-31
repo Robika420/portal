@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Hub</title>
+    <style>
+        :root {
+            --bg-color: #121214;
+            --card-bg: #1e1e24;
+            --accent: #7952b3;
+            --text-main: #e1e1e6;
+            --text-sub: #a8a8b3;
+            --code-bg: #0d0d10;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        h1 { text-align: center; margin-bottom: 2rem; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .category h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            color: var(--accent);
+            border-bottom: 1px solid #323238;
+            padding-bottom: 0.5rem;
+        }
+
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { margin-bottom: 0.75rem; font-size: 0.95rem; }
+
+        a {
+            color: #61dafb;
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+
+        code {
+            background-color: var(--code-bg);
+            color: #00ff66;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: 4px;
+            user-select: all; /* Easy copying */
+        }
+
+        .subtext {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dashboard Hub</h1>
+
+    <div class="grid">
+        <!-- CATEGORY 1: MEDIA & FILM -->
+        <div class="category">
+            <h2>Film & Media</h2>
+            <ul>
+                <li><a href="https://letterboxd.com" target="_blank">Letterboxd</a> <span class="subtext">- Tracker</span></li>
+                <li><a href="https://imdb.com" target="_blank">IMDb</a> <span class="subtext">- Info</span></li>
+                <li><a href="https://justwatch.com" target="_blank">JustWatch</a> <span class="subtext">- Streaming guide</span></li>
+            </ul>
+        </div>
+
+        <!-- CATEGORY 2: DESKTOP APPS & WINGET -->
+        <div class="category">
+            <h2>Desktop Apps</h2>
+            <ul>
+                <li>
+                    <strong>MPV Player</strong> [<a href="https://github.com/mpv-player/mpv" target="_blank">GitHub</a>]<br>
+                    <code>winget install --id io.mpv.mpv</code>
+                </li>
+                <li>
+                    <strong>Process Lasso</strong><br>
+                    <code>winget install --id Bitsum.ProcessLasso</code>
+                </li>
+            </ul>
+        </div>
+
+        <!-- CATEGORY 3: ANDROID APPS -->
+        <div class="category">
+            <h2>Android Apps</h2>
+            <ul>
+                <li>
+                    <strong>Niagara Launcher</strong> [<a href="https://github.com/8BitKit/Niagara-Issues" target="_blank">GitHub</a>]<br>
+                    <span class="subtext">Minimal homescreen replacement</span>
+                </li>
+                <li>
+                    <strong>Ente Auth</strong> [<a href="https://github.com/ente-io/ente" target="_blank">GitHub</a>]<br>
+                    <span class="subtext">Open-source 2FA manager</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>
