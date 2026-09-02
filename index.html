@@ -183,6 +183,7 @@
   <a href="#DDL" style="color: #ff00ff; text-decoration: none;">DDL</a>
   <a href="#launchers" style="color: #ff00ff; text-decoration: none;">launchers</a>
   <a href="#revanced" style="color: #ff00ff; text-decoration: none;">revanced</a>
+  <a href="#pkg-man" style="color: #ff00ff; text-decoration: none;">pkg-man</a>
   <a href="#winget" style="color: #ff00ff; text-decoration: none;">winget</a>
   <a href="#altstores" style="color: #ff00ff; text-decoration: none;">altstores</a>
   <a href="#FPS-boost" style="color: #ff00ff; text-decoration: none;">FPS-boost</a>
@@ -1302,6 +1303,70 @@
             </ul>
         </div>
 
+<div class="category" id="pkg-man">
+            <h2>📦 Mass Download Apps & Package Managers to Win PC</h2>
+            <ul>
+                <li>
+                    <strong>ALL-in-1 Package Managers & GUIs:</strong><br>
+                    <span class="subtext">
+                        • <strong>UniGetUI:</strong> <code>winget install MartiCliment.UniGetUI</code> | <a href="https://www.marticliment.com/unigetui" target="_blank">marticliment.com/unigetui</a> | <a href="https://github.com/marticliment/UniGetUI" target="_blank">GitHub</a><br>
+                        • <em>Win package manager tier list:</em> WinGet, Scoop, Chocolatey
+                    </span>
+                </li>
+                <li>
+                    <strong>WinGet (Windows Package Manager):</strong><br>
+                    <span class="subtext">
+                        • <strong>Install:</strong> MS Store (recommended) (search 'winget' or 'App Installer') | <a href="https://apps.microsoft.com/detail/9NBLGGH4NNS1" target="_blank">MS Store</a> | <a href="https://github.com/microsoft/winget-cli" target="_blank">GitHub</a><br>
+                        • <strong>Example install app:</strong> <code>winget install googlechrome</code><br>
+                        • <strong>Stupid Fast Scoop Utils (sfsu):</strong> <a href="https://github.com/winpax/sfsu" target="_blank">GitHub</a> (Example: <code>sfsu install googlechrome</code>)<br>
+                        • <strong>Hok:</strong> <code>winget install ChawyeHsu.Hok</code> | <a href="https://github.com/chawyehsu/hok" target="_blank">GitHub</a> (Example: <code>hok install googlechrome</code>)
+                    </span>
+                </li>
+                <li>
+                    <strong>Scoop:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://scoop.sh" target="_blank">scoop.sh</a> | <a href="https://github.com/ScoopInstaller/Scoop" target="_blank">GitHub</a><br>
+                        • <strong>Win PowerShell command:</strong><br>
+                        <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code><br>
+                        <code>Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression</code><br>
+                        • <strong>Example install app:</strong> <code>scoop install googlechrome</code><br>
+                        • <strong>Install GUI:</strong> Scoop Extension for Command Palette (<code>winget install 9N5CGL8FTTT3</code>) OR Rscoop (<code>winget install AmarBego.Rscoop</code> | <a href="https://amarbego.github.io/Rscoop" target="_blank">amarbego.github.io/Rscoop</a> | <a href="https://github.com/AmarBego/Rscoop" target="_blank">GitHub</a>)
+                    </span>
+                </li>
+                <li>
+                    <strong>Chocolatey:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://community.chocolatey.org/packages" target="_blank">community.chocolatey.org/packages</a><br>
+                        • <strong>Win PowerShell (Admin) install command:</strong><br>
+                        <code>Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</code><br>
+                        • <strong>Example install app:</strong> <code>choco install googlechrome</code><br>
+                        • <strong>Install GUI:</strong> <code>choco install chocolateygui -y</code>
+                    </span>
+                </li>
+                <li>
+                    <strong>Web-Based Builders & Bulk Installers:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://wingetly.io" target="_blank">wingetly.io</a><br>
+                        • <strong>Winstall:</strong> <a href="https://winstall.app" target="_blank">winstall.app</a> (<span class="subtext">generates PowerShell commands</span>)
+                    </span>
+                </li>
+                <li>
+                    <strong>Traditional Bulk Installers & Alternatives:</strong><br>
+                    <span class="subtext">
+                        • <strong>Ninite:</strong> Fast and easy, but limited app collection.<br>
+                        • <strong>PatchMyPC:</strong> Rules them all. Alternatives: Keratin, Batchpatch, Sumo, GeGeek, Ninite.
+                    </span>
+                </li>
+                <li>
+                    <strong>Download Utilities & Other Tools:</strong><br>
+                    <span class="subtext">
+                        • Aria2 Explorer & Aria2 Manager: <a href="https://aria2e.com" target="_blank">aria2e.com</a><br>
+                        • <strong>Npackd:</strong> <a href="https://npackd.org" target="_blank">npackd.org</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
         <div class="category" id="winget">
             <h2>💻 Winget Apps (Fresh Install)</h2>
             
@@ -1329,7 +1394,7 @@ winget install RazerInc.RazerInstaller --accept-source-agreements --accept-packa
 winget install voidtools.Everything --accept-source-agreements --accept-package-agreements
 winget install AntibodySoftware.WizTree --accept-source-agreements --accept-package-agreements
 winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --accept-package-agreements
-winget install HydraLauncher.Hydra</textarea>
+</textarea>
                     <button class="copy-btn" onclick="copyFullScript()">Copy All Commands</button>
                 </details>
             </div>
@@ -1418,10 +1483,6 @@ winget install HydraLauncher.Hydra</textarea>
                 <li>
                     <strong>Universal ADB Driver</strong> [<a href="https://github.com/koush/UniversalAdbDriver" target="_blank">GitHub</a>]<br>
                     <code>winget install ClockworkMod.UniversalADBDriver</code>
-                </li>
-                <li>
-                    <strong>Hydra Launcher</strong> [<a href="https://hydralauncher.gg" target="_blank">Web</a>]<br>
-                    <code>winget install HydraLauncher.Hydra</code>
                 </li>
             </ul>
         </div>
