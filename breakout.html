@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Breakout</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 { margin-bottom: 10px; font-size: 2.5rem; color: #ffaa00; text-shadow: 0 0 10px rgba(255, 170, 0, 0.5); }
+        .scoreboard {
+            display: flex;
+            gap: 20px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .score-box {
+            background: #1e1e1e;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        canvas { background-color: #1a1a1a; border: 4px solid #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .instructions { margin-top: 15px; color: #888; font-size: 0.9rem; text-align: center; }
+        .back-link { margin-top: 15px; color: #ffaa00; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>BREAKOUT</h1>
+    <div class="scoreboard">
+        <div class="score-box">Score: <span id="score">0</span></div>
+        <div class="score-box">Lives: <span id="lives">3</span></div>
+    </div>
+    <canvas id="breakoutCanvas" width="480" height="400"></canvas>
+    <div class="instructions">
+        Use <b>Left / Right Arrow Keys</b> or <b>A / D</b> to move the paddle.<br>Press <b>Spacebar</b> to restart when game over.
+    </div>
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <script>
+        const canvas = document.getElementById("breakoutCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let score = 0;
+        let lives = 3;
+        let isGameOver = false;
+
+        // Paddle setup
+        const paddleHeight = 12;
+        const paddleWidth = 75;
+        let paddleX = (canvas.width - paddleWidth) / 2;
+
+        // Ball setup
+        let ballRadius = 6;
+        let x = canvas.width / 2;
+        let y = canvas.height - 30;
+        let dx = 3;
+        let dy = -3;
+
+        // Controls
+        let rightPressed = false;
+        let leftPressed = false;
+
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+        document.addEventListener("mousemove", mouseMoveHandler, false);
+
+        function keyDownHandler(e) {
+            if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+                rightPressed = true;
+            } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+                leftPressed = true;
+            } else if (e.key === " " && isGameOver) {
+                resetGame();
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+                rightPressed = false;
+            } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+                leftPressed = false;
+            }
+        }
+
+        function mouseMoveHandler(e) {
+            let relativeX = e.clientX - canvas.offsetLeft;
+            if (relativeX > 0 && relativeX < canvas.width) {
+                paddleX = relativeX - paddleWidth / 2;
+                // Clamp within canvas bounds
+                if (paddleX < 0) paddleX = 0;
+                if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
+            }
+        }
+
+        // Bricks setup
+        const brickRowCount = 5;
+        const brickColumnCount = 7;
+        const brickWidth = 58;
+        const brickHeight = 18;
+        const brickPadding = 8;
+        const brickOffsetTop = 30;
+        const brickOffsetLeft = 25;
+
+        const brickColors = ["#ff3366", "#ff9900", "#ffff33", "#33cc66", "#3399ff"];
+
+        let bricks = [];
+        function initBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                bricks[c] = [];
+                for (let r = 0; r < brickRowCount; r++) {
+                    bricks[c][r] = { x: 0, y: 0, status: 1 };
+                }
+            }
+        }
+        initBricks();
+
+        function collisionDetection() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    let b = bricks[c][r];
+                    if (b.status === 1) {
+                        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                            dy = -dy;
+                            b.status = 0;
+                            score += (brickRowCount - r) * 10; // Higher rows worth more points
+                            document.getElementById("score").innerText = score;
+
+                            // Check for win condition
+                            if (score === getTotalPossibleScore()) {
+                                alert("YOU WIN, CONGRATS!");
+                                document.location.reload();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function getTotalPossibleScore() {
+            let total = 0;
+            for (let r = 0; r < brickRowCount; r++) {
+                total += brickColumnCount * ((brickRowCount - r) * 10);
+            }
+            return total;
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#ffaa00";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                        let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                        bricks[c][r].x = brickX;
+                        bricks[c][r].y = brickY;
+                        ctx.beginPath();
+                        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                        ctx.fillStyle = brickColors[r];
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            collisionDetection();
+
+            // Wall collisions (Left/Right/Top)
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx;
+            }
+            if (y + dy < ballRadius) {
+                dy = -dy;
+            } 
+            // Paddle collision & bottom boundary
+            else if (y + dy > canvas.height - ballRadius - 10 - paddleHeight) {
+                if (x > paddleX && x < paddleX + paddleWidth) {
+                    // Add slight angle variance depending on where it hits the paddle
+                    let hitPoint = x - (paddleX + paddleWidth / 2);
+                    dx = hitPoint * 0.15;
+                    dy = -dy;
+                } else if (y + dy > canvas.height - ballRadius) {
+                    lives--;
+                    document.getElementById("lives").innerText = lives;
+                    if (!lives) {
+                        isGameOver = true;
+                        drawGameOver();
+                        return;
+                    } else {
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        dx = 3;
+                        dy = -3;
+                        paddleX = (canvas.width - paddleWidth) / 2;
+                    }
+                }
+            }
+
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += 6;
+            } else if (leftPressed && paddleX > 0) {
+                paddleX -= 6;
+            }
+
+            x += dx;
+            y += dy;
+
+            if (!isGameOver) {
+                requestAnimationFrame(draw);
+            }
+        }
+
+        function drawGameOver() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "white";
+            ctx.font = "bold 28px 'Segoe UI'";
+            ctx.textAlign = "center";
+            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 15);
+
+            ctx.font = "15px 'Segoe UI'";
+            ctx.fillStyle = "#888";
+            ctx.fillText("Press Space to Play Again", canvas.width / 2, canvas.height / 2 + 20);
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            isGameOver = false;
+            document.getElementById("score").innerText = score;
+            document.getElementById("lives").innerText = lives;
+            initBricks();
+            x = canvas.width / 2;
+            y = canvas.height - 30;
+            dx = 3;
+            dy = -3;
+            paddleX = (canvas.width - paddleWidth) / 2;
+            draw();
+        }
+
+        draw();
+    </script>
+</body>
+</html>
