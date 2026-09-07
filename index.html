@@ -1949,6 +1949,27 @@ const tracks = [
 const repeatBtn = document.getElementById('repeat-btn');
 let isRepeating = false;
 
+ const repeatBtn = document.getElementById('repeat-btn');
+let isRepeating = false;
+
+document.getElementById('repeat-btn').addEventListener('click', () => {
+  console.log('Repeat clicked');
+});
+
+repeatBtn.addEventListener('click', () => {
+  isRepeating = !isRepeating;
+  audio.loop = isRepeating;
+  repeatBtn.style.opacity = isRepeating ? '1' : '0.5'; // Visual active state
+  repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+});
+
+audio.addEventListener('ended', () => {
+  if (!audio.loop) {
+    nextTrack();
+  }
+});
+   
+
 repeatBtn.addEventListener('click', () => {
   isRepeating = !isRepeating;
   audio.loop = isRepeating;
