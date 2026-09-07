@@ -1822,116 +1822,115 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         }
     </script>
 
-// Initial GitHub-hosted tracks
-const tracks = [
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial GitHub-hosted tracks
+  const tracks = [
   { title: "VELVET MAFIA – TINTED BANDIT", src: "./tracks/001 - VELVET MAFIA – TINTED BANDIT.opus" },
   { title: "Ketioz - Gamma GT", src: "./tracks/002 - Gamma GT.opus" }
-];
+  ];
 
-let currentTrackIndex = 0;
+  let currentTrackIndex = 0;
 
-const audio = document.getElementById('audioElement');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const progressBar = document.getElementById('progressBar');
-const progressContainer = document.getElementById('progressContainer');
-const timeDisplay = document.getElementById('timeDisplay');
-const playlistEl = document.getElementById('playlist');
-const fileSelector = document.getElementById('fileSelector');
+  const audio = document.getElementById('audioElement');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const progressBar = document.getElementById('progressBar');
+  const progressContainer = document.getElementById('progressContainer');
+  const timeDisplay = document.getElementById('timeDisplay');
+  const playlistEl = document.getElementById('playlist');
+  const fileSelector = document.getElementById('fileSelector');
 
-// Render the playlist dynamically
-function initPlaylist() {
-  playlistEl.innerHTML = '';
-  tracks.forEach((track, index) => {
-    const li = document.createElement('li');
-    li.textContent = track.title;
-    if (index === currentTrackIndex) li.classList.add('active');
-    
-    li.addEventListener('click', () => {
-      currentTrackIndex = index;
-      loadTrack(currentTrackIndex);
-      audio.play();
-      updatePlayState(true);
-    });
-    playlistEl.appendChild(li);
-  });
-}
-
-function loadTrack(index) {
-  if (tracks.length === 0) return;
-  audio.src = tracks[index].src;
-  audio.load();
-  initPlaylist(); 
-}
-
-function updatePlayState(isPlaying) {
-  playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
-}
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-// Handle Local File Uploads
-fileSelector.addEventListener('change', (event) => {
-  const files = event.target.files;
-  if (files.length === 0) return;
-
-  // Add each selected file to the tracks array
-  for (let file of files) {
-    tracks.push({
-      title: `💾 ${file.name}`, // Icon to indicate local file
-      src: URL.createObjectURL(file)
+  // Render the playlist dynamically
+  function initPlaylist() {
+    playlistEl.innerHTML = '';
+    tracks.forEach((track, index) => {
+      const li = document.createElement('li');
+      li.textContent = track.title;
+      if (index === currentTrackIndex) li.classList.add('active');
+      
+      li.addEventListener('click', () => {
+        currentTrackIndex = index;
+        loadTrack(currentTrackIndex);
+        audio.play().catch(e => console.log("Playback prevented:", e));
+        updatePlayState(true);
+      });
+      playlistEl.appendChild(li);
     });
   }
 
-  // Jump to the first newly added track and play it
-  currentTrackIndex = tracks.length - files.length;
-  loadTrack(currentTrackIndex);
-  audio.play();
-  updatePlayState(true);
-  
-  // Reset input so the same files can be re-uploaded if needed
-  fileSelector.value = ''; 
-});
+  function loadTrack(index) {
+    if (tracks.length === 0) return;
+    audio.src = tracks[index].src;
+    audio.load();
+    initPlaylist(); 
+  }
 
-// Playback Controls
-playPauseBtn.addEventListener('click', () => {
-  if (audio.paused) {
-    audio.play();
+  function updatePlayState(isPlaying) {
+    playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+  }
+
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  // Handle Local File Uploads
+  fileSelector.addEventListener('change', (event) => {
+    const files = event.target.files;
+    if (files.length === 0) return;
+
+    for (let file of files) {
+      tracks.push({
+        title: `💾 ${file.name}`,
+        src: URL.createObjectURL(file)
+      });
+    }
+
+    currentTrackIndex = tracks.length - files.length;
+    loadTrack(currentTrackIndex);
+    audio.play().catch(e => console.log("Playback prevented:", e));
     updatePlayState(true);
-  } else {
-    audio.pause();
-    updatePlayState(false);
-  }
-});
+    
+    fileSelector.value = ''; 
+  });
 
-audio.addEventListener('timeupdate', () => {
-  const current = audio.currentTime;
-  const duration = audio.duration || 0;
-  progressBar.style.width = `${(current / duration) * 100}%`;
-  timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
-});
+  // Playback Controls
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().catch(e => console.log("Playback prevented:", e));
+      updatePlayState(true);
+    } else {
+      audio.pause();
+      updatePlayState(false);
+    }
+  });
 
-audio.addEventListener('loadedmetadata', () => {
-  timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
-});
+  audio.addEventListener('timeupdate', () => {
+    const current = audio.currentTime;
+    const duration = audio.duration || 0;
+    progressBar.style.width = `${(current / duration) * 100}%`;
+    timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+  });
 
-progressContainer.addEventListener('click', (e) => {
-  const rect = progressContainer.getBoundingClientRect();
-  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-});
+  audio.addEventListener('loadedmetadata', () => {
+    timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+  });
 
-// Auto-play next track
-audio.addEventListener('ended', () => {
-  currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  });
+
+  // Auto-play next track
+  audio.addEventListener('ended', () => {
+    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    loadTrack(currentTrackIndex);
+    audio.play().catch(e => console.log("Playback prevented:", e));
+    updatePlayState(true);
+  });
+
+  // Initialize first track on page load
   loadTrack(currentTrackIndex);
-  audio.play();
-  updatePlayState(true);
 });
-
-// Initialize first track on page load
-loadTrack(currentTrackIndex);
 </body>
 </html>
