@@ -34,98 +34,97 @@
             margin-bottom: 1.5rem;
         }
 
-/* Matching Dark Theme Playlist Styles */
 .opus-player-wrapper {
-  max-width: 500px;
-  margin: 20px 0;
-  font-family: system-ui, sans-serif;
-}
+      max-width: 500px;
+      margin: 20px 0;
+      font-family: system-ui, sans-serif;
+    }
 
-.upload-btn {
-  display: inline-block;
-  background: transparent;
-  color: #00ffff;
-  border: 1px solid #00ffff;
-  padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  margin-bottom: 10px;
-  transition: all 0.2s;
-}
+    .upload-btn {
+      display: inline-block;
+      background: transparent;
+      color: #00ffff;
+      border: 1px solid #00ffff;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
 
-.upload-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-}
+    .upload-btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+    }
 
-.opus-player {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  padding: 10px 14px;
-  border-radius: 6px;
-}
+    .opus-player {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      padding: 10px 14px;
+      border-radius: 6px;
+    }
 
-.control-btn {
-  background: transparent;
-  color: #00ffff;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
+    .control-btn {
+      background: transparent;
+      color: #00ffff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-.progress-container {
-  flex-grow: 1;
-  background: #222;
-  height: 4px;
-  border-radius: 2px;
-  cursor: pointer;
-}
+    .progress-container {
+      flex-grow: 1;
+      background: #222;
+      height: 4px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
 
-.progress-bar {
-  background: #00ffff;
-  width: 0%;
-  height: 100%;
-}
+    .progress-bar {
+      background: #00ffff;
+      width: 0%;
+      height: 100%;
+    }
 
-.time-display {
-  font-size: 11px;
-  color: #00ffff;
-  min-width: 60px;
-  text-align: right;
-}
+    .time-display {
+      font-size: 11px;
+      color: #00ffff;
+      min-width: 60px;
+      text-align: right;
+    }
 
-.playlist {
-  list-style: none;
-  padding: 0;
-  margin-top: 8px;
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.8);
-}
+    .playlist {
+      list-style: none;
+      padding: 0;
+      margin-top: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.8);
+    }
 
-.playlist li {
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #ccc;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  cursor: pointer;
-}
+    .playlist li {
+      padding: 8px 12px;
+      font-size: 13px;
+      color: #ccc;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+    }
 
-.playlist li:hover {
-  background: rgba(0, 255, 255, 0.05);
-  color: #00ffff;
-}
+    .playlist li:hover {
+      background: rgba(0, 255, 255, 0.05);
+      color: #00ffff;
+    }
 
-.playlist li.active {
-  background: rgba(0, 255, 255, 0.15);
-  color: #00ffff;
-  font-weight: bold;
-}
+    .playlist li.active {
+      background: rgba(0, 255, 255, 0.15);
+      color: #00ffff;
+      font-weight: bold;
+    }
         .search-container {
             max-width: 500px;
             margin: 0 auto 2.5rem auto;
@@ -281,30 +280,10 @@
   <a href="#Niagara" style="color: #ff00ff; text-decoration: none;">Niagara</a>
   <a href="#photos" style="color: #ff00ff; text-decoration: none;">photos</a>
   <a href="#FPS-boost" style="color: #ff00ff; text-decoration: none;">FPS-boost</a>
+  <a href="#opus" style="color: #ff00ff; text-decoration: none;">opus</a>
 </nav>
     <h1>Dashboard</h1>
     <div id="clock"></div>
-
-<div class="opus-player-wrapper">
-  <!-- Local File Input (Allows multiple files) -->
-  <div class="upload-section">
-    <label for="fileSelector" class="upload-btn">+ Add Local Tracks</label>
-    <input type="file" id="fileSelector" accept=".opus, audio/ogg, audio/opus" multiple hidden />
-  </div>
-
-  <!-- Player UI -->
-  <div class="opus-player">
-    <audio id="audioElement" preload="metadata"></audio>
-    <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
-    <div class="progress-container" id="progressContainer">
-      <div id="progressBar" class="progress-bar"></div>
-    </div>
-    <span id="timeDisplay" class="time-display">0:00 / 0:00</span>
-  </div>
-
-  <!-- Playlist UI -->
-  <ul id="playlist" class="playlist"></ul>
-</div>
 
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
@@ -1779,6 +1758,27 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             </ul>
         </div>
 
+<div class="opus-player-wrapper" id="opus">
+    <!-- Local File Input -->
+    <div>
+      <label for="fileSelector" class="upload-btn">+ Add Local Tracks</label>
+      <input type="file" id="fileSelector" accept=".opus, audio/ogg, audio/opus" multiple hidden />
+    </div>
+
+    <!-- Player UI -->
+    <div class="opus-player">
+      <audio id="audioElement" preload="metadata"></audio>
+      <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
+      <div class="progress-container" id="progressContainer">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+      <span id="timeDisplay" class="time-display">0:00 / 0:00</span>
+    </div>
+
+    <!-- Playlist UI -->
+    <ul id="playlist" class="playlist"></ul>
+  </div>
+
     <script>
         // Clock Script
         function updateClock() {
@@ -1827,115 +1827,111 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         }
     </script>
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Initial GitHub-hosted tracks
-  const tracks = [
-  { title: "VELVET MAFIA – TINTED BANDIT", src: "./tracks/001 - VELVET MAFIA – TINTED BANDIT.opus" },
-  { title: "Ketioz - Gamma GT", src: "./tracks/002 - Gamma GT.opus" }
-  ];
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tracks = [
+        { title: "VELVET MAFIA – TINTED BANDIT", src: "./tracks/001-velvet-mafia-tinted-bandit.opus" },
+        { title: "Ketioz - Gamma GT", src: "./tracks/002-gamma-gt.opus" }
+      ];
 
-  let currentTrackIndex = 0;
+      let currentTrackIndex = 0;
 
-  const audio = document.getElementById('audioElement');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const progressBar = document.getElementById('progressBar');
-  const progressContainer = document.getElementById('progressContainer');
-  const timeDisplay = document.getElementById('timeDisplay');
-  const playlistEl = document.getElementById('playlist');
-  const fileSelector = document.getElementById('fileSelector');
+      const audio = document.getElementById('audioElement');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const progressBar = document.getElementById('progressBar');
+      const progressContainer = document.getElementById('progressContainer');
+      const timeDisplay = document.getElementById('timeDisplay');
+      const playlistEl = document.getElementById('playlist');
+      const fileSelector = document.getElementById('fileSelector');
 
-  // Render the playlist dynamically
-  function initPlaylist() {
-    playlistEl.innerHTML = '';
-    tracks.forEach((track, index) => {
-      const li = document.createElement('li');
-      li.textContent = track.title;
-      if (index === currentTrackIndex) li.classList.add('active');
-      
-      li.addEventListener('click', () => {
-        currentTrackIndex = index;
+      function initPlaylist() {
+        playlistEl.innerHTML = '';
+        tracks.forEach((track, index) => {
+          const li = document.createElement('li');
+          li.textContent = track.title;
+          if (index === currentTrackIndex) li.classList.add('active');
+          
+          li.addEventListener('click', () => {
+            currentTrackIndex = index;
+            loadTrack(currentTrackIndex);
+            audio.play().catch(e => console.log("Playback prevented:", e));
+            updatePlayState(true);
+          });
+          playlistEl.appendChild(li);
+        });
+      }
+
+      function loadTrack(index) {
+        if (tracks.length === 0) return;
+        audio.src = tracks[index].src;
+        audio.load();
+        initPlaylist(); 
+      }
+
+      function updatePlayState(isPlaying) {
+        playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+      }
+
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+
+      fileSelector.addEventListener('change', (event) => {
+        const files = event.target.files;
+        if (files.length === 0) return;
+
+        for (let file of files) {
+          tracks.push({
+            title: `💾 ${file.name}`,
+            src: URL.createObjectURL(file)
+          });
+        }
+
+        currentTrackIndex = tracks.length - files.length;
+        loadTrack(currentTrackIndex);
+        audio.play().catch(e => console.log("Playback prevented:", e));
+        updatePlayState(true);
+        
+        fileSelector.value = ''; 
+      });
+
+      playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play().catch(e => console.log("Playback prevented:", e));
+          updatePlayState(true);
+        } else {
+          audio.pause();
+          updatePlayState(false);
+        }
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        const current = audio.currentTime;
+        const duration = audio.duration || 0;
+        progressBar.style.width = `${(current / duration) * 100}%`;
+        timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+      });
+
+      audio.addEventListener('loadedmetadata', () => {
+        timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+      });
+
+      progressContainer.addEventListener('click', (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+      });
+
+      audio.addEventListener('ended', () => {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
         loadTrack(currentTrackIndex);
         audio.play().catch(e => console.log("Playback prevented:", e));
         updatePlayState(true);
       });
-      playlistEl.appendChild(li);
+
+      loadTrack(currentTrackIndex);
     });
-  }
-
-  function loadTrack(index) {
-    if (tracks.length === 0) return;
-    audio.src = tracks[index].src;
-    audio.load();
-    initPlaylist(); 
-  }
-
-  function updatePlayState(isPlaying) {
-    playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
-  }
-
-  function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  }
-
-  // Handle Local File Uploads
-  fileSelector.addEventListener('change', (event) => {
-    const files = event.target.files;
-    if (files.length === 0) return;
-
-    for (let file of files) {
-      tracks.push({
-        title: `💾 ${file.name}`,
-        src: URL.createObjectURL(file)
-      });
-    }
-
-    currentTrackIndex = tracks.length - files.length;
-    loadTrack(currentTrackIndex);
-    audio.play().catch(e => console.log("Playback prevented:", e));
-    updatePlayState(true);
-    
-    fileSelector.value = ''; 
-  });
-
-  // Playback Controls
-  playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play().catch(e => console.log("Playback prevented:", e));
-      updatePlayState(true);
-    } else {
-      audio.pause();
-      updatePlayState(false);
-    }
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    const current = audio.currentTime;
-    const duration = audio.duration || 0;
-    progressBar.style.width = `${(current / duration) * 100}%`;
-    timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
-  });
-
-  audio.addEventListener('loadedmetadata', () => {
-    timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
-  });
-
-  progressContainer.addEventListener('click', (e) => {
-    const rect = progressContainer.getBoundingClientRect();
-    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-  });
-
-  // Auto-play next track
-  audio.addEventListener('ended', () => {
-    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-    loadTrack(currentTrackIndex);
-    audio.play().catch(e => console.log("Playback prevented:", e));
-    updatePlayState(true);
-  });
-
-  // Initialize first track on page load
-  loadTrack(currentTrackIndex);
-});
+  </script>
 </body>
 </html>
