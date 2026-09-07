@@ -2007,7 +2007,7 @@ const tracks = [
   { title: "177 - Wildok3", src: "./tracks/177-wildok3.m4a" },
   { title: "178 - PiroslámpaZöldlámpa", src: "./tracks/178-piroslampazoldlampa.m4a" },
   { title: "179 - Superior", src: "./tracks/179-superior.m4a" },
-  { title: "180 - Mood", src: "./tracks/180-mood.m4a" },
+  { title: "180 - Mood", src: /tracks/180-mood.m4a" },
   { title: "181 - KIKA", src: "./tracks/181-kika.m4a" },
   { title: "182 - Evolution of Hip Hop Drug Songs - Crank Lucas", src: "./tracks/182-evolution-of-hip-hop-drug-songs-crank-lucas.m4a" },
   { title: "183 - THE EVOLUTION OF HIP HOP LOVE SONGS", src: "./tracks/183-the-evolution-of-hip-hop-love-songs.m4a" },
@@ -2021,10 +2021,12 @@ const tracks = [
   { title: "191 - Mondtam", src: "./tracks/191-mondtam.m4a" },
   { title: "192 - Ha máshogyan lenne", src: "./tracks/192-ha-mashogyan-lenne.m4a" },
   { title: "193 - Headlights (feat. KIDDO & Issam Alnajjar) (Radio Edit)", src: "./tracks/193-headlights-feat-kiddo-issam-alnajjar-radio-edit.m4a" }
-];   
+]; 
      
-      let currentTrackIndex = 0;
-      let isRepeating = false;
+let tracks = [...defaultTracks];
+      let currentTrackIndex = parseInt(localStorage.getItem('opus_track_index')) || 0;
+      let isRepeating = localStorage.getItem('opus_repeat') === 'true';
+      let isShuffled = localStorage.getItem('opus_shuffle') === 'true';
 
       const audio = document.getElementById('audioElement');
       const playPauseBtn = document.getElementById('playPauseBtn');
@@ -2034,6 +2036,24 @@ const tracks = [
       const timeDisplay = document.getElementById('timeDisplay');
       const playlistEl = document.getElementById('playlist');
       const fileSelector = document.getElementById('fileSelector');
+
+      // Add shuffle button dynamically if not present in HTML
+      let shuffleBtn = document.getElementById('shuffle-btn');
+      if (!shuffleBtn) {
+        shuffleBtn = document.createElement('button');
+        shuffleBtn.id = 'shuffle-btn';
+        shuffleBtn.title = "Toggle Shuffle";
+        shuffleBtn.textContent = '🔀';
+        repeatBtn.parentNode.insertBefore(shuffleBtn, repeatBtn);
+      }
+
+      // Apply initial UI states from storage
+      repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
+      repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+      audio.loop = isRepeating;
+
+      shuffleBtn.style.opacity = isShuffled ? '1' : '0.5';
+      shuffleBtn.style.borderColor = isShuffled ? 'var(--accent-color)' : '';
 
       function initPlaylist() {
         playlistEl.innerHTML = '';
@@ -2054,8 +2074,10 @@ const tracks = [
 
       function loadTrack(index) {
         if (tracks.length === 0) return;
-        audio.src = tracks[index].src;
+        if (index >= tracks.length) currentTrackIndex = 0;
+        audio.src = tracks[currentTrackIndex].src;
         audio.load();
+        localStorage.setItem('opus_track_index', currentTrackIndex);
         initPlaylist(); 
       }
 
@@ -2084,7 +2106,6 @@ const tracks = [
         loadTrack(currentTrackIndex);
         audio.play().catch(e => console.log("Playback prevented:", e));
         updatePlayState(true);
-        
         fileSelector.value = ''; 
       });
 
@@ -2103,6 +2124,14 @@ const tracks = [
         audio.loop = isRepeating;
         repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
         repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+        localStorage.setItem('opus_repeat', isRepeating);
+      });
+
+      shuffleBtn.addEventListener('click', () => {
+        isShuffled = !isShuffled;
+        shuffleBtn.style.opacity = isShuffled ? '1' : '0.5';
+        shuffleBtn.style.borderColor = isShuffled ? 'var(--accent-color)' : '';
+        localStorage.setItem('opus_shuffle', isShuffled);
       });
 
       audio.addEventListener('timeupdate', () => {
@@ -2123,7 +2152,15 @@ const tracks = [
 
       audio.addEventListener('ended', () => {
         if (!audio.loop) {
-          currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+          if (isShuffled && tracks.length > 1) {
+            let nextIndex;
+            do {
+              nextIndex = Math.floor(Math.random() * tracks.length);
+            } while (nextIndex === currentTrackIndex);
+            currentTrackIndex = nextIndex;
+          } else {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+          }
           loadTrack(currentTrackIndex);
           audio.play().catch(e => console.log("Playback prevented:", e));
           updatePlayState(true);
