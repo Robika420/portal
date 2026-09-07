@@ -34,93 +34,98 @@
             margin-bottom: 1.5rem;
         }
 
-.opus-player {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #f1f3f4;
-  padding: 12px 16px;
-  border-radius: 30px;
-  max-width: 400px;
-  font-family: system-ui, -apple-system, sans-serif;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.control-btn {
-  background: #1a73e8;
-  color: white;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  transition: background 0.2s;
-}
-
-.control-btn:hover {
-  background: #1557b0;
-}
-
-.progress-container {
-  flex-grow: 1;
-  background: #dcdcdc;
-  height: 6px;
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-bar {
-  background: #1a73e8;
-  width: 0%;
-  height: 100%;
-  transition: width 0.1s linear;
-}
-
-.time-display {
-  font-size: 12px;
-  color: #5f6368;
-  min-width: 65px;
-  text-align: right;
+/* Matching Dark Theme Playlist Styles */
+.opus-player-wrapper {
+  max-width: 500px;
+  margin: 20px 0;
+  font-family: system-ui, sans-serif;
 }
 
 .upload-btn {
   display: inline-block;
-  background: #34a853;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+  background: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  padding: 6px 14px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 15px;
-  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
 }
 
-.upload-btn:hover { background: #2d8f47; }
+.upload-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.opus-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.control-btn {
+  background: transparent;
+  color: #00ffff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.progress-container {
+  flex-grow: 1;
+  background: #222;
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.progress-bar {
+  background: #00ffff;
+  width: 0%;
+  height: 100%;
+}
+
+.time-display {
+  font-size: 11px;
+  color: #00ffff;
+  min-width: 60px;
+  text-align: right;
+}
 
 .playlist {
   list-style: none;
   padding: 0;
-  margin-top: 15px;
-  font-family: system-ui, sans-serif;
-  max-width: 400px;
+  margin-top: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .playlist li {
-  padding: 10px;
-  background: #fff;
-  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #ccc;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
 }
 
-.playlist li:hover { background: #f1f3f4; }
-.playlist li.active { background: #e8f0fe; font-weight: bold; color: #1a73e8; }
+.playlist li:hover {
+  background: rgba(0, 255, 255, 0.05);
+  color: #00ffff;
+}
 
+.playlist li.active {
+  background: rgba(0, 255, 255, 0.15);
+  color: #00ffff;
+  font-weight: bold;
+}
         .search-container {
             max-width: 500px;
             margin: 0 auto 2.5rem auto;
