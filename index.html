@@ -1839,16 +1839,18 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             });
         }
     </script>
-
+    
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const tracks = [
+      const defaultTracks = [
         { title: "VELVET MAFIA – TINTED BANDIT", src: "https://robika420.github.io/portal/tracks/001-velvet-mafia-tinted-bandit.m4a" },
         { title: "Ketioz - Gamma GT", src: "https://robika420.github.io/portal/tracks/002-gamma-gt.m4a" }
       ];
         
-      let currentTrackIndex = 0;
-      let isRepeating = false;
+      let tracks = [...defaultTracks];
+      let currentTrackIndex = parseInt(localStorage.getItem('opus_track_index')) || 0;
+      let isRepeating = localStorage.getItem('opus_repeat') === 'true';
+      let isShuffled = localStorage.getItem('opus_shuffle') === 'true';
 
       const audio = document.getElementById('audioElement');
       const playPauseBtn = document.getElementById('playPauseBtn');
@@ -1858,6 +1860,24 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
       const timeDisplay = document.getElementById('timeDisplay');
       const playlistEl = document.getElementById('playlist');
       const fileSelector = document.getElementById('fileSelector');
+
+      // Add shuffle button dynamically if not present in HTML
+      let shuffleBtn = document.getElementById('shuffle-btn');
+      if (!shuffleBtn) {
+        shuffleBtn = document.createElement('button');
+        shuffleBtn.id = 'shuffle-btn';
+        shuffleBtn.title = "Toggle Shuffle";
+        shuffleBtn.textContent = '🔀';
+        repeatBtn.parentNode.insertBefore(shuffleBtn, repeatBtn);
+      }
+
+      // Apply initial UI states from storage
+      repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
+      repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+      audio.loop = isRepeating;
+
+      shuffleBtn.style.opacity = isShuffled ? '1' : '0.5';
+      shuffleBtn.style.borderColor = isShuffled ? 'var(--accent-color)' : '';
 
       function initPlaylist() {
         playlistEl.innerHTML = '';
@@ -1878,8 +1898,10 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
 
       function loadTrack(index) {
         if (tracks.length === 0) return;
-        audio.src = tracks[index].src;
+        if (index >= tracks.length) currentTrackIndex = 0;
+        audio.src = tracks[currentTrackIndex].src;
         audio.load();
+        localStorage.setItem('opus_track_index', currentTrackIndex);
         initPlaylist(); 
       }
 
@@ -1908,7 +1930,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         loadTrack(currentTrackIndex);
         audio.play().catch(e => console.log("Playback prevented:", e));
         updatePlayState(true);
-        
         fileSelector.value = ''; 
       });
 
@@ -1927,6 +1948,14 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         audio.loop = isRepeating;
         repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
         repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+        localStorage.setItem('opus_repeat', isRepeating);
+      });
+
+      shuffleBtn.addEventListener('click', () => {
+        isShuffled = !isShuffled;
+        shuffleBtn.style.opacity = isShuffled ? '1' : '0.5';
+        shuffleBtn.style.borderColor = isShuffled ? 'var(--accent-color)' : '';
+        localStorage.setItem('opus_shuffle', isShuffled);
       });
 
       audio.addEventListener('timeupdate', () => {
@@ -1947,7 +1976,15 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
 
       audio.addEventListener('ended', () => {
         if (!audio.loop) {
-          currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+          if (isShuffled && tracks.length > 1) {
+            let nextIndex;
+            do {
+              nextIndex = Math.floor(Math.random() * tracks.length);
+            } while (nextIndex === currentTrackIndex);
+            currentTrackIndex = nextIndex;
+          } else {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+          }
           loadTrack(currentTrackIndex);
           audio.play().catch(e => console.log("Playback prevented:", e));
           updatePlayState(true);
