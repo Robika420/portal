@@ -1839,18 +1839,192 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             });
         }
     </script>
-    
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const defaultTracks = [
-        { title: "VELVET MAFIA – TINTED BANDIT", src: "https://robika420.github.io/portal/tracks/001-velvet-mafia-tinted-bandit.m4a" },
-        { title: "Ketioz - Gamma GT", src: "https://robika420.github.io/portal/tracks/002-gamma-gt.m4a" }
-      ];
-        
-      let tracks = [...defaultTracks];
-      let currentTrackIndex = parseInt(localStorage.getItem('opus_track_index')) || 0;
-      let isRepeating = localStorage.getItem('opus_repeat') === 'true';
-      let isShuffled = localStorage.getItem('opus_shuffle') === 'true';
+const tracks = [
+  { title: "001 - Velvet Mafia - Tinted Bandit", src: "./tracks/001-velvet-mafia-tinted-bandit.m4a" },
+  { title: "002 - Gamma GT", src: "./tracks/002-gamma-gt.m4a" },
+  { title: "003 - Hurt Me Too", src: "./tracks/003-hurt-me-too.m4a" },
+  { title: "004 - Salute (Original Mix)", src: "./tracks/004-salute-original-mix.m4a" },
+  { title: "005 - Rasta Reggae Music", src: "./tracks/005-rasta-reggae-music.m4a" },
+  { title: "006 - Regulate", src: "./tracks/006-regulate.m4a" },
+  { title: "007 - High Note", src: "./tracks/007-high-note.m4a" },
+  { title: "008 - ROCKSTAR", src: "./tracks/008-rockstar.m4a" },
+  { title: "009 - Foolproof", src: "./tracks/009-foolproof.m4a" },
+  { title: "010 - Miénk (feat. Bankos & Vegaz)", src: "./tracks/010-mienk-feat-bankos-vegaz.m4a" },
+  { title: "011 - Normál (feat. Frog, Káva, Essemm)", src: "./tracks/011-normal-feat-frog-kava-essemm.m4a" },
+  { title: "012 - The Scientist", src: "./tracks/012-the-scientist.m4a" },
+  { title: "013 - Guard Down", src: "./tracks/013-guard-down.m4a" },
+  { title: "014 - Sunflower (Remix)", src: "./tracks/014-sunflower-remix.m4a" },
+  { title: "015 - Moonlight", src: "./tracks/015-moonlight.m4a" },
+  { title: "016 - Boom Biddy Bye Bye", src: "./tracks/016-boom-biddy-bye-bye.m4a" },
+  { title: "017 - Élem", src: "./tracks/017-elem.m4a" },
+  { title: "018 - Curse of the Liquor", src: "./tracks/018-curse-of-the-liquor.m4a" },
+  { title: "019 - Money", src: "./tracks/019-money.m4a" },
+  { title: "020 - U Not Like Me", src: "./tracks/020-u-not-like-me.m4a" },
+  { title: "021 - DOHÁNYBOLT", src: "./tracks/021-dohanybolt.m4a" },
+  { title: "022 - In These Shadows", src: "./tracks/022-in-these-shadows.m4a" },
+  { title: "023 - Bad Habits (feat. Gabs)", src: "./tracks/023-bad-habits-feat-gabs.m4a" },
+  { title: "024 - Mi Lesz", src: "./tracks/024-mi-lesz.m4a" },
+  { title: "025 - Unholy", src: "./tracks/025-unholy.m4a" },
+  { title: "026 - Sorozatlövés", src: "./tracks/026-sorozatloves.m4a" },
+  { title: "027 - Change", src: "./tracks/027-change.m4a" },
+  { title: "028 - RUNAWAY", src: "./tracks/028-runaway.m4a" },
+  { title: "029 - Anima Libera", src: "./tracks/029-anima-libera.m4a" },
+  { title: "030 - One Million", src: "./tracks/030-one-million.m4a" },
+  { title: "031 - SONG SEVEN", src: "./tracks/031-song-seven.m4a" },
+  { title: "032 - Body", src: "./tracks/032-body.m4a" },
+  { title: "033 - Az Igazgatótanács & Akril - Elveszett Igazság", src: "./tracks/033-az-igazgatotanacs-akril-elveszett-igazsag.m4a" },
+  { title: "034 - Bazár", src: "./tracks/034-bazar.m4a" },
+  { title: "035 - Broken", src: "./tracks/035-broken.m4a" },
+  { title: "036 - HOOLIGANG", src: "./tracks/036-hooligang.m4a" },
+  { title: "037 - Look Inside", src: "./tracks/037-look-inside.m4a" },
+  { title: "038 - Temporarily Happy", src: "./tracks/038-temporarily-happy.m4a" },
+  { title: "039 - Skream & Example - Shot Yourself In The Foot Again", src: "./tracks/039-skream-example-shot-yourself-in-the-foot-again.m4a" },
+  { title: "040 - Dj Zefil feat El Da Sensei & Prince AK & Siska Finuccsi - Ghetto Speak", src: "./tracks/040-dj-zefil-feat-el-da-sensei-prince-ak-siska-finuccsi-ghetto-speak720p.m4a" },
+  { title: "041 - Lefőtt a kávé", src: "./tracks/041-lefott-a-kave.m4a" },
+  { title: "042 - Insomnia", src: "./tracks/042-insomnia.m4a" },
+  { title: "043 - Apache 207 - Breaking Your Heart (Averro Hypertechno Remix)", src: "./tracks/043-apache-207-breaking-your-heart-averro-hypertechno-remix-tiktok-techno.m4a" },
+  { title: "044 - űző", src: "./tracks/044-uzo.m4a" },
+  { title: "045 - Miss Primetime (feat. Pell)", src: "./tracks/045-miss-primetime-feat-pell.m4a" },
+  { title: "046 - Vibrate", src: "./tracks/046-vibrate.m4a" },
+  { title: "047 - Ass Like That", src: "./tracks/047-ass-like-that.m4a" },
+  { title: "048 - Fonál", src: "./tracks/048-fonal.m4a" },
+  { title: "049 - Bankos - Vándor Akusztik (Fixi4)", src: "./tracks/049-bankos-vandor-akusztik-fixi4-bankos-mappa-2-track-11.m4a" },
+  { title: "051 - Corner Store (feat. Dave B & Travis Thompson)", src: "./tracks/051-corner-store-feat-dave-b-travis-thompson.m4a" },
+  { title: "052 - Rabszolgalány", src: "./tracks/052-rabszolgalany.m4a" },
+  { title: "053 - Lay Low", src: "./tracks/053-lay-low.m4a" },
+  { title: "054 - Healing", src: "./tracks/054-healing.m4a" },
+  { title: "055 - Red Red Wine (Remastered 2009)", src: "./tracks/055-red-red-wine-remastered-2009.m4a" },
+  { title: "056 - GOTTI", src: "./tracks/056-gotti.m4a" },
+  { title: "057 - Mohaman - A sárkány közbelép", src: "./tracks/057-mohaman-a-sarkany-kozbelep.m4a" },
+  { title: "058 - Milliók", src: "./tracks/058-milliok.m4a" },
+  { title: "059 - Isten Vezet (feat. Sean Price)", src: "./tracks/059-isten-vezet-feat-sean-price.m4a" },
+  { title: "060 - 5150", src: "./tracks/060-5150.m4a" },
+  { title: "061 - Tovább", src: "./tracks/061-tovabb.m4a" },
+  { title: "062 - A Legnagyobb", src: "./tracks/062-a-legnagyobb.m4a" },
+  { title: "063 - Booyah (Radio Edit)", src: "./tracks/063-booyah-radio-edit.m4a" },
+  { title: "064 - Plur Genocide (feat. Lockdown)", src: "./tracks/064-plur-genocide-feat-lockdown.m4a" },
+  { title: "065 - Sober", src: "./tracks/065-sober.m4a" },
+  { title: "066 - Show Me the Light (feat. Starling) (VIP)", src: "./tracks/066-show-me-the-light-feat-starling-vip.m4a" },
+  { title: "067 - PULSE", src: "./tracks/067-pulse.m4a" },
+  { title: "068 - O.P.", src: "./tracks/068-o-p.m4a" },
+  { title: "069 - Walking on the Moon", src: "./tracks/069-walking-on-the-moon.m4a" },
+  { title: "070 - I'm Throwed (feat. Jermaine Dupri)", src: "./tracks/070-i-m-throwed-feat-jermaine-dupri.m4a" },
+  { title: "071 - HIGHER", src: "./tracks/071-higher.m4a" },
+  { title: "072 - Don't do Drugs", src: "./tracks/072-don-t-do-drugs.m4a" },
+  { title: "073 - Frozen", src: "./tracks/073-frozen.m4a" },
+  { title: "074 - Stockholm, Sweden", src: "./tracks/074-stockholm-sweden.m4a" },
+  { title: "075 - Gam Gam", src: "./tracks/075-gam-gam.m4a" },
+  { title: "076 - Csirió (feat. KKevin)", src: "./tracks/076-csirio-feat-kkevin.m4a" },
+  { title: "077 - DESERVED BEAT", src: "./tracks/077-deserved-beat.m4a" },
+  { title: "078 - HARCOSOK KLUBJA", src: "./tracks/078-harcosok-klubja.m4a" },
+  { title: "079 - Classic", src: "./tracks/079-classic.m4a" },
+  { title: "080 - Color Blind (feat. Lil Xan)", src: "./tracks/080-color-blind-feat-lil-xan.m4a" },
+  { title: "082 - Later Bitches (Danny Dove Re-Rub)", src: "./tracks/082-later-bitches-danny-dove-re-rub.m4a" },
+  { title: "083 - Storm Chaser", src: "./tracks/083-storm-chaser.m4a" },
+  { title: "084 - Fine Day", src: "./tracks/084-fine-day.m4a" },
+  { title: "085 - La Pluma (Extended Mix)", src: "./tracks/085-la-pluma-extended-mix.m4a" },
+  { title: "086 - Az Életem (feat. Szakács Gergő)", src: "./tracks/086-az-eletem-feat-szakacs-gergo.m4a" },
+  { title: "087 - White Line", src: "./tracks/087-white-line.m4a" },
+  { title: "088 - Would You (go to bed with me?)", src: "./tracks/088-would-you-go-to-bed-with-me.m4a" },
+  { title: "089 - CAN YOU SEE ME?", src: "./tracks/089-can-you-see-me.m4a" },
+  { title: "090 - Clandestina (Cover)", src: "./tracks/090-clandestina-cover.m4a" },
+  { title: "092 - WOTOWOTO SEASONING", src: "./tracks/092-wotowoto-seasoning.m4a" },
+  { title: "093 - Turnt Up", src: "./tracks/093-turnt-up.m4a" },
+  { title: "094 - Mac Miller - Surf (Prod. by Plak 2TS)", src: "./tracks/094-lo-fi-mac-miller-surf-prod-by-plak-2ts.m4a" },
+  { title: "095 - Rey's Theme ~ Star Wars Lofi", src: "./tracks/095-rey-s-theme-star-wars-lofi.m4a" },
+  { title: "096 - Wana Wana Ma", src: "./tracks/096-wana-wana-ma.m4a" },
+  { title: "097 - He Called Me", src: "./tracks/097-he-called-me.m4a" },
+  { title: "098 - HOLY GHOST", src: "./tracks/098-holy-ghost.m4a" },
+  { title: "099 - Icarus (feat. soap.)", src: "./tracks/099-icarus-feat-soap.m4a" },
+  { title: "100 - Hennessy (feat. Funktasztikus, Essemm, Fura Csé, AK26, Awful, MaxBeard, Jimy)", src: "./tracks/100-hennessy-feat-funktasztikus-essemm-fura-cse-ak26-awful-maxbeard-jimy.m4a" },
+  { title: "101 - LONELY ROAD", src: "./tracks/101-lonely-road.m4a" },
+  { title: "102 - Corners Of The Earth (feat. RY X)", src: "./tracks/102-corners-of-the-earth-feat-ry-x.m4a" },
+  { title: "103 - Bad Karma", src: "./tracks/103-bad-karma.m4a" },
+  { title: "104 - How Storytelling Changed In Hip-Hop", src: "./tracks/104-how-storytelling-changed-in-hip-hop.m4a" },
+  { title: "105 - Rapping on 12 different substances", src: "./tracks/105-rapping-on-12-different-substances.m4a" },
+  { title: "106 - DOWN", src: "./tracks/106-down.m4a" },
+  { title: "107 - UPPERCUTS", src: "./tracks/107-uppercuts.m4a" },
+  { title: "108 - I'm in Love with the Coco", src: "./tracks/108-i-m-in-love-with-the-coco.m4a" },
+  { title: "109 - Point Of No Return", src: "./tracks/109-point-of-no-return.m4a" },
+  { title: "110 - Not In Love", src: "./tracks/110-not-in-love.m4a" },
+  { title: "112 - It's My Ego", src: "./tracks/112-it-s-my-ego.m4a" },
+  { title: "113 - The Evolution of Story Telling (1980-2019)", src: "./tracks/113-the-evolution-of-story-telling-1980-2019.m4a" },
+  { title: "114 - Sunset", src: "./tracks/114-sunset.m4a" },
+  { title: "115 - Another Love", src: "./tracks/115-another-love.m4a" },
+  { title: "116 - Lonely", src: "./tracks/116-lonely.m4a" },
+  { title: "117 - Come Around", src: "./tracks/117-come-around.m4a" },
+  { title: "118 - 2MUCH (feat. Kyra Mastro)", src: "./tracks/118-2much-feat-kyra-mastro.m4a" },
+  { title: "120 - SZÍVTIPRÓ", src: "./tracks/120-szivtipro.m4a" },
+  { title: "121 - Mockingbird", src: "./tracks/121-mockingbird.m4a" },
+  { title: "122 - Friendships", src: "./tracks/122-friendships.m4a" },
+  { title: "123 - I'm Yours", src: "./tracks/123-i-m-yours.m4a" },
+  { title: "124 - Ashes", src: "./tracks/124-ashes.m4a" },
+  { title: "126 - Walkin'", src: "./tracks/126-walkin.m4a" },
+  { title: "127 - Thank You (Not So Bad)", src: "./tracks/127-thank-you-not-so-bad.m4a" },
+  { title: "128 - On Repeat", src: "./tracks/128-on-repeat.m4a" },
+  { title: "129 - Lady Luck", src: "./tracks/129-lady-luck.m4a" },
+  { title: "131 - Like Royalty", src: "./tracks/131-like-royalty.m4a" },
+  { title: "132 - Tegnap", src: "./tracks/132-tegnap.m4a" },
+  { title: "133 - Signals", src: "./tracks/133-signals.m4a" },
+  { title: "134 - Tilidin", src: "./tracks/134-tilidin.m4a" },
+  { title: "135 - The Ghost I Used to Be", src: "./tracks/135-the-ghost-i-used-to-be.m4a" },
+  { title: "136 - Jam Balaya - Felvilágosítás (közr. Kontroll, Hajnalke)", src: "./tracks/136-jam-balaya-felvilagositas-kozr-kontroll-hajnalke.m4a" },
+  { title: "137 - Lions Never Die", src: "./tracks/137-lions-never-die.m4a" },
+  { title: "138 - Sleepless", src: "./tracks/138-sleepless.m4a" },
+  { title: "139 - Bajnok", src: "./tracks/139-bajnok.m4a" },
+  { title: "140 - Baby Got Brap", src: "./tracks/140-baby-got-brap.m4a" },
+  { title: "141 - Apathy", src: "./tracks/141-apathy.m4a" },
+  { title: "142 - Ridin Round", src: "./tracks/142-ridin-round.m4a" },
+  { title: "143 - Csibész Kutyák", src: "./tracks/143-csibesz-kutyak.m4a" },
+  { title: "144 - BONGWATER FREESTYLE", src: "./tracks/144-bongwater-freestyle.m4a" },
+  { title: "145 - Deep", src: "./tracks/145-deep.m4a" },
+  { title: "147 - Doja", src: "./tracks/147-doja.m4a" },
+  { title: "149 - Your Mind", src: "./tracks/149-your-mind.m4a" },
+  { title: "150 - No Identificados", src: "./tracks/150-no-identificados.m4a" },
+  { title: "151 - My Way", src: "./tracks/151-my-way.m4a" },
+  { title: "152 - MISSH – Nem I Gaz", src: "./tracks/152-missh-nem-i-gaz-official-audio-misshmusic.m4a" },
+  { title: "153 - Devam", src: "./tracks/153-devam.m4a" },
+  { title: "154 - Rave in the Grave", src: "./tracks/154-rave-in-the-grave.m4a" },
+  { title: "155 - Puerto Rico", src: "./tracks/155-puerto-rico.m4a" },
+  { title: "156 - Hail Ras Tafari", src: "./tracks/156-hail-ras-tafari.m4a" },
+  { title: "157 - I'm Supposed To Die Tonight", src: "./tracks/157-i-m-supposed-to-die-tonight.m4a" },
+  { title: "158 - Like Wooh Wooh", src: "./tracks/158-like-wooh-wooh.m4a" },
+  { title: "159 - Tattoo", src: "./tracks/159-tattoo.m4a" },
+  { title: "160 - My Life", src: "./tracks/160-my-life-album-version-explicit.m4a" },
+  { title: "161 - Super Gremlin", src: "./tracks/161-super-gremlin.m4a" },
+  { title: "163 - Perra", src: "./tracks/163-perra.m4a" },
+  { title: "164 - MALA (feat. Anuel Aa)", src: "./tracks/164-mala-feat-anuel-aa.m4a" },
+  { title: "166 - Ég velem", src: "./tracks/166-eg-velem.m4a" },
+  { title: "167 - 03' Bonnie & Clyde", src: "./tracks/167-03-bonnie-clyde.m4a" },
+  { title: "169 - Kaktusz", src: "./tracks/169-kaktusz.m4a" },
+  { title: "170 - U -", src: "./tracks/170-u.m4a" },
+  { title: "171 - Role Model", src: "./tracks/171-role-model.m4a" },
+  { title: "172 - Túltoltam", src: "./tracks/172-tultoltam.m4a" },
+  { title: "176 - Nichts ist für die Ewigkeit", src: "./tracks/176-nichts-ist-fur-die-ewigkeit.m4a" },
+  { title: "177 - Wildok3", src: "./tracks/177-wildok3.m4a" },
+  { title: "178 - PiroslámpaZöldlámpa", src: "./tracks/178-piroslampazoldlampa.m4a" },
+  { title: "179 - Superior", src: "./tracks/179-superior.m4a" },
+  { title: "180 - Mood", src: "./tracks/180-mood.m4a" },
+  { title: "181 - KIKA", src: "./tracks/181-kika.m4a" },
+  { title: "182 - Evolution of Hip Hop Drug Songs - Crank Lucas", src: "./tracks/182-evolution-of-hip-hop-drug-songs-crank-lucas.m4a" },
+  { title: "183 - THE EVOLUTION OF HIP HOP LOVE SONGS", src: "./tracks/183-the-evolution-of-hip-hop-love-songs.m4a" },
+  { title: "184 - Would I Lie to You (Radio Edit)", src: "./tracks/184-would-i-lie-to-you-radio-edit.m4a" },
+  { title: "185 - Trouble Nobody", src: "./tracks/185-trouble-nobody-album-version.m4a" },
+  { title: "186 - SZERETEM", src: "./tracks/186-szeretem.m4a" },
+  { title: "187 - HEGYEK ALATT", src: "./tracks/187-hegyek-alatt.m4a" },
+  { title: "188 - LÁMPALÁZ", src: "./tracks/188-lampalaz.m4a" },
+  { title: "189 - Időjárás-jelentés (feat. Co Lee)", src: "./tracks/189-idojaras-jelentes-feat-co-lee.m4a" },
+  { title: "190 - Lost In Paradise (Edit)", src: "./tracks/190-lost-in-paradise-edit.m4a" },
+  { title: "191 - Mondtam", src: "./tracks/191-mondtam.m4a" },
+  { title: "192 - Ha máshogyan lenne", src: "./tracks/192-ha-mashogyan-lenne.m4a" },
+  { title: "193 - Headlights (feat. KIDDO & Issam Alnajjar) (Radio Edit)", src: "./tracks/193-headlights-feat-kiddo-issam-alnajjar-radio-edit.m4a" }
+];   
+     
+      let currentTrackIndex = 0;
+      let isRepeating = false;
 
       const audio = document.getElementById('audioElement');
       const playPauseBtn = document.getElementById('playPauseBtn');
@@ -1860,24 +2034,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
       const timeDisplay = document.getElementById('timeDisplay');
       const playlistEl = document.getElementById('playlist');
       const fileSelector = document.getElementById('fileSelector');
-
-      // Add shuffle button dynamically if not present in HTML
-      let shuffleBtn = document.getElementById('shuffle-btn');
-      if (!shuffleBtn) {
-        shuffleBtn = document.createElement('button');
-        shuffleBtn.id = 'shuffle-btn';
-        shuffleBtn.title = "Toggle Shuffle";
-        shuffleBtn.textContent = '🔀';
-        repeatBtn.parentNode.insertBefore(shuffleBtn, repeatBtn);
-      }
-
-      // Apply initial UI states from storage
-      repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
-      repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
-      audio.loop = isRepeating;
-
-      shuffleBtn.style.opacity = isShuffled ? '1' : '0.5';
-      shuffleBtn.style.borderColor = isShuffled ? 'var(--accent-color)' : '';
 
       function initPlaylist() {
         playlistEl.innerHTML = '';
@@ -1898,10 +2054,8 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
 
       function loadTrack(index) {
         if (tracks.length === 0) return;
-        if (index >= tracks.length) currentTrackIndex = 0;
-        audio.src = tracks[currentTrackIndex].src;
+        audio.src = tracks[index].src;
         audio.load();
-        localStorage.setItem('opus_track_index', currentTrackIndex);
         initPlaylist(); 
       }
 
@@ -1930,6 +2084,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         loadTrack(currentTrackIndex);
         audio.play().catch(e => console.log("Playback prevented:", e));
         updatePlayState(true);
+        
         fileSelector.value = ''; 
       });
 
@@ -1948,14 +2103,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         audio.loop = isRepeating;
         repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
         repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
-        localStorage.setItem('opus_repeat', isRepeating);
-      });
-
-      shuffleBtn.addEventListener('click', () => {
-        isShuffled = !isShuffled;
-        shuffleBtn.style.opacity = isShuffled ? '1' : '0.5';
-        shuffleBtn.style.borderColor = isShuffled ? 'var(--accent-color)' : '';
-        localStorage.setItem('opus_shuffle', isShuffled);
       });
 
       audio.addEventListener('timeupdate', () => {
@@ -1976,15 +2123,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
 
       audio.addEventListener('ended', () => {
         if (!audio.loop) {
-          if (isShuffled && tracks.length > 1) {
-            let nextIndex;
-            do {
-              nextIndex = Math.floor(Math.random() * tracks.length);
-            } while (nextIndex === currentTrackIndex);
-            currentTrackIndex = nextIndex;
-          } else {
-            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-          }
+          currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
           loadTrack(currentTrackIndex);
           audio.play().catch(e => console.log("Playback prevented:", e));
           updatePlayState(true);
