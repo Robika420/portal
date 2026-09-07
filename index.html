@@ -1719,7 +1719,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             </ul>
         </div>
 
-<div class="category" id="top-browser-games">
+<div class="category" id="browser-games">
             <h2>🌐 Top Browser Games</h2>
             <ul>
                 <li><strong>Ray Browser</strong> <span class="subtext">// playonray.com</span></li>
@@ -1909,16 +1909,18 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
       <input type="file" id="fileSelector" accept=".opus, .m4a, .mp3, audio/ogg, audio/opus" multiple hidden />
     </div>
 
-    <!-- Player UI -->
-    <div class="opus-player">
-      <audio id="audioElement" preload="metadata"></audio>
-      <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
-<button id="repeat-btn" title="Toggle Repeat Track">🔄</button>
-      <div class="progress-container" id="progressContainer">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
-      <span id="timeDisplay" class="time-display">0:00 / 0:00</span>
-    </div>
+<!-- Player UI -->
+<div class="opus-player">
+  <audio id="audioElement" preload="metadata"></audio>
+  <button id="prevBtn" class="control-btn" aria-label="Previous">⏮</button>
+  <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
+  <button id="nextBtn" class="control-btn" aria-label="Next">⏭</button>
+  <button id="repeat-btn" title="Toggle Repeat Track">🔄</button>
+  <div class="progress-container" id="progressContainer">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+  <span id="timeDisplay" class="time-display">0:00 / 0:00</span>
+</div>
 
     <!-- Playlist UI -->
     <ul id="playlist" class="playlist"></ul>
@@ -2155,114 +2157,130 @@ const tracks = [
   { title: "193 - Headlights (feat. KIDDO & Issam Alnajjar) (Radio Edit)", src: "./tracks/193-headlights-feat-kiddo-issam-alnajjar-radio-edit.m4a" }
 ]; 
      
-      let currentTrackIndex = 0;
-      let isRepeating = false;
+let currentTrackIndex = 0;
+let isRepeating = false;
 
-      const audio = document.getElementById('audioElement');
-      const playPauseBtn = document.getElementById('playPauseBtn');
-      const repeatBtn = document.getElementById('repeat-btn');
-      const progressBar = document.getElementById('progressBar');
-      const progressContainer = document.getElementById('progressContainer');
-      const timeDisplay = document.getElementById('timeDisplay');
-      const playlistEl = document.getElementById('playlist');
-      const fileSelector = document.getElementById('fileSelector');
+const audio = document.getElementById('audioElement');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const repeatBtn = document.getElementById('repeat-btn');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+const timeDisplay = document.getElementById('timeDisplay');
+const playlistEl = document.getElementById('playlist');
+const fileSelector = document.getElementById('fileSelector');
 
-      function initPlaylist() {
-        playlistEl.innerHTML = '';
-        tracks.forEach((track, index) => {
-          const li = document.createElement('li');
-          li.textContent = track.title;
-          if (index === currentTrackIndex) li.classList.add('active');
-          
-          li.addEventListener('click', () => {
-            currentTrackIndex = index;
-            loadTrack(currentTrackIndex);
-            audio.play().catch(e => console.log("Playback prevented:", e));
-            updatePlayState(true);
-          });
-          playlistEl.appendChild(li);
-        });
-      }
-
-      function loadTrack(index) {
-        if (tracks.length === 0) return;
-        audio.src = tracks[index].src;
-        audio.load();
-        initPlaylist(); 
-      }
-
-      function updatePlayState(isPlaying) {
-        playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
-      }
-
-      function formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-      }
-
-      fileSelector.addEventListener('change', (event) => {
-        const files = event.target.files;
-        if (files.length === 0) return;
-
-        for (let file of files) {
-          tracks.push({
-            title: `💾 ${file.name}`,
-            src: URL.createObjectURL(file)
-          });
-        }
-
-        currentTrackIndex = tracks.length - files.length;
-        loadTrack(currentTrackIndex);
-        audio.play().catch(e => console.log("Playback prevented:", e));
-        updatePlayState(true);
-        
-        fileSelector.value = ''; 
-      });
-
-      playPauseBtn.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play().catch(e => console.log("Playback prevented:", e));
-          updatePlayState(true);
-        } else {
-          audio.pause();
-          updatePlayState(false);
-        }
-      });
-
-      repeatBtn.addEventListener('click', () => {
-        isRepeating = !isRepeating;
-        audio.loop = isRepeating;
-        repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
-        repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
-      });
-
-      audio.addEventListener('timeupdate', () => {
-        const current = audio.currentTime;
-        const duration = audio.duration || 0;
-        progressBar.style.width = `${(current / duration) * 100}%`;
-        timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
-      });
-
-      audio.addEventListener('loadedmetadata', () => {
-        timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
-      });
-
-      progressContainer.addEventListener('click', (e) => {
-        const rect = progressContainer.getBoundingClientRect();
-        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-      });
-
-      audio.addEventListener('ended', () => {
-        if (!audio.loop) {
-          currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-          loadTrack(currentTrackIndex);
-          audio.play().catch(e => console.log("Playback prevented:", e));
-          updatePlayState(true);
-        }
-      });
-
+function initPlaylist() {
+  playlistEl.innerHTML = '';
+  tracks.forEach((track, index) => {
+    const li = document.createElement('li');
+    li.textContent = track.title;
+    if (index === currentTrackIndex) li.classList.add('active');
+    
+    li.addEventListener('click', () => {
+      currentTrackIndex = index;
       loadTrack(currentTrackIndex);
+      audio.play().catch(e => console.log("Playback prevented:", e));
+      updatePlayState(true);
+    });
+    playlistEl.appendChild(li);
+  });
+}
+
+function loadTrack(index) {
+  if (tracks.length === 0) return;
+  audio.src = tracks[index].src;
+  audio.load();
+  initPlaylist(); 
+}
+
+function updatePlayState(isPlaying) {
+  playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+fileSelector.addEventListener('change', (event) => {
+  const files = event.target.files;
+  if (files.length === 0) return;
+
+  for (let file of files) {
+    tracks.push({
+      title: `💾 ${file.name}`,
+      src: URL.createObjectURL(file)
+    });
+  }
+
+  currentTrackIndex = tracks.length - files.length;
+  loadTrack(currentTrackIndex);
+  audio.play().catch(e => console.log("Playback prevented:", e));
+  updatePlayState(true);
+  
+  fileSelector.value = ''; 
+});
+
+playPauseBtn.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play().catch(e => console.log("Playback prevented:", e));
+    updatePlayState(true);
+  } else {
+    audio.pause();
+    updatePlayState(false);
+  }
+});
+
+prevBtn.addEventListener('click', () => {
+  currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+  loadTrack(currentTrackIndex);
+  audio.play().catch(e => console.log("Playback prevented:", e));
+  updatePlayState(true);
+});
+
+nextBtn.addEventListener('click', () => {
+  currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+  loadTrack(currentTrackIndex);
+  audio.play().catch(e => console.log("Playback prevented:", e));
+  updatePlayState(true);
+});
+
+repeatBtn.addEventListener('click', () => {
+  isRepeating = !isRepeating;
+  audio.loop = isRepeating;
+  repeatBtn.style.opacity = isRepeating ? '1' : '0.5';
+  repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+});
+
+audio.addEventListener('timeupdate', () => {
+  const current = audio.currentTime;
+  const duration = audio.duration || 0;
+  progressBar.style.width = `${(current / duration) * 100}%`;
+  timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+});
+
+progressContainer.addEventListener('click', (e) => {
+  const rect = progressContainer.getBoundingClientRect();
+  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+});
+
+audio.addEventListener('ended', () => {
+  if (!audio.loop) {
+    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    loadTrack(currentTrackIndex);
+    audio.play().catch(e => console.log("Playback prevented:", e));
+    updatePlayState(true);
+  }
+});
+
+loadTrack(currentTrackIndex);
     });
 </script>
 </body>
