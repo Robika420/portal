@@ -1771,6 +1771,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     <div class="opus-player">
       <audio id="audioElement" preload="metadata"></audio>
       <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
+<button id="repeat-btn" title="Toggle Repeat Track">🔄</button>
       <div class="progress-container" id="progressContainer">
         <div id="progressBar" class="progress-bar"></div>
       </div>
@@ -1934,6 +1935,22 @@ const tracks = [
 
       loadTrack(currentTrackIndex);
     });
+
+const repeatBtn = document.getElementById('repeat-btn');
+let isRepeating = false;
+
+repeatBtn.addEventListener('click', () => {
+  isRepeating = !isRepeating;
+  audio.loop = isRepeating;
+  repeatBtn.style.opacity = isRepeating ? '1' : '0.5'; // Visual active state
+  repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
+});
+
+audio.addEventListener('ended', () => {
+  if (!audio.loop) {
+    nextTrack();
+  }
+});
   </script>
 </body>
 </html>
