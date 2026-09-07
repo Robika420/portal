@@ -2272,10 +2272,14 @@ playPauseBtn.addEventListener('click', () => {
 });
 
 prevBtn.addEventListener('click', () => {
-  currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-  loadTrack(currentTrackIndex);
-  audio.play().catch(e => console.log("Playback prevented:", e));
-  updatePlayState(true);
+  if (audio.currentTime > 3) {
+    audio.currentTime = 0;
+  } else {
+    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrackIndex);
+    audio.play().catch(e => console.log("Playback prevented:", e));
+    updatePlayState(true);
+  }
 });
 
 nextBtn.addEventListener('click', () => {
