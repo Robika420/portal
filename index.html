@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; media-src 'self';">
+
     <title>Portal</title>
+
     <style>
+@font-face {
+    font-family: 'Storopia';
+    src: url('path/to/storopia.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Storopia', sans-serif;
+}
+
         :root {
             --bg-color: #121214;
             --card-bg: #1e1e24;
@@ -15,7 +30,7 @@
         }
 
         body {
-            font-family: Storopia;
+            font-family: 'Storopia';
             background-color: var(--bg-color);
             color: var(--text-main);
             max-width: 950px;
@@ -33,8 +48,6 @@
             color: var(--text-sub);
             margin-bottom: 1.5rem;
         }
-
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; media-src 'self';">
 
 .opus-player-wrapper {
       max-width: 500px;
