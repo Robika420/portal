@@ -31,8 +31,33 @@
         }
         canvas { background-color: #1a1a1a; border: 4px solid #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
         .instructions { margin-top: 15px; color: #888; font-size: 0.9rem; text-align: center; }
+        
+        .controls {
+            display: none;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .controls button {
+            background: #2a2a2a;
+            color: white;
+            border: 1px solid #444;
+            font-size: 1.5rem;
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .controls button:active {
+            background: #ffaa00;
+            color: #121212;
+        }
+
         .back-link { margin-top: 15px; color: #ffaa00; text-decoration: none; }
         .back-link:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .controls { display: flex; }
+        }
     </style>
 </head>
 <body>
@@ -42,8 +67,14 @@
         <div class="score-box">Lives: <span id="lives">3</span></div>
     </div>
     <canvas id="breakoutCanvas" width="480" height="400"></canvas>
+    
+    <div class="controls">
+        <button ontouchstart="leftPressed=true" onmousedown="leftPressed=true" ontouchend="leftPressed=false" onmouseup="leftPressed=false">⬅️</button>
+        <button ontouchstart="rightPressed=true" onmousedown="rightPressed=true" ontouchend="rightPressed=false" onmouseup="rightPressed=false">➡️</button>
+    </div>
+
     <div class="instructions">
-        Use <b>Left / Right Arrow Keys</b> or <b>A / D</b> to move the paddle.<br>Press <b>Spacebar</b> to restart when game over.
+        Use <b>Arrow Keys</b>, <b>A/D</b>, or Buttons to move the paddle.<br>Press <b>Spacebar</b> to restart when game over.
     </div>
     <a href="index.html" class="back-link">← Back to Home</a>
 
@@ -55,55 +86,33 @@
         let lives = 3;
         let isGameOver = false;
 
-        // Paddle setup
         const paddleHeight = 12;
         const paddleWidth = 75;
         let paddleX = (canvas.width - paddleWidth) / 2;
 
-        // Ball setup
         let ballRadius = 6;
         let x = canvas.width / 2;
         let y = canvas.height - 30;
         let dx = 3;
         let dy = -3;
 
-        // Controls
         let rightPressed = false;
         let leftPressed = false;
 
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
-        document.addEventListener("mousemove", mouseMoveHandler, false);
 
         function keyDownHandler(e) {
-            if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
-                rightPressed = true;
-            } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
-                leftPressed = true;
-            } else if (e.key === " " && isGameOver) {
-                resetGame();
-            }
+            if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") rightPressed = true;
+            else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") leftPressed = true;
+            else if (e.key === " " && isGameOver) resetGame();
         }
 
         function keyUpHandler(e) {
-            if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
-                rightPressed = false;
-            } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
-                leftPressed = false;
-            }
+            if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") rightPressed = false;
+            else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") leftPressed = false;
         }
 
-        function mouseMoveHandler(e) {
-            let relativeX = e.clientX - canvas.offsetLeft;
-            if (relativeX > 0 && relativeX < canvas.width) {
-                paddleX = relativeX - paddleWidth / 2;
-                // Clamp within canvas bounds
-                if (paddleX < 0) paddleX = 0;
-                if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
-            }
-        }
-
-        // Bricks setup
         const brickRowCount = 5;
         const brickColumnCount = 7;
         const brickWidth = 58;
@@ -111,7 +120,6 @@
         const brickPadding = 8;
         const brickOffsetTop = 30;
         const brickOffsetLeft = 25;
-
         const brickColors = ["#ff3366", "#ff9900", "#ffff33", "#33cc66", "#3399ff"];
 
         let bricks = [];
@@ -133,26 +141,12 @@
                         if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                             dy = -dy;
                             b.status = 0;
-                            score += (brickRowCount - r) * 10; // Higher rows worth more points
+                            score += (brickRowCount - r) * 10;
                             document.getElementById("score").innerText = score;
-
-                            // Check for win condition
-                            if (score === getTotalPossibleScore()) {
-                                alert("YOU WIN, CONGRATS!");
-                                document.location.reload();
-                            }
                         }
                     }
                 }
             }
-        }
-
-        function getTotalPossibleScore() {
-            let total = 0;
-            for (let r = 0; r < brickRowCount; r++) {
-                total += brickColumnCount * ((brickRowCount - r) * 10);
-            }
-            return total;
         }
 
         function drawBall() {
@@ -196,17 +190,10 @@
             drawPaddle();
             collisionDetection();
 
-            // Wall collisions (Left/Right/Top)
-            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-                dx = -dx;
-            }
-            if (y + dy < ballRadius) {
-                dy = -dy;
-            } 
-            // Paddle collision & bottom boundary
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
+            if (y + dy < ballRadius) dy = -dy;
             else if (y + dy > canvas.height - ballRadius - 10 - paddleHeight) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
-                    // Add slight angle variance depending on where it hits the paddle
                     let hitPoint = x - (paddleX + paddleWidth / 2);
                     dx = hitPoint * 0.15;
                     dy = -dy;
@@ -227,29 +214,22 @@
                 }
             }
 
-            if (rightPressed && paddleX < canvas.width - paddleWidth) {
-                paddleX += 6;
-            } else if (leftPressed && paddleX > 0) {
-                paddleX -= 6;
-            }
+            if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 6;
+            else if (leftPressed && paddleX > 0) paddleX -= 6;
 
             x += dx;
             y += dy;
 
-            if (!isGameOver) {
-                requestAnimationFrame(draw);
-            }
+            if (!isGameOver) requestAnimationFrame(draw);
         }
 
         function drawGameOver() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             ctx.fillStyle = "white";
             ctx.font = "bold 28px 'Segoe UI'";
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 15);
-
             ctx.font = "15px 'Segoe UI'";
             ctx.fillStyle = "#888";
             ctx.fillText("Press Space to Play Again", canvas.width / 2, canvas.height / 2 + 20);
