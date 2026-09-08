@@ -13,45 +13,49 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
-            padding: 10px;
+            padding: 20px;
         }
-        h1 { margin-bottom: 8px; font-size: 2.2rem; color: #3399ff; text-shadow: 0 0 10px rgba(51, 153, 255, 0.5); }
+        h1 { margin-bottom: 8px; font-size: 2.2rem; color: #3399ff; text-shadow: 0 0 10px rgba(51, 153, 255, 0.4); }
         .scoreboard {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             font-size: 1.1rem;
             margin-bottom: 15px;
         }
-        .score-box {
-            background: #1e1e1e;
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-        canvas { background-color: #1a1a1a; border: 4px solid #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); max-width: 100%; height: auto; }
+        .score-box { background: #1e1e1e; padding: 8px 16px; border-radius: 8px; border: 1px solid #333; }
+        canvas { background-color: #1a1a1a; border: 4px solid #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
         
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(3, 70px);
-            gap: 10px;
-            margin-top: 15px;
+	.controls {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            width: 100%;
+            z-index: 100;
+            pointer-events: none; /* Let clicks pass through empty space */
         }
         .controls button {
-            background: #2a2a2a;
+            pointer-events: auto; /* Enable clicks on buttons */
+            background: rgba(37, 37, 37, 0.85);
             color: white;
-            border: 1px solid #444;
-            font-size: 1.2rem;
-            height: 50px;
-            border-radius: 8px;
+            border: 2px solid #555;
+            font-size: 1.5rem;
+            width: 85px;
+            height: 65px;
+            border-radius: 12px;
             cursor: pointer;
             user-select: none;
+            backdrop-filter: blur(4px);
         }
-        .controls button:active { background: #3399ff; color: #121212; }
+        .controls button:active { background: #3399ff; color: #121212; border-color: #3399ff; }
 
-        .instructions { margin-top: 12px; color: #888; font-size: 0.85rem; text-align: center; }
-        .back-link { margin-top: 12px; color: #3399ff; text-decoration: none; font-size: 0.9rem; }
+        .instructions { margin-top: 15px; color: #888; font-size: 0.9rem; text-align: center; }
+        .back-link { margin-top: 15px; color: #3399ff; text-decoration: none; }
         .back-link:hover { text-decoration: underline; }
     </style>
 </head>
@@ -61,15 +65,15 @@
         <div class="score-box">Score: <span id="score">0</span></div>
         <div class="score-box">Lives: <span id="lives">3</span></div>
     </div>
-    <canvas id="invadersCanvas" width="440" height="360"></canvas>
+    <canvas id="invadersCanvas" width="440" height="380"></canvas>
 
 <div class="controls">
-        <button ontouchstart="leftPressed=true" ontouchend="leftPressed=false" onmousedown="leftPressed=true" onmouseup="leftPressed=false" onmouseleave="leftPressed=false">⬅️</button>
-        <button ontouchstart="fireBullet()" onmousedown="fireBullet()">🎯</button>
-        <button ontouchstart="rightPressed=true" ontouchend="rightPressed=false" onmousedown="rightPressed=true" onmouseup="rightPressed=false" onmouseleave="rightPressed=false">➡️</button>
+        <button onpointerdown="leftPressed=true" onpointerup="leftPressed=false" onpointerleave="leftPressed=false">◀</button>
+        <button onpointerdown="fireBullet()">🎯</button>
+        <button onpointerdown="rightPressed=true" onpointerup="rightPressed=false" onpointerleave="rightPressed=false">▶</button>
     </div>
 
-    <div class="instructions">Use Arrow Keys or touch controls to move & shoot.</div>
+    <div class="instructions">Use Arrow Keys / Touch buttons to move and shoot.</div>
     <a href="../index.html" class="back-link">← Back to Home</a>
 
     <script>
@@ -81,7 +85,7 @@
         let isGameOver = false;
         let isVictory = false;
 
-        let player = { x: canvas.width / 2 - 18, y: canvas.height - 35, width: 36, height: 14, speed: 5 };
+        let player = { x: canvas.width / 2 - 20, y: canvas.height - 40, width: 40, height: 16, speed: 5 };
         let bullets = [];
         let aliens = [];
         let alienBullets = [];
@@ -119,10 +123,10 @@
             for (let r = 0; r < 3; r++) {
                 for (let c = 0; c < 7; c++) {
                     aliens.push({
-                        x: 40 + c * 52,
-                        y: 35 + r * 30,
-                        width: 28,
-                        height: 18,
+                        x: 50 + c * 50,
+                        y: 40 + r * 32,
+                        width: 30,
+                        height: 20,
                         alive: true
                     });
                 }
@@ -136,12 +140,12 @@
         function update() {
             if (isGameOver || isVictory) return;
 
-            if (leftPressed && player.x > 0) player.x -= player.speed;
-            if (rightPressed && player.x < canvas.width - player.width) player.x += player.speed;
+            if (leftPressed && player.x > 15) player.x -= player.speed;
+            if (rightPressed && player.x < canvas.width - player.width - 15) player.x += player.speed;
 
             for (let i = bullets.length - 1; i >= 0; i--) {
                 bullets[i].y -= bullets[i].speed;
-                if (bullets[i].y < 0) {
+                if (bullets[i].y < 15) {
                     bullets.splice(i, 1);
                     continue;
                 }
@@ -165,26 +169,26 @@
             }
 
             alienSpeedTimer++;
-            if (alienSpeedTimer > 35) {
+            if (alienSpeedTimer > 30) {
                 let hitEdge = false;
                 aliens.forEach(a => {
                     if (a.alive) {
-                        a.x += alienDirection * 10;
-                        if (a.x + a.width >= canvas.width - 10 || a.x <= 10) hitEdge = true;
+                        a.x += alienDirection * 12;
+                        if (a.x + a.width >= canvas.width - 25 || a.x <= 25) hitEdge = true;
                     }
                 });
 
                 if (hitEdge) {
                     alienDirection *= -1;
                     aliens.forEach(a => {
-                        a.y += 12;
+                        a.y += 14;
                         if (a.alive && a.y + a.height >= player.y) isGameOver = true;
                     });
                 }
                 alienSpeedTimer = 0;
             }
 
-            if (Math.random() < 0.02) {
+            if (Math.random() < 0.025) {
                 let livingAliens = aliens.filter(a => a.alive);
                 if (livingAliens.length > 0) {
                     let shooter = livingAliens[Math.floor(Math.random() * livingAliens.length)];
@@ -194,7 +198,7 @@
 
             for (let i = alienBullets.length - 1; i >= 0; i--) {
                 alienBullets[i].y += alienBullets[i].speed;
-                if (alienBullets[i].y > canvas.height) {
+                if (alienBullets[i].y > canvas.height - 15) {
                     alienBullets.splice(i, 1);
                     continue;
                 }
@@ -218,9 +222,14 @@
             ctx.fillStyle = "#1a1a1a";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Visible arcade cabinet border walls
+            ctx.strokeStyle = "#444";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+
             ctx.fillStyle = "#3399ff";
             ctx.fillRect(player.x, player.y, player.width, player.height);
-            ctx.fillRect(player.x + player.width / 2 - 2, player.y - 5, 4, 5);
+            ctx.fillRect(player.x + player.width / 2 - 3, player.y - 6, 6, 6);
 
             ctx.fillStyle = "#ffffff";
             bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
@@ -259,7 +268,7 @@
             isVictory = false;
             bullets = [];
             alienBullets = [];
-            player.x = canvas.width / 2 - 18;
+            player.x = canvas.width / 2 - 20;
             initAliens();
         }
 
