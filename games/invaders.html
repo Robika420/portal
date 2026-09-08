@@ -63,10 +63,10 @@
     </div>
     <canvas id="invadersCanvas" width="440" height="360"></canvas>
 
-    <div class="controls">
-        <button ontstart="leftPressed=true" ontend="leftPressed=false" onmousedown="leftPressed=true" onmouseup="leftPressed=false" onmouseleave="leftPressed=false">⬅️</button>
-        <button ontstart="fireBullet()" onmousedown="fireBullet()">🎯</button>
-        <button ontstart="rightPressed=true" ontend="rightPressed=false" onmousedown="rightPressed=true" onmouseup="rightPressed=false" onmouseleave="rightPressed=false">➡️</button>
+<div class="controls">
+        <button onpointerdown="leftPressed=true" onpointerup="leftPressed=false" onpointerleave="leftPressed=false">⬅️</button>
+        <button onpointerdown="fireBullet()">🎯</button>
+        <button onpointerdown="rightPressed=true" onpointerup="rightPressed=false" onpointerleave="rightPressed=false">➡️</button>
     </div>
 
     <div class="instructions">Use Arrow Keys or touch controls to move & shoot.</div>
