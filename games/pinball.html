@@ -13,46 +13,49 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
-            padding: 10px;
+            padding: 20px;
         }
-        h1 { margin-bottom: 8px; font-size: 2.3rem; color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
+        h1 { margin-bottom: 8px; font-size: 2.3rem; color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.4); }
         .scoreboard {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             font-size: 1.1rem;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
-        .score-box {
-            background: #1e1e1e;
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
+        .score-box { background: #1e1e1e; padding: 8px 16px; border-radius: 8px; border: 1px solid #333; }
         canvas { background-color: #1a1a1a; border: 4px solid #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
         
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(2, 120px);
-            gap: 15px;
-            margin-top: 15px;
+	.controls {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            width: 100%;
+            z-index: 100;
+            pointer-events: none; /* Let clicks pass through empty space */
         }
         .controls button {
-            background: #2a2a2a;
+            pointer-events: auto; /* Enable clicks on buttons */
+            background: rgba(37, 37, 37, 0.85);
             color: white;
-            border: 1px solid #444;
-            font-size: 1rem;
-            height: 50px;
-            border-radius: 8px;
+            border: 2px solid #555;
+            font-size: 1.5rem;
+            width: 85px;
+            height: 65px;
+            border-radius: 12px;
             cursor: pointer;
             user-select: none;
-            font-weight: bold;
+            backdrop-filter: blur(4px);
         }
-        .controls button:active { background: #ff3366; color: #121212; }
+        .controls button:active { background: #3399ff; color: #121212; border-color: #3399ff; }
 
-        .instructions { margin-top: 10px; color: #888; font-size: 0.85rem; text-align: center; }
-        .back-link { margin-top: 10px; color: #ff3366; text-decoration: none; font-size: 0.9rem; }
+        .instructions { margin-top: 15px; color: #888; font-size: 0.9rem; text-align: center; }
+        .back-link { margin-top: 15px; color: #ff3366; text-decoration: none; }
         .back-link:hover { text-decoration: underline; }
     </style>
 </head>
@@ -62,14 +65,15 @@
         <div class="score-box">Score: <span id="score">0</span></div>
         <div class="score-box">Balls: <span id="balls">3</span></div>
     </div>
-    <canvas id="pinballCanvas" width="360" height="500"></canvas>
+    <canvas id="pinballCanvas" width="360" height="520"></canvas>
 
     <div class="controls">
-        <button onpointerdown="leftFlipperActive=true" onpointerup="leftFlipperActive=false" onpointerleave="leftFlipperActive=false">⬅️ LEFT</button>
-        <button onpointerdown="rightFlipperActive=true" onpointerup="rightFlipperActive=false" onpointerleave="rightFlipperActive=false">RIGHT ➡️</button>
+        <button onpointerdown="leftFlipperActive=true" onpointerup="leftFlipperActive=false" onpointerleave="leftFlipperActive=false">◀ FLIP</button>
+        <button onpointerdown="launchBall()" style="background: #333; border-color: #ff3366;">LAUNCH</button>
+        <button onpointerdown="rightFlipperActive=true" onpointerup="rightFlipperActive=false" onpointerleave="rightFlipperActive=false">FLIP ▶</button>
     </div>
 
-    <div class="instructions">Use <b>Z</b> / <b>Left Arrow</b> and <b>M</b> / <b>Right Arrow</b> (or touch buttons) to flip.</div>
+    <div class="instructions">Use Z/M keys or touch buttons to flip. Press Launch to shoot ball.</div>
     <a href="../index.html" class="back-link">← Back to Home</a>
 
     <script>
@@ -81,13 +85,13 @@
         let isGameOver = false;
 
         let ball = {
-            x: 320,
-            y: 400,
+            x: 330,
+            y: 440,
             vx: 0,
-            vy: -8,
+            vy: 0,
             radius: 8,
-            gravity: 0.25,
-            active: true
+            gravity: 0.22,
+            inLauncher: true
         };
 
         let leftFlipperAngle = 0.3;
@@ -96,15 +100,19 @@
         let rightFlipperActive = false;
 
         const bumpers = [
-            { x: 140, y: 150, radius: 18, color: "#ffcc00", points: 100 },
-            { x: 220, y: 150, radius: 18, color: "#ffcc00", points: 100 },
-            { x: 180, y: 90, radius: 22, color: "#3399ff", points: 200 }
+            { x: 130, y: 160, radius: 18, color: "#ffcc00", points: 100 },
+            { x: 210, y: 160, radius: 18, color: "#ffcc00", points: 100 },
+            { x: 170, y: 90, radius: 22, color: "#3399ff", points: 200 }
         ];
 
         document.addEventListener("keydown", (e) => {
             if (e.key === "z" || e.key === "Z" || e.key === "ArrowLeft") leftFlipperActive = true;
             if (e.key === "m" || e.key === "M" || e.key === "ArrowRight") rightFlipperActive = true;
-            if (e.key === " " && isGameOver) resetGame();
+            if (e.key === " ") {
+                e.preventDefault();
+                if (isGameOver) resetGame();
+                else if (ball.inLauncher) launchBall();
+            }
         });
 
         document.addEventListener("keyup", (e) => {
@@ -112,86 +120,75 @@
             if (e.key === "m" || e.key === "M" || e.key === "ArrowRight") rightFlipperActive = false;
         });
 
+        function launchBall() {
+            if (ball.inLauncher && !isGameOver) {
+                ball.vx = -1.5 - Math.random() * 1.5;
+                ball.vy = -12 - Math.random() * 2;
+                ball.inLauncher = false;
+            }
+        }
+
         function update() {
             if (isGameOver) return;
 
-            // Apply gravity & velocity
-            ball.vy += ball.gravity;
-            ball.x += ball.vx;
-            ball.y += ball.vy;
+            if (!ball.inLauncher) {
+                ball.vy += ball.gravity;
+                ball.x += ball.vx;
+                ball.y += ball.vy;
 
-            // Air resistance
-            ball.vx *= 0.99;
-            ball.vy *= 0.99;
+                ball.vx *= 0.995;
+                ball.vy *= 0.995;
 
-            // Wall collisions
-            if (ball.x - ball.radius < 20) { ball.x = 20 + ball.radius; ball.vx *= -0.8; }
-            if (ball.x + ball.radius > canvas.width - 40) { ball.x = canvas.width - 40 - ball.radius; ball.vx *= -0.8; }
-            if (ball.y - ball.radius < 20) { ball.y = 20 + ball.radius; ball.vy *= -0.8; }
+                // Wall boundaries
+                if (ball.x - ball.radius < 20) { ball.x = 20 + ball.radius; ball.vx *= -0.8; }
+                if (ball.x + ball.radius > canvas.width - 45) { ball.x = canvas.width - 45 - ball.radius; ball.vx *= -0.8; }
+                if (ball.y - ball.radius < 20) { ball.y = 20 + ball.radius; ball.vy *= -0.8; }
 
-            // Launch lane restriction
-            if (ball.x > canvas.width - 40 && ball.y > 300 && ball.active) {
-                ball.vy = -7;
-            }
+                // Bumper collisions
+                bumpers.forEach(b => {
+                    let dx = ball.x - b.x;
+                    let dy = ball.y - b.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < ball.radius + b.radius) {
+                        let angle = Math.atan2(dy, dx);
+                        let force = 7;
+                        ball.vx = Math.cos(angle) * force;
+                        ball.vy = Math.sin(angle) * force;
+                        score += b.points;
+                        document.getElementById("score").innerText = score;
+                    }
+                });
 
-            // Bumper collisions
-            bumpers.forEach(b => {
-                let dx = ball.x - b.x;
-                let dy = ball.y - b.y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < ball.radius + b.radius) {
-                    let angle = Math.atan2(dy, dx);
-                    let force = 6;
-                    ball.vx = Math.cos(angle) * force;
-                    ball.vy = Math.sin(angle) * force;
-                    score += b.points;
-                    document.getElementById("score").innerText = score;
-                }
-            });
+                // Flippers movement
+                let targetLeftAngle = leftFlipperActive ? -0.45 : 0.3;
+                let targetRightAngle = rightFlipperActive ? 0.45 : -0.3;
+                leftFlipperAngle += (targetLeftAngle - leftFlipperAngle) * 0.4;
+                rightFlipperAngle += (targetRightAngle - rightFlipperAngle) * 0.4;
 
-            // Flipper physics & movement
-            let targetLeftAngle = leftFlipperActive ? -0.4 : 0.3;
-            let targetRightAngle = rightFlipperActive ? 0.4 : -0.3;
-            leftFlipperAngle += (targetLeftAngle - leftFlipperAngle) * 0.4;
-            rightFlipperAngle += (targetRightAngle - rightFlipperAngle) * 0.4;
+                // Flipper collisions
+                checkFlipperCollision(110, 450, leftFlipperActive, -1);
+                checkFlipperCollision(210, 450, rightFlipperActive, 1);
 
-            // Left flipper collision box coordinates
-            let lfPivotX = 110, lfPivotY = 430;
-            let lfTipX = lfPivotX + 60 * Math.cos(leftFlipperAngle);
-            let lfTipY = lfPivotY + 60 * Math.sin(leftFlipperAngle);
-            checkFlipperCollision(lfPivotX, lfPivotY, lfTipX, lfTipY, leftFlipperActive);
-
-            // Right flipper collision box coordinates
-            let rfPivotX = 230, rfPivotY = 430;
-            let rfTipX = rfPivotX + 60 * Math.cos(Math.PI - rightFlipperAngle);
-            let rfTipY = rfPivotY + 60 * Math.sin(Math.PI - rightFlipperAngle);
-            checkFlipperCollision(rfPivotX, rfPivotY, rfTipX, rfTipY, rightFlipperActive);
-
-            // Ball out of bounds (drain)
-            if (ball.y > canvas.height + 20) {
-                balls--;
-                document.getElementById("balls").innerText = balls;
-                if (balls <= 0) {
-                    isGameOver = true;
-                } else {
-                    resetBall();
+                // Drain check
+                if (ball.y > canvas.height + 20) {
+                    balls--;
+                    document.getElementById("balls").innerText = balls;
+                    if (balls <= 0) {
+                        isGameOver = true;
+                    } else {
+                        resetBall();
+                    }
                 }
             }
         }
 
-        function checkFlipperCollision(x1, y1, x2, y2, isActive) {
-            let dx = x2 - x1;
-            let dy = y2 - y1;
-            let length = Math.sqrt(dx * dx + dy * dy);
-            let dot = ((ball.x - x1) * dx + (ball.y - y1) * dy) / (length * length);
-            let clampedDot = Math.max(0, Math.min(1, dot));
-            let nearestX = x1 + clampedDot * dx;
-            let nearestY = y1 + clampedDot * dy;
-
-            let dist = Math.sqrt((ball.x - nearestX) ** 2 + (ball.y - nearestY) ** 2);
-            if (dist < ball.radius) {
-                ball.vy = isActive ? -9 : -4;
-                ball.vx += isActive ? (dx > 0 ? 3 : -3) : 1;
+        function checkFlipperCollision(pivotX, pivotY, isActive, sideDir) {
+            let dx = ball.x - pivotX;
+            let dy = ball.y - pivotY;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 65 && ball.y > pivotY - 20) {
+                ball.vy = isActive ? -11 : -5;
+                ball.vx += isActive ? sideDir * 4 : sideDir * 1;
             }
         }
 
@@ -199,11 +196,18 @@
             ctx.fillStyle = "#1a1a1a";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Table borders / walls
-            ctx.fillStyle = "#333";
-            ctx.fillRect(0, 0, 20, canvas.height);
-            ctx.fillRect(canvas.width - 40, 0, 40, canvas.height);
-            ctx.fillRect(0, 0, canvas.width, 20);
+            // Visible cabinet borders and launcher lane separator
+            ctx.strokeStyle = "#444";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+            // Launcher Lane Wall Divider
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 45, 60);
+            ctx.lineTo(canvas.width - 45, canvas.height - 60);
+            ctx.strokeStyle = "#444";
+            ctx.lineWidth = 3;
+            ctx.stroke();
 
             // Bumpers
             bumpers.forEach(b => {
@@ -216,18 +220,18 @@
 
             // Left Flipper
             ctx.save();
-            ctx.translate(110, 430);
+            ctx.translate(110, 450);
             ctx.rotate(leftFlipperAngle);
             ctx.fillStyle = "#ff3366";
-            ctx.fillRect(0, -6, 65, 12);
+            ctx.fillRect(0, -6, 60, 12);
             ctx.restore();
 
             // Right Flipper
             ctx.save();
-            ctx.translate(230, 430);
+            ctx.translate(210, 450);
             ctx.rotate(rightFlipperAngle);
             ctx.fillStyle = "#ff3366";
-            ctx.fillRect(-65, -6, 65, 12);
+            ctx.fillRect(-60, -6, 60, 12);
             ctx.restore();
 
             // Ball
@@ -236,6 +240,13 @@
             ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.closePath();
+
+            if (ball.inLauncher && !isGameOver) {
+                ctx.fillStyle = "#ff3366";
+                ctx.font = "bold 13px 'Segoe UI'";
+                ctx.textAlign = "center";
+                ctx.fillText("PRESS LAUNCH", canvas.width - 27, 280);
+            }
 
             if (isGameOver) {
                 ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
@@ -258,9 +269,10 @@
 
         function resetBall() {
             ball.x = 330;
-            ball.y = 350;
-            ball.vx = -1;
-            ball.vy = -10;
+            ball.y = 440;
+            ball.vx = 0;
+            ball.vy = 0;
+            ball.inLauncher = true;
         }
 
         function resetGame() {
