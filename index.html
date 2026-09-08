@@ -1944,6 +1944,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
   <button id="prevBtn" class="control-btn" aria-label="Previous">⏮</button>
   <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
   <button id="nextBtn" class="control-btn" aria-label="Next">⏭</button>
+  <button id="shuffle-btn" title="Toggle Shuffle">🔀</button>
   <button id="repeat-btn" title="Toggle Repeat Track">🔄</button>
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" class="volume-slider" title="Volume">
   <div class="progress-container" id="progressContainer">
@@ -2204,12 +2205,14 @@ const tracks = [
 ]; 
      
 let currentTrackIndex = 0;
+let isShuffling = false;
 let isRepeating = false;
 
 const audio = document.getElementById('audioElement');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffle-btn');
 const repeatBtn = document.getElementById('repeat-btn');
 const volumeSlider = document.getElementById('volumeSlider');
 const progressBar = document.getElementById('progressBar');
@@ -2292,11 +2295,29 @@ prevBtn.addEventListener('click', () => {
   }
 });
 
+function getNextIndex() {
+  if (isShuffling) {
+    if (tracks.length <= 1) return currentTrackIndex;
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * tracks.length);
+    } while (randomIndex === currentTrackIndex);
+    return randomIndex;
+  }
+  return (currentTrackIndex + 1) % tracks.length;
+}
+
 nextBtn.addEventListener('click', () => {
-  currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+  currentTrackIndex = getNextIndex();
   loadTrack(currentTrackIndex);
   audio.play().catch(e => console.log("Playback prevented:", e));
   updatePlayState(true);
+});
+
+shuffleBtn.addEventListener('click', () => {
+  isShuffling = !isShuffling;
+  shuffleBtn.style.opacity = isShuffling ? '1' : '0.5';
+  shuffleBtn.style.borderColor = isShuffling ? 'var(--accent-color)' : '';
 });
 
 repeatBtn.addEventListener('click', () => {
@@ -2328,7 +2349,7 @@ progressContainer.addEventListener('click', (e) => {
 
 audio.addEventListener('ended', () => {
   if (!audio.loop) {
-    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    currentTrackIndex = getNextIndex();
     loadTrack(currentTrackIndex);
     audio.play().catch(e => console.log("Playback prevented:", e));
     updatePlayState(true);
