@@ -357,10 +357,10 @@ flex: 1 1 100%;
         <li><a href="https://eeszt.gov.hu/hu/e-kortortenet" target="_blank">eeszt.gov.hu/hu/e-kortortenet</a></li>
         <li><a href="https://ugyfelkapu.gov.hu" target="_blank">ugyfelkapu.gov.hu</a></li>
         <li><a href="https://auth.ente.com" target="_blank">auth.ente.com</a></li>
-        <li><a href="https://virustotal.com" target="_blank">virustotal.com</a></li>
         <li><a href="https://gemini.google.com/app" target="_blank">gemini.google.com/app</a></li>
         <li><a href="https://chatgpt.com" target="_blank">chatgpt.com</a></li>
-        <li><a href="https://google.com" target="_blank">google.com</a></li>
+        <li><a href="https://file.kiwi" target="_blank">file.kiwi</a></li>
+        <li><a href="https://virustotal.com" target="_blank">virustotal.com</a></li>
         <li><a href="https://music.youtube.com/@zerovok" target="_blank">music.youtube.com/@zerovok</a></li>
         <li><a href="https://youtube.com/feed/privatemode" target="_blank">youtube.com/feed/privatemode</a></li>
         <li><a href="https://youtube-nocookie.com" target="_blank">youtube-nocookie.com</a></li>
@@ -2057,15 +2057,15 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     </script>
 
 <script>
-    function checkPin() {
-        // Change "1234" to whatever secret PIN you want
-        if (document.getElementById('pinInput').value === "2344") {
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('uploadScreen').style.display = 'block';
-        } else {
-            alert("Wrong PIN");
-        }
+function checkPin() {
+    const enteredPin = document.getElementById('pinInput').value.trim();
+    if (enteredPin === "1234") {
+        document.getElementById('authScreen').style.display = 'none';
+        document.getElementById('uploadScreen').style.display = 'block';
+    } else {
+        alert("Wrong PIN");
     }
+}
 
     async function uploadFile() {
         const fileInput = document.getElementById('fileInput');
