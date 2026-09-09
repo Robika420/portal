@@ -276,6 +276,7 @@ flex: 1 1 100%;
   <span style="color: #00ffff; font-weight: bold; margin-right: 10px;">CATEGORIES:</span>
   <a href="#top-sites" style="color: #ff00ff; margin-right: 5px; text-decoration: none;">top-sites</a>
   <a href="#docu" style="color: #ff00ff; text-decoration: none;">docu</a>
+  <a href="#PIN" style="color: #ff00ff; text-decoration: none;">PIN</a>
   <a href="#share" style="color: #ff00ff; text-decoration: none;">share</a>
   <a href="#AI" style="color: #ff00ff; text-decoration: none;">AI</a>
   <a href="#mega" style="color: #ff00ff; text-decoration: none;">mega</a>
@@ -421,6 +422,18 @@ flex: 1 1 100%;
                 <li><strong>PDF Scanner - Doc Scanner</strong> <span class="subtext">by Prometheus Interactive LLC</span></li>
             </ul>
         </div>
+
+<div id="PIN">
+    <input type="password" id="pinInput" placeholder="Enter PIN">
+    <button onclick="checkPin()">Enter</button>
+</div>
+
+<div id="uploadScreen" style="display:none;">
+    <input type="file" id="fileInput"><br><br>
+    <button onclick="uploadFile()">Upload to Phone</button>
+    <p id="status"></p>
+    <a id="downloadLink" href="" target="_blank"></a>
+</div>
 
 <div class="category" id="share">
             <h2>🔗 Wi-Fi File / Note Sharing & App Sync</h2>
@@ -2042,6 +2055,53 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             });
         }
     </script>
+
+<script>
+    function checkPin() {
+        // Change "1234" to whatever secret PIN you want
+        if (document.getElementById('pinInput').value === "2344") {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('uploadScreen').style.display = 'block';
+        } else {
+            alert("Wrong PIN");
+        }
+    }
+
+    async function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const status = document.getElementById('status');
+        const downloadLink = document.getElementById('downloadLink');
+        
+        if (fileInput.files.length === 0) {
+            status.innerText = "Select a file first.";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('reqtype', 'fileupload');
+        formData.append('fileToUpload', fileInput.files[0]);
+
+        status.innerText = "Uploading...";
+
+        try {
+            const response = await fetch('https://catbox.moe/user/api.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                const fileUrl = await response.text();
+                status.innerText = "Success! Open this link on your phone:";
+                downloadLink.href = fileUrl;
+                downloadLink.innerText = fileUrl;
+            } else {
+                status.innerText = "Upload failed.";
+            }
+        } catch (error) {
+            status.innerText = "Error: " + error.message;
+        }
+    }
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
