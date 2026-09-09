@@ -2057,15 +2057,16 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     </script>
 
 <script>
-function checkPin() {
-    const enteredPin = document.getElementById('pinInput').value.trim();
-    if (enteredPin === "1234") {
-        document.getElementById('authScreen').style.display = 'none';
-        document.getElementById('uploadScreen').style.display = 'block';
-    } else {
-        alert("Wrong PIN");
+    function checkPin() {
+        const enteredPin = document.getElementById('pinInput').value.trim();
+        
+        if (enteredPin === "2344") {
+            document.getElementById('PIN').style.display = 'none';
+            document.getElementById('uploadScreen').style.display = 'block';
+        } else {
+            alert("Wrong PIN");
+        }
     }
-}
 
     async function uploadFile() {
         const fileInput = document.getElementById('fileInput');
