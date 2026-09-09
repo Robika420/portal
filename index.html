@@ -137,15 +137,19 @@ flex: 1 1 100%;
       color: #00ffff;
       font-weight: bold;
     }
+  .search-wrapper {
+    margin-bottom: 10px;
+    margin-top: -10px;
+  }
         .search-container {
             max-width: 500px;
-            margin: 0 auto 2.5rem auto;
+            margin: 0 auto 2rem auto;
             text-align: center;
         }
 
         .search-container input[type="text"] {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.7rem 1rem;
             border-radius: 8px;
             border: 1px solid #323238;
             background-color: var(--card-bg);
@@ -299,6 +303,22 @@ flex: 1 1 100%;
 </nav>
     <h1>Dashboard</h1>
     <div id="clock"></div>
+
+<div class="search-wrapper">
+<form action="https://www.google.com/search" method="get" target="_blank">
+  <label for="standard-search">Google Search:</label>
+  <input type="text" id="standard-search" name="q" placeholder="Search the web..." required>
+  <button type="submit">Search</button>
+</form>
+
+<form action="https://www.google.com/search" method="get" target="_blank">
+  <!-- The parameter triggers or aligns with AI search interfaces depending on current URL structures -->
+  <input type="hidden" name="udm" value="50"> 
+  <label for="ai-search">Google AI Mode:</label>
+  <input type="text" id="ai-search" name="q" placeholder="Ask a complex question..." required>
+  <button type="submit">AI Search</button>
+</form>
+    </div>
 
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
