@@ -429,9 +429,11 @@ flex: 1 1 100%;
 </div>
 
 <div id="uploadScreen" style="display:none;">
-    <input type="file" id="fileInput"><br><br>
-    <button onclick="uploadFile()">Send to Phone</button>
-    <p id="status"></p>
+    <!-- Replace the action URL with your actual Formspree endpoint -->
+    <form action="https://formspree.io/f/youruniquecode" method="POST" enctype="multipart/form-data">
+        <input type="file" name="uploadFile"><br><br>
+        <button type="submit">Send to Email/Phone</button>
+    </form>
 </div>
 
 <div class="category" id="share">
@@ -2063,39 +2065,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             document.getElementById('uploadScreen').style.display = 'block';
         } else {
             alert("Wrong PIN");
-        }
-    }
-
-    async function uploadFile() {
-        const fileInput = document.getElementById('fileInput');
-        const status = document.getElementById('status');
-        
-        if (fileInput.files.length === 0) {
-            status.innerText = "Select a file first.";
-            return;
-        }
-
-        const file = fileInput.files[0];
-        status.innerText = "Uploading...";
-
-        const topic = 'onmyway';
-
-        try {
-            const response = await fetch(`https://ntfy.sh/${topic}`, {
-                method: 'POST',
-                body: file,
-                headers: {
-                    'Filename': encodeURIComponent(file.name)
-                }
-            });
-            
-            if (response.ok) {
-                status.innerText = "Sent successfully! Check your phone.";
-            } else {
-                status.innerText = "Upload failed.";
-            }
-        } catch (error) {
-            status.innerText = "Error: " + error.message;
         }
     }
 </script>
