@@ -592,24 +592,6 @@ border-radius: 8px;
         </div>
     </div>
 
-<!-- Load YouTube API script -->
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<!-- The container where the player renders -->
-<div id="embedded-yt-player"></div>
-
-<!-- Your external script -->
-<script src="yt-player-integration.js" defer></script>
-
-<!-- YouTube Music Search Container -->
-<div class="search-container">
-  <input type="text" id="ytmSearchBox" placeholder="Search YouTube Music..." />
-  <button id="ytmSearchBtn">YTM</button>
-</div>
-
-<!-- The Embedded Player Window -->
-<div id="embedded-yt-player"></div>
-
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
     </div>
@@ -2334,6 +2316,101 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     </ul>
 </section>
 
+<!-- Load YouTube API script -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- YouTube Music Search Container -->
+<div class="search-container">
+  <input type="text" id="ytmSearchBox" placeholder="Search YouTube Music..." />
+  <button id="ytmSearchBtn">YTM</button>
+</div>
+
+<!-- The Embedded Player Window (Only ONE instance) -->
+<div id="embedded-yt-player"></div>
+
+<script>
+let ytPlayer;
+const searchApiKey = 'AIzaSyB6QIDtxKpO2JbILQ8JCKNl3cGUhMXl-i4';
+
+// 1. Initialize the player with advanced parameters
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('embedded-yt-player', {
+    height: '250',
+    width: '100%',
+    playerVars: {
+      'playsinline': 1,
+      'controls': 1,
+      'modestbranding': 1,
+      'rel': 0
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange,
+      'onError': onPlayerError
+    }
+  });
+}
+
+// 2. Player Lifecycle Hooks
+function onPlayerReady(event) {
+  console.log('Player is fully loaded and ready for commands.');
+}
+
+function onPlayerStateChange(event) {
+  const states = {-1: 'UNSTARTED', 0: 'ENDED', 1: 'PLAYING', 2: 'PAUSED', 3: 'BUFFERING', 5: 'CUED'};
+  console.log('Player State Changed:', states[event.data]);
+  
+  if (event.data === YT.PlayerState.PLAYING) {
+    const data = ytPlayer.getVideoData();
+    console.log(`Now Playing: ${data.title} by ${data.author}`);
+  }
+}
+
+function onPlayerError(event) {
+  console.warn('Playback Error Code:', event.data);
+  if (event.data === 101 || event.data === 150) {
+    console.error('This video blocks external embedding.');
+  }
+}
+
+// 3. Search and Load Integration
+async function searchAndPlayAdvanced(query) {
+  if (!query) return;
+  const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodeURIComponent(query)}&type=video&key=${searchApiKey}`;
+  
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    
+    if (data.items && data.items.length > 0) {
+      const videoId = data.items[0].id.videoId;
+      ytPlayer.loadVideoById(videoId);
+    } else {
+      console.warn('No search results found.');
+    }
+  } catch (err) {
+    console.error('Search query failed', err);
+  }
+}
+
+// 4. Wire up the search box and button triggers
+document.addEventListener('DOMContentLoaded', () => {
+  const ytmSearchBox = document.getElementById('ytmSearchBox');
+  const ytmSearchBtn = document.getElementById('ytmSearchBtn');
+
+  if (ytmSearchBtn && ytmSearchBox) {
+    ytmSearchBtn.addEventListener('click', () => {
+      searchAndPlayAdvanced(ytmSearchBox.value.trim() + ' music');
+    });
+    ytmSearchBox.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchAndPlayAdvanced(ytmSearchBox.value.trim() + ' music');
+      }
+    });
+  }
+});
+</script>
+
     <script>
         // Clock Script
         function updateClock() {
@@ -2423,115 +2500,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Wrong PIN");
         }
     }
-</script>
-
-<script>
-let ytPlayer;
-const searchApiKey = 'AIzaSyB6QIDtxKpO2JbILQ8JCKNl3cGUhMXl-i4';
-
-// 1. Initialize the player with advanced parameters
-function onYouTubeIframeAPIReady() {
-  ytPlayer = new YT.Player('embedded-yt-player', {
-    height: '250',
-    width: '100%',
-    playerVars: {
-      'playsinline': 1,
-      'controls': 1,        // Set to 0 if you want to build 100% custom buttons
-      'modestbranding': 1,  // Minimizes YouTube branding
-      'rel': 0              // Limits recommended videos to the same channel
-    },
-    events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange,
-      'onError': onPlayerError
-    }
-  });
-}
-
-// 2. Player Lifecycle Hooks
-function onPlayerReady(event) {
-  console.log('Player is fully loaded and ready for commands.');
-  // You can auto-load a safe, embeddable test video here if you want:
-  // ytPlayer.cueVideoById('dQw4w9WgXcQ'); 
-}
-
-function onPlayerStateChange(event) {
-  // YT.PlayerState mapping:
-  // -1 = Unstarted, 0 = Ended, 1 = Playing, 2 = Paused, 3 = Buffering, 5 = Cued
-  const states = {-1: 'UNSTARTED', 0: 'ENDED', 1: 'PLAYING', 2: 'PAUSED', 3: 'BUFFERING', 5: 'CUED'};
-  console.log('Player State Changed:', states[event.data]);
-  
-  if (event.data === YT.PlayerState.PLAYING) {
-    // Example: Fetch and display current video metadata dynamically
-    const data = ytPlayer.getVideoData();
-    console.log(`Now Playing: ${data.title} by ${data.author}`);
-  }
-}
-
-function onPlayerError(event) {
-  // Catches Error 153 / embedding blocks programmatically
-  console.warn('Playback Error Code:', event.data);
-  if (event.data === 101 || event.data === 150) {
-    console.error('This video blocks external embedding.');
-  }
-}
-
-// 3. Advanced Control Functions (Bind these to custom buttons on your site)
-const advancedControls = {
-  play: () => ytPlayer.playVideo(),
-  pause: () => ytPlayer.pauseVideo(),
-  stop: () => ytPlayer.stopVideo(),
-  
-  // Seeking (jump forward/backward 10 seconds)
-  seekForward: () => {
-    const current = ytPlayer.getCurrentTime();
-    ytPlayer.seekTo(current + 10, true);
-  },
-  seekBackward: () => {
-    const current = ytPlayer.getCurrentTime();
-    ytPlayer.seekTo(Math.max(0, current - 10), true);
-  },
-  
-  // Volume Control (0 to 100)
-  setVolume: (vol) => ytPlayer.setVolume(vol),
-  mute: () => ytPlayer.mute(),
-  unMute: () => ytPlayer.unMute(),
-  
-  // Playback Rate (0.25 to 2.0)
-  setSpeed: (speed) => ytPlayer.setPlaybackRate(speed),
-  
-  // Get live telemetry
-  getStats: () => {
-    if (!ytPlayer) return;
-    return {
-      currentTime: ytPlayer.getCurrentTime(),
-      duration: ytPlayer.getDuration(),
-      playerState: ytPlayer.getPlayerState(),
-      videoUrl: ytPlayer.getVideoUrl(),
-      quality: ytPlayer.getPlaybackQuality()
-    };
-  }
-};
-
-// 4. Search and Load Integration with Fallback Handling
-async function searchAndPlayAdvanced(query) {
-  if (!query) return;
-  const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodeURIComponent(query)}&type=video&key=${searchApiKey}`;
-  
-  try {
-    const response = await fetch(endpoint);
-    const data = await response.json();
-    
-    if (data.items && data.items.length > 0) {
-      // Loop through search results to find one that might actually load
-      // (Note: The API doesn't flag embed status, so it still relies on error catching)
-      const videoId = data.items[0].id.videoId;
-      ytPlayer.loadVideoById(videoId);
-    }
-  } catch (err) {
-    console.error('Search query failed', err);
-  }
-}
 </script>
 
 <script>
