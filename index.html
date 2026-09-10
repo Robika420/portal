@@ -51,7 +51,7 @@ html {
         .widget-card { 
             background-color: var(--card-bg); 
             border-radius: 8px; 
-            padding: 0.5brem; 
+            padding: 0.5rem; 
 	    margin-top: 0.5rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
             flex: 1; 
@@ -162,133 +162,132 @@ html {
         .bookmark-btn:hover { opacity: 0.9; }
 
 .opus-player-wrapper {
-      max-width: 500px;
-	margin: 0 auto 20px auto;
-	margin-bottom: 0.5rem;
-      font-family: system-ui, sans-serif;
-    }
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+  margin-bottom: 0.5rem;
+  font-family: system-ui, sans-serif;
+}
 
-    .upload-btn {
-      display: inline-block;
-      background: transparent;
-      color: #00ffff;
-      border: 1px solid #00ffff;
-      padding: 6px 14px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 13px;
-      margin-bottom: 10px;
-      transition: all 0.2s;
-    }
+.upload-btn {
+  display: inline-block;
+  background: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
 
-    .upload-btn:hover {
-      background: rgba(0, 255, 255, 0.1);
-    }
+.upload-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
 
-    .opus-player {
-display: flex;
+.opus-player {
+  display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  align-items: center;      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      padding: 10px 14px;
-      border-radius: 6px;
-    }
-
-    .control-btn {
-      background: transparent;
-      color: #00ffff;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-.shuffle-btn, .repeat-btn {
-    background: var(--code-bg);
-    border: 1px solid #323238;
-    color: var(--text-sub, #888);
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    outline: none;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 10px 14px;
+  border-radius: 6px;
 }
 
-.shuffle-btn:hover, .repeat-btn:hover {
-    border-color: var(--accent);
-    color: var(--text-main, #fff);
-    background: rgba(255, 255, 255, 0.03);
-}
-
-.shuffle-btn.active, .repeat-btn.active {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-    box-shadow: 0 0 8px rgba(147, 51, 234, 0.4);
-}
-
-.control-btn, #repeat-btn {
+.control-btn, .shuffle-btn, .repeat-btn {
+  background: transparent;
+  color: #a8a8b3;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
   position: relative;
   z-index: 5;
+  pointer-events: auto;
 }
 
-#repeat-btn, #playPauseBtn {
-  pointer-events: auto;
+.control-btn:hover, .shuffle-btn:hover, .repeat-btn:hover {
+  border-color: #00ffff;
+  color: #00ffff;
+}
+
+/* Shuffle Active State: */
+.shuffle-btn.active, 
+.shuffle-btn[data-active="true"] {
+background: rgba(255, 255, 255, 0.03) !important;
+  color: #e2e8f0 !important;
+border: 1px solid;
+  border-color: #f87171 !important;
+border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); !important;
+}
+
+/* Repeat Active State: */
+.repeat-btn.active, 
+.repeat-btn[data-active="true"] {
+  background: #00ffff !important;
+  color: #000000 !important;
+  border-color: #00ffff !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important;
+}
+
+.progress-container {
+  flex: 1 1 100%;
+  width: 100%;
+  background: #222;
+  height: 8px;
+  border-radius: 2px;
   cursor: pointer;
 }
 
-    .progress-container {
-flex: 1 1 100%;
-  width: 100%;
-      flex-grow: 1;
-      background: #222;
-      height: 8px;
-      border-radius: 2px;
-      cursor: pointer;
-    }
+.progress-bar {
+  background: #00ffff;
+  width: 0%;
+  height: 100%;
+}
 
-    .progress-bar {
-      background: #00ffff;
-      width: 0%;
-      height: 100%;
-    }
+.time-display {
+  font-size: 11px;
+  color: #00ffff;
+  min-width: 60px;
+  text-align: right;
+}
 
-    .time-display {
-      font-size: 11px;
-      color: #00ffff;
-      min-width: 60px;
-      text-align: right;
-    }
+.playlist {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.8);
+}
 
-    .playlist {
-      list-style: none;
-      padding: 0;
-      margin-top: 8px;
-      max-height: 150px;
-      overflow-y: auto;
-      border: 1px solid rgba(0, 255, 255, 0.2);
-      border-radius: 4px;
-      background: rgba(0, 0, 0, 0.8);
-    }
+.playlist li {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #ccc;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
 
-    .playlist li {
-      padding: 8px 12px;
-      font-size: 13px;
-      color: #ccc;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      cursor: pointer;
-    }
+.playlist li:hover {
+  background: rgba(0, 255, 255, 0.05);
+  color: #00ffff;
+}
 
-    .playlist li:hover {
-      background: rgba(0, 255, 255, 0.05);
-      color: #00ffff;
-    }
-
-    .playlist li.active {
-      background: rgba(0, 255, 255, 0.15);
-      color: #00ffff;
-      font-weight: bold;
-    }
+.playlist li.active {
+  background: rgba(0, 255, 255, 0.15);
+  color: #00ffff;
+  font-weight: bold;
+}
 
   .search-wrapper {
     margin-bottom: 11px;
@@ -477,8 +476,8 @@ flex: 1 1 100%;
   <button id="prevBtn" class="control-btn" aria-label="Previous">⏮</button>
   <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
   <button id="nextBtn" class="control-btn" aria-label="Next">⏭</button>
-  <button id="shuffle-btn" style="background: var(--code-bg); border: 1px solid #323238; color: var(--text-sub, #888); padding: 6px 10px; border-radius: 4px; cursor: pointer; outline: none; transition: all 0.2s ease; "title="Toggle Shuffle">🔀</button>
-  <button id="repeat-btn" title="Toggle Repeat Track">🔄</button>
+<button id="shuffle-btn" class="shuffle-btn" style="padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.85rem; outline: none; transition: all 0.2s ease;" title="Toggle Shuffle">🔀</button>
+  <button id="repeat-btn" class="repeat-btn "style="padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.85rem; outline: none; transition: all 0.2s ease;" title="Toggle Repeat Track">🔄</button>
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" class="volume-slider" title="Volume">
   <div class="progress-container" id="progressContainer">
     <div id="progressBar" class="progress-bar"></div>
