@@ -577,6 +577,25 @@ flex: 1 1 100%;
     </ul>
 </div>
 
+<div class="bookmark-form-card">
+        <h3>Add Quick Bookmark</h3>
+        <form id="add-bm-form">
+            <div class="bookmark-inputs">
+                <input type="text" id="bm-name" placeholder="Site Name" required>
+                <input type="url" id="bm-url" placeholder="https://example.com" required>
+                <select id="bm-category" required>
+                    <option value="" disabled selected>Select Category</option>
+                </select>
+            </div>
+            <button type="submit" class="bookmark-btn">Add to Portal</button>
+        </form>
+    </div>
+
+<div class="widget-card-wide" style="text-align: left;">
+    <h3>Manage Bookmarks</h3>
+    <ul id="manage-bookmarks-list" style="max-height: 120px; overflow-y: auto; padding: 0; margin-top: 8px;"></ul>
+</div>
+
 <div class="category" id="docu">
             <h2>📱 Document Scanners for Android</h2>
             <ul>
@@ -2235,21 +2254,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     <ul id="playlist" class="playlist"></ul>
   </div>
 
-<div class="bookmark-form-card">
-        <h3>Add Quick Bookmark</h3>
-        <form id="add-bm-form">
-            <div class="bookmark-inputs">
-                <input type="text" id="bm-name" placeholder="Site Name" required>
-                <input type="url" id="bm-url" placeholder="https://example.com" required>
-                <select id="bm-category" required>
-                    <option value="" disabled selected>Select Category</option>
-                </select>
-            </div>
-            <button type="submit" class="bookmark-btn">Add to Portal</button>
-        </form>
-    </div>
-
-<section class="games-hub" id="play'>
+<section class="games-hub" id="play">
     <h2>Mini Arcade</h2>
     <p>Choose a game to play:</p>
     <ul>
@@ -2803,6 +2808,41 @@ function removeChecklistItem(index) {
         saveCloudData();
         renderBookmarks();
     }
+
+function renderManageBookmarks() {
+    const listEl = document.getElementById("manage-bookmarks-list");
+    if (!listEl) return;
+    listEl.innerHTML = "";
+    
+    if (cloudData.bookmarks.length === 0) {
+        listEl.innerHTML = `<li class="subtext">No custom bookmarks added yet.</li>`;
+        return;
+    }
+
+    cloudData.bookmarks.forEach((bm, index) => {
+        const li = document.createElement("li");
+        li.style.display = "flex";
+        li.style.justifyContent = "space-between";
+        li.style.alignItems = "center";
+        li.style.marginBottom = "6px";
+        li.style.fontSize = "0.9rem";
+        
+        li.innerHTML = `
+            <span><strong>[${bm.category}]</strong> ${bm.name}</span>
+            <button onclick="removeCloudBookmark(${index})" style="background: transparent; border: none; color: #f87171; cursor: pointer; font-weight: bold; font-size: 1.1rem; padding: 0 6px;" title="Delete bookmark">×</button>
+        `;
+        listEl.appendChild(li);
+    });
+}
+
+function removeCloudBookmark(index) {
+    cloudData.bookmarks.splice(index, 1);
+    saveCloudData();
+    renderManageBookmarks();
+    // Reload page or re-render your site links if necessary
+}
+
+// Call renderManageBookmarks inside your initial load function once data is fetched
 
     // Handle form submission event
     document.addEventListener("DOMContentLoaded", () => {
