@@ -203,6 +203,30 @@ display: flex;
       font-size: 16px;
     }
 
+.shuffle-btn, .repeat-btn {
+    background: var(--code-bg);
+    border: 1px solid #323238;
+    color: var(--text-sub, #888);
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.shuffle-btn:hover, .repeat-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-main, #fff);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.shuffle-btn.active, .repeat-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(147, 51, 234, 0.4);
+}
+
 .control-btn, #repeat-btn {
   position: relative;
   z-index: 5;
@@ -411,7 +435,7 @@ flex: 1 1 100%;
     </style>
 </head>
 <body>
-<nav style="background: #111; padding: 0.75rem 1rem; margin-bottom: 0px; font-family: monospace; position: sticky; top: 0; z-index: 1000; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 0.95rem;">
+<nav style="background: #111; padding: 0.75rem 1rem; margin-bottom: 0px; font-family: monospace; position: sticky; top: 0; z-index: 1000; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 0.99rem;">
   <a href="#m4a" style="color: #ff00ff; text-decoration: none;">m4a</a>
   <a href="#top-sites" style="color: #ff00ff; margin-right: 5px; text-decoration: none;">top-sites</a>
   <a href="#PIN" style="color: #ff00ff; text-decoration: none;">PIN</a>
@@ -453,7 +477,7 @@ flex: 1 1 100%;
   <button id="prevBtn" class="control-btn" aria-label="Previous">⏮</button>
   <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
   <button id="nextBtn" class="control-btn" aria-label="Next">⏭</button>
-  <button id="shuffle-btn" title="Toggle Shuffle">🔀</button>
+  <button id="shuffle-btn" style="background: var(--code-bg); border: 1px solid #323238; color: var(--text-sub, #888); padding: 6px 10px; border-radius: 4px; cursor: pointer; outline: none; transition: all 0.2s ease; "title="Toggle Shuffle">🔀</button>
   <button id="repeat-btn" title="Toggle Repeat Track">🔄</button>
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" class="volume-slider" title="Volume">
   <div class="progress-container" id="progressContainer">
