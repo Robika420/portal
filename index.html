@@ -2809,13 +2809,14 @@ function removeChecklistItem(index) {
         renderBookmarks();
     }
 
+// --- MANAGE BOOKMARKS RENDER LOGIC ---
 function renderManageBookmarks() {
     const listEl = document.getElementById("manage-bookmarks-list");
     if (!listEl) return;
     listEl.innerHTML = "";
     
-    if (cloudData.bookmarks.length === 0) {
-        listEl.innerHTML = `<li class="subtext">No custom bookmarks added yet.</li>`;
+    if (!cloudData.bookmarks || cloudData.bookmarks.length === 0) {
+        listEl.innerHTML = `<li class="subtext" style="list-style: none; padding: 4px 0;">No custom bookmarks added yet.</li>`;
         return;
     }
 
@@ -2826,10 +2827,11 @@ function renderManageBookmarks() {
         li.style.alignItems = "center";
         li.style.marginBottom = "6px";
         li.style.fontSize = "0.9rem";
+        li.style.listStyle = "none";
         
         li.innerHTML = `
-            <span><strong>[${bm.category}]</strong> ${bm.name}</span>
-            <button onclick="removeCloudBookmark(${index})" style="background: transparent; border: none; color: #f87171; cursor: pointer; font-weight: bold; font-size: 1.1rem; padding: 0 6px;" title="Delete bookmark">×</button>
+            <span style="word-break: break-all; padding-right: 10px;"><strong style="color: var(--accent);">[${bm.category}]</strong> <a href="${bm.url}" target="_blank">${bm.name}</a></span>
+            <button onclick="removeCloudBookmark(${index})" style="background: transparent; border: none; color: #f87171; cursor: pointer; font-weight: bold; font-size: 1.2rem; padding: 0 4px;" title="Delete bookmark">×</button>
         `;
         listEl.appendChild(li);
     });
@@ -2839,10 +2841,26 @@ function removeCloudBookmark(index) {
     cloudData.bookmarks.splice(index, 1);
     saveCloudData();
     renderManageBookmarks();
-    // Reload page or re-render your site links if necessary
+    renderBookmarks();
 }
 
-// Call renderManageBookmarks inside your initial load function once data is fetched
+async function loadCloudData() {
+    try {
+        const response = await fetch(API_URL, {
+            headers: { "X-Master-Key": API_KEY }
+        });
+        const json = await response.json();
+        cloudData = json.record;
+        
+        // Populate UI elements
+        if(document.getElementById("scratchpad")) document.getElementById("scratchpad").value = cloudData.scratchpad || "";
+        renderChecklist();
+        renderBookmarks();
+        renderManageBookmarks(); // <--- Add this line here
+    } catch (error) {
+        console.error("Failed to load cloud data", error);
+    }
+}
 
     // Handle form submission event
     document.addEventListener("DOMContentLoaded", () => {
