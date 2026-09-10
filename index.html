@@ -592,6 +592,9 @@ border-radius: 8px;
         </div>
     </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
+<div id="embedded-yt-player"></div>
+
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
     </div>
@@ -2385,6 +2388,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+let ytPlayer;
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('embedded-yt-player', {
+    height: '200',
+    width: '100%',
+    playerVars: {
+      'playsinline': 1,
+      'controls': 1
+    }
+  });
+}
+
+function playOnSite(videoId) {
+  if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+    ytPlayer.loadVideoById(videoId);
+  }
+}
 
         // Copy full winget script
         function copyFullScript() {
