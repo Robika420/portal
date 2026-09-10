@@ -2732,6 +2732,18 @@ if ('mediaSession' in navigator) {
   });
 }
 
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.setActionHandler('previoustrack', () => {
+    // Call your function that plays the previous song
+    playPreviousTrack();
+  });
+
+  navigator.mediaSession.setActionHandler('nexttrack', () => {
+    // Call your function that plays the next song
+    playNextTrack();
+  });
+}
+
 <script>
     const BIN_ID = "6aa217ceffd5d16053f4533a";
     const API_KEY = "$2a$10$SA2WYLWEYDaSb42MEjW/5.Ceb5GwRbqOJhUbQlzM1j/JN3ah623O2";
