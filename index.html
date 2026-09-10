@@ -592,8 +592,14 @@ border-radius: 8px;
         </div>
     </div>
 
+<!-- Load YouTube API script -->
 <script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- The container where the player renders -->
 <div id="embedded-yt-player"></div>
+
+<!-- Your external script -->
+<script src="yt-player-integration.js" defer></script>
 
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
@@ -2428,6 +2434,67 @@ function playOnSite(videoId) {
         }
     }
 </script>
+
+// YouTube Data API search and IFrame player integration script
+let ytPlayer;
+let searchApiKey = 'YOUR_API_KEY_HERE'; // Replace with your restricted API key
+
+// 1. Initialize the YouTube IFrame API
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('embedded-yt-player', {
+    height: '180',
+    width: '320',
+    playerVars: {
+      'playsinline': 1,
+      'controls': 1
+    }
+  });
+}
+
+// 2. Search YouTube Data API and play the top result
+async function searchAndPlay(query) {
+  if (!query) return;
+  
+  const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(query)}&type=video&key=${searchApiKey}`;
+  
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    
+    if (data.items && data.items.length > 0) {
+      const videoId = data.items[0].id.videoId;
+      if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+        ytPlayer.loadVideoById(videoId);
+      }
+    } else {
+      console.warn('No videos found for query.');
+    }
+  } catch (error) {
+    console.error('API search failed:', error);
+  }
+}
+
+// 3. Event Listeners for your search boxes
+document.addEventListener('DOMContentLoaded', () => {
+  const ytSearchBox = document.getElementById('ytSearchBox');
+  const ytSearchBtn = document.getElementById('ytSearchBtn');
+  const ytmSearchBox = document.getElementById('ytmSearchBox');
+  const ytmSearchBtn = document.getElementById('ytmSearchBtn');
+
+  if (ytSearchBtn && ytSearchBox) {
+    ytSearchBtn.addEventListener('click', () => searchAndPlay(ytSearchBox.value.trim()));
+    ytSearchBox.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') searchAndPlay(ytSearchBox.value.trim());
+    });
+  }
+
+  if (ytmSearchBtn && ytmSearchBox) {
+    ytmSearchBtn.addEventListener('click', () => searchAndPlay(ytmSearchBox.value.trim() + ' music'));
+    ytmSearchBox.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') searchAndPlay(ytmSearchBox.value.trim() + ' music');
+    });
+  }
+});
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
