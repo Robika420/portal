@@ -22,10 +22,10 @@ html {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            max-width: 950px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 2rem 1rem;
-	padding-top: 30px;
+	padding-top: 20px;
         }
 
         h1 { text-align: center; margin-bottom: 0.25rem; }
@@ -117,8 +117,6 @@ html {
             border-radius: 8px;
             padding: 1rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            max-width: 500px;
-            margin: 0 auto 1.5rem auto;
             border: 1px solid #323238;
             text-align: center;
         }
@@ -146,6 +144,7 @@ html {
             font-size: 0.9rem;
             outline: none;
         }
+
         .bookmark-inputs input:focus, .bookmark-inputs select:focus {
             border-color: var(--accent);
         }
@@ -157,7 +156,7 @@ html {
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.9rem;
-            width: 100%;
+            flex: 0 0 auto;
             margin-top: 8px;
         }
         .bookmark-btn:hover { opacity: 0.9; }
@@ -268,13 +267,13 @@ flex: 1 1 100%;
     }
 
   .search-wrapper {
-    margin-bottom: 10px;
+    margin-bottom: 11px;
     margin-top: 0.5px;
-	gap: 2px;
+	gap: 2.5px;
   }
         .search-container {
             max-width: 500px;
-            margin: 0 auto 1rem auto;
+            margin: 0 auto 0.6rem auto;
             text-align: center;
         }
 
@@ -296,18 +295,22 @@ flex: 1 1 100%;
             box-shadow: 0 0 0 2px rgba(121, 82, 179, 0.3);
         }
         
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(299px, 1fr));
-            gap: 1.5rem;
-        }
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
 
-        .category {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.25rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
+.category {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    flex: 1 1 300px;
+    max-width: calc(33.333% - 1rem); /* Forces a maximum of 3 columns per row without full-height stretching */
+    box-sizing: border-box;
+}
 
         .category h2 {
             margin-top: 0;
@@ -415,16 +418,16 @@ flex: 1 1 100%;
   <a href="#PIN" style="color: #ff00ff; text-decoration: none;">PIN</a>
   <a href="#share" style="color: #ff00ff; text-decoration: none;">share</a>
   <a href="#AI" style="color: #ff00ff; text-decoration: none;">AI</a>
-  <a href="#mega" style="color: #ff00ff; text-decoration: none;">mega</a>
   <a href="#search" style="color: #ff00ff; text-decoration: none;">search</a>
+  <a href="#mega" style="color: #ff00ff; text-decoration: none;">mega</a>
   <a href="#film" style="color: #ff00ff; text-decoration: none;">film</a>
   <a href="#YT" style="color: #ff00ff; text-decoration: none;">YT</a>
   <a href="#hangover" style="color: #ff00ff; text-decoration: none;">hangover</a>
-  <a href="#android-browsers" style="color: #ff00ff; text-decoration: none;">android-browsers</a>
-  <a href="#extensions" style="color: #ff00ff; text-decoration: none;">extensions</a>
+  <a href="#revanced" style="color: #ff00ff; text-decoration: none;">revanced</a>
   <a href="#DDL" style="color: #ff00ff; text-decoration: none;">DDL</a>
   <a href="#launchers" style="color: #ff00ff; text-decoration: none;">launchers</a>
-  <a href="#revanced" style="color: #ff00ff; text-decoration: none;">revanced</a>
+  <a href="#android-browsers" style="color: #ff00ff; text-decoration: none;">android-browsers</a>
+  <a href="#extensions" style="color: #ff00ff; text-decoration: none;">extensions</a>
   <a href="#pkg-man" style="color: #ff00ff; text-decoration: none;">pkg-man</a>
   <a href="#winget" style="color: #ff00ff; text-decoration: none;">winget</a>
   <a href="#altstores" style="color: #ff00ff; text-decoration: none;">altstores</a>
@@ -539,6 +542,7 @@ flex: 1 1 100%;
 
         <!-- Network Speed Widget -->
         <div class="card">
+            <div id="speed-info" class="subtext" style="margin-top: 6px;">Click to test</div>
             <button class="widget-btn" onclick="measureNetSpeed()">Test Net Speed</button>
         </div>
     </div>
@@ -598,23 +602,21 @@ flex: 1 1 100%;
     </ul>
 </div>
 
-<div class="bookmark-form-card">
-        <h3>Add Quick Bookmark</h3>
-        <form id="add-bm-form">
-            <div class="bookmark-inputs">
-                <input type="text" id="bm-name" placeholder="Site Name" required>
-                <input type="url" id="bm-url" placeholder="https://example.com" required>
-                <select id="bm-category" required>
-                    <option value="" disabled selected>Select Category</option>
-                </select>
-            </div>
-            <button type="submit" class="bookmark-btn">Add to Portal</button>
-        </form>
+<div class="category bookmark-form-card">
+    <h3>Manage Quick Bookmarks</h3>
+    <div class="bookmark-inputs">
+        <input type="text" id="quickName" placeholder="Site Name">
+        <input type="text" id="quickUrl" placeholder="https://example.com">
+        <select id="bm-category">
+            <option value="">Select Category</option>
+        </select>
     </div>
-
-<div class="widget-card-wide" style="text-align: left;">
-<h3 style="text-align: center;">Manage Bookmarks</h3>
-    <ul id="manage-bookmarks-list" style="max-height: 120px; overflow-y: auto; padding: 0; margin-top: 8px;"></ul>
+    <button class="bookmark-btn">Add to Portal</button>
+    
+    <!-- Added id="manage-bookmarks-list" here -->
+    <div id="manage-bookmarks-list" class="bookmark-list" style="margin-top: 1rem; text-align: left;">
+        <span style="color: #888; font-size: 0.9rem;">No custom bookmarks added yet.</span>
+    </div>
 </div>
 
 <div class="category" id="docu">
@@ -1013,89 +1015,6 @@ flex: 1 1 100%;
     </ul>
 </div>
 
-<div class="category" id="mega">
-            <h2>📚 Megathreads & Indexes</h2>
-            <ul>
-                <li>
-                    <strong>Featured Indexes:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://mefrraz.github.io/hattered" target="_blank">mefrraz.github.io/hattered</a><br>
-                        • <a href="https://megathread.pages.dev" target="_blank">megathread.pages.dev</a><br>
-                        • <a href="https://github.com/privateersclub/wiki" target="_blank">privateersclub/wiki</a> | <a href="https://github.com/LeFishe/piratedgames-megathread" target="_blank">LeFishe Mega</a><br>
-                        • <strong>YarrList:</strong> <a href="https://yarrlist.com" target="_blank">yarrlist.com</a> | <a href="https://yarrlist.xyz" target="_blank">.xyz</a> | <a href="https://yarrlist.icu" target="_blank">.icu</a> | <a href="https://yarrlist.cc" target="_blank">.cc</a> | <a href="https://github.com/yarrlist/YarrList" target="_blank">GitHub</a> | [<a href="https://reddit.com/r/YarrList" target="_blank">Reddit</a>]<br>
-                        • <a href="https://rentry.org/pgames" target="_blank">rentry.org/pgames</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>FMHY (Free Media Heck Yeah):</strong><br>
-                    <span class="subtext">
-                        • Main: <a href="https://fmhy.net" target="_blank">fmhy.net</a> | <a href="https://fmhy.pages.dev" target="_blank">fmhy.pages.dev</a> | <a href="https://ffmhy.pages.dev" target="_blank">ffmhy.pages.dev</a> | <a href="https://fmhyclone.pages.dev" target="_blank">clone</a> | <a href="https://fmhy.bid" target="_blank">fmhy.bid</a> | <a href="https://d.fmhy.bid" target="_blank">d.fmhy.bid</a> | <a href="https://retrofmhy.pages.dev" target="_blank">retro</a><br>
-                        • Mirrors: <a href="https://fmhy.samidy.com" target="_blank">samidy</a> | <a href="https://fmhy.jbugel.xyz" target="_blank">jbugel</a> | <a href="https://a-fmhy.pages.dev" target="_blank">a-fmhy</a> | <a href="https://fmhy.artistgrid.cx" target="_blank">artistgrid</a> | <a href="https://fmhy.artistgrid.pp.ua" target="_blank">pp.ua</a> | <a href="https://fmhy.blooketbot.me" target="_blank">blooketbot</a> | <a href="https://fmhy.joyconlab.net" target="_blank">joyconlab</a> | <a href="https://fmhy.monochrome.tf" target="_blank">monochrome</a> | <a href="https://fmhy.piperagossip.org" target="_blank">piperagossip</a> | <a href="https://fmhy.pp.ua" target="_blank">pp.ua</a> | <a href="https://fmhy.prigoana.com" target="_blank">prigoana</a> | <a href="https://fmhy.prigoana.pp.ua" target="_blank">pp.ua</a> | <a href="https://fmhy.vercel.app" target="_blank">vercel</a><br>
-                        • <strong>Not Official / Avoid:</strong> <span class="tag-dead">bitbucket.io</span> <span class="tag-dead">archive.ph/Qb9uq</span> <span class="tag-dead">ww1.lat/fmhy</span> <span class="tag-dead">fmhy.cloud</span><br>
-                        • Wiki/API/Search: [<a href="https://reddit.com/r/FREEMEDIAHECKYEAH/wiki/index" target="_blank">Reddit Wiki</a>] [<a href="https://github.com/fmhy/FMHY" target="_blank">GitHub</a>] [<a href="https://api.fmhy.net/single-page" target="_blank">API Single Page</a>] [<a href="https://fmhyapi.wispy.qzz.io/single-page" target="_blank">API 2</a>] [<a href="https://reddit.com/r/FREEMEDIAHECKYEAH/comments/105xraz/howto_search_fmhy" target="_blank">Search Guide</a>]<br>
-                        • Backups: [<a href="https://github.com/fmhy/FMHY/wiki/Backups" target="_blank">GitHub Backups</a>] [<a href="https://github.com/fmhy/bookmarks" target="_blank">Bookmarks</a>] [<a href="https://fmhy.net/other/backups" target="_blank">Site Backups</a>] [<a href="https://raw.githubusercontent.com/fmhy/FMHY-SafeGuard/refs/heads/main/fmhy-filterlist.txt" target="_blank">Filterlist</a>]
-                    </span>
-                </li>
-                <li>
-                    <strong>Reddit & Forum Megathreads:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://old.reddit.com/r/Piracy/wiki/megathread/games#wiki_.1F4D1_.279C_direct_downloads" target="_blank">r/Piracy Games DDL</a> | <a href="https://rentry.co/megathread-games#direct-downloads" target="_blank">Rentry Games</a> | <a href="https://reddit.com/r/FREEMEDIAHECKYEAH/wiki/games/#wiki_.25BA_download_games" target="_blank">FMHY Games Wiki</a><br>
-                        • <a href="https://cs.rin.ru/forum/viewtopic.php?f=10&t=95461" target="_blank">CS.RIN.RU (The Hub)</a><br>
-                        • <a href="https://wiki.dbzer0.com/piracy/megathread" target="_blank">dbzer0 Wiki Piracy</a> | <a href="https://wiki.dbzer0.com/_dir" target="_blank">_dir</a> | [<a href="https://lemmy.dbzer0.com/c/piracy" target="_blank">Lemmy</a>]<br>
-                        • <a href="https://reddit.com/r/PiratedGames/wiki/index" target="_blank">r/PiratedGames Wiki</a><br>
-                        • <a href="https://old.reddit.com/r/Piracy/wiki/megathread" target="_blank">r/Piracy Megathread</a><br>
-                        • Archives & Backups: [<a href="https://reddit.com/r/PiracyArchive/comments/1498u6f/megathread" target="_blank">PiracyArchive</a>] [<a href="https://reddit.com/r/PiracyBackup/wiki/megathread" target="_blank">PiracyBackup</a>] [<a href="https://github.com/DareDevil2000/MegaThread" target="_blank">DareDevil2000</a>] [<a href="https://gist.github.com/teraflik/f718fd2611cb1eb589a3e5e6599290f6" target="_blank">Gist Mega</a>] [<a href="https://github.com/magicoflolis/Reddit-Piracy-Megathread" target="_blank">magicoflolis</a>] [<a href="https://sajayprakash.github.io/megathread" target="_blank">sajayprakash</a>]
-                    </span>
-                </li>
-                <li>
-                    <strong>Alternative Collections & Scribd Dumps:</strong><br>
-                    <span class="subtext">
-                        • Scribd Docs: [<a href="https://www.scribd.com/document/686326681/Mega-Thread" target="_blank">Doc 1</a>] [<a href="https://www.scribd.com/document/587241059/pgames-mega-thread" target="_blank">Doc 2</a>] [<a href="https://www.scribd.com/document/932254219/Megathread-games-Piracy" target="_blank">Doc 3</a>] [<a href="https://www.scribd.com/document/747698708/Pirate-websites-you-should-know-UPDATED-Tutorials-Methods-OneHack-Us" target="_blank">Doc 4</a>] [<a href="https://www.scribd.com/document/843569922/r-Piracy-Megathread-Guide-Resources-Tools" target="_blank">Doc 5</a>]<br>
-                        • Wayback Archive: <a href="https://web.archive.org/web/20240803063904/https://www.reddit.com/r/FreeContentOnline" target="_blank">FreeContentOnline Archive</a><br>
-                        • Community Indexes: <a href="https://pixelated-pathways.neocities.org" target="_blank">pixelated-pathways.neocities.org</a> | <a href="https://courage-1984.github.io/pixelated-pathways" target="_blank">GitHub</a> | <a href="https://rentry.org/Pixelated_Pathways" target="_blank">Rentry</a><br>
-                        • <a href="https://champagne.pages.dev" target="_blank">champagne.pages.dev</a><br>
-                        • <a href="https://ripped.guide" target="_blank">ripped.guide</a><br>
-                        • <a href="https://mediasavvy.pages.dev" target="_blank">mediasavvy.pages.dev</a><br>
-                        • <a href="https://wiki-index.pages.dev" target="_blank">wiki-index.pages.dev</a><br>
-                        • <a href="https://pirataria.link" target="_blank">pirataria.link</a><br>
-                        • <a href="https://piracybound.com" target="_blank">piracybound.com</a><br>
-                        • <a href="https://mana.blue" target="_blank">mana.blue</a><br>
-                        • <strong>THE OMEGATHREAD:</strong> <a href="https://hunterthief.github.io/THE-OMEGATHREAD" target="_blank">hunterthief.github.io/THE-OMEGATHREAD</a> | <a href="https://github.com/Hunterthief/THE-OMEGATHREAD" target="_blank">GitHub</a><br>
-                        • <a href="https://saidit.net/s/freemediaheckyeah/wiki/download?v=c8fbe472-3985-11ec-86ea-f23c92dfc260" target="_blank">SaidIt FMHY Archive</a><br>
-                        • <a href="https://reddit.com/r/RepackWatchers/comments/1r4vakr/repack_games_mega_thread" target="_blank">r/RepackWatchers Mega Thread</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>GitHub Repos & Awesome Lists:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://gitlab.com/ZediAlreadyTaken/guides/-/blob/main/megathread.md" target="_blank">ZediAlreadyTaken Guides</a><br>
-                        • <a href="https://shakil-shahadat.github.io/awesome-piracy" target="_blank">Shakil-Shahadat Awesome-Piracy</a> (<a href="https://web.archive.org/web/20220000000000*/https://github.com/Shakil-Shahadat/awesome-piracy" target="_blank">Archive</a>)<br>
-                        • <a href="https://notabug.org/TheChumBucket/PiracySubreddit/src/master/wiki/megathread.md" target="_blank">TheChumBucket Megathread</a><br>
-                        • <a href="https://github.com/Rekulous/PiratedGames" target="_blank">Rekulous/PiratedGames</a> | <a href="https://github.com/Rekulous/piratedgames-megathread" target="_blank">Mega</a><br>
-                        • <a href="https://github.com/riverstore/piratedgames-megathread" target="_blank">riverstore/piratedgames-megathread</a><br>
-                        • <a href="https://github.com/aviranzerioniac/awesome-piracy" target="_blank">aviranzerioniac/awesome-piracy</a><br>
-                        • <span class="tag-dead">Outdated Forks (Watch out):</span> <a href="https://github.com/Igglybuff/awesome-piracy" target="_blank">Igglybuff</a>, <a href="https://github.com/alienthief/thesourc" target="_blank">alienthief</a>, <a href="https://github.com/qmarcelle/getting_things" target="_blank">qmarcelle</a>, <a href="https://github.com/0xL33t/awesome-piracy" target="_blank">0xL33t</a>, <a href="https://github.com/Juized/FORGK" target="_blank">Juized</a><br>
-                        • <a href="https://archive.org/details/software" target="_blank">Archive.org Software Index</a><br>
-                        • <a href="https://thepiratelist.com" target="_blank">thepiratelist.com</a> | [<a href="https://reddit.com/r/internetarchive" target="_blank">r/internetarchive</a>]<br>
-                        • <a href="https://saidit.net/s/piracy/comments/g5u/rpiracy_megathread_mirror" target="_blank">SaidIt r/Piracy Megathread Mirror</a><br>
-                        • <a href="https://rentry.co/piratelinks" target="_blank">Rentry Pirate Links</a><br>
-                        • <a href="https://github.com/trimstray/the-book-of-secret-knowledge" target="_blank">trimstray/the-book-of-secret-knowledge</a><br>
-                        • Indexes & Portals: <a href="https://indexer.is-an.app" target="_blank">indexer.is-an.app</a> | <a href="https://entertainment.is-not-a.dev" target="_blank">entertainment.is-not-a.dev</a> | <a href="https://programming.dev/post/1050/5069" target="_blank">Programming.dev</a><br>
-                        • DesiDime Ultimate Map: <a href="https://desidime.com/discussions/the-ultimate-guide-map-to-everything-on-the-internet-privacy-p-r-cy-many-more" target="_blank">DesiDime Guide Map</a><br>
-                        • <a href="https://github.com/sindresorhus/awesome" target="_blank">sindresorhus/awesome</a><br>
-                        • SaidIt Guides Archive: [<a href="https://web.archive.org/web/20210328020828/https://www.saidit.net/s/sjain_guides" target="_blank">Archive 1</a>] [<a href="https://web.archive.org/web/20210404162910/https://saidit.net/s/sjain_guides/wiki/index" target="_blank">Archive 2</a>]<br>
-                        • <a href="https://bukmark.club" target="_blank">bukmark.club</a><br>
-                        • <a href="https://wez.data.blog/2023/05/22/piracy-megathread" target="_blank">wez.data.blog</a><br>
-                        • <a href="https://github.com/anymeofu/Indian-Piracy-Index" target="_blank">Indian-Piracy-Index</a><br>
-                        • Caliwyr Software: <a href="https://github.com/caliwyr/Software/blob/main/45-ILLEGAL-SERVICES.md" target="_blank">Illegal Services</a> | <a href="https://github.com/caliwyr/Software" target="_blank">Repo</a><br>
-                        • <a href="https://lkrjangid1.github.io/Awesome-Warez" target="_blank">lkrjangid1.github.io/Awesome-Warez</a><br>
-                        • Subreddits & Communities: [<a href="https://reddit.com/r/lostmedia" target="_blank">r/lostmedia</a>] [<a href="https://reddit.com/r/pirating" target="_blank">r/pirating</a>] [<a href="https://reddit.com/r/PiracyUncensored" target="_blank">r/PiracyUncensored</a>] [<a href="https://lemmy.eco.br/c/leftpiracy@lemmygrad.ml" target="_blank">LeftPiracy Lemmy</a>] [<a href="https://onehack.st" target="_blank">onehack.st</a>] [<a href="https://t.me/s/PiratedHubOfficial" target="_blank">PiratedHub Telegram</a>]<br>
-                        • GitHub Topics Explorer: <a href="https://github.com/topics/piracy" target="_blank">#piracy</a> | <a href="https://github.com/topics/piracy-index" target="_blank">#piracy-index</a> | <a href="https://github.com/topics/awesome-list" target="_blank">#awesome-list</a> | <a href="https://github.com/topics/awesome" target="_blank">#awesome</a> | <a href="https://github.com/topics/megathread" target="_blank">#megathread</a> | <a href="https://github.com/topics/list" target="_blank">#list</a> | <a href="https://github.com/topics/links" target="_blank">#links</a> | <a href="https://github.com/topics/link-directory" target="_blank">#link-directory</a> | <a href="https://github.com/topics/directory" target="_blank">#directory</a> | <a href="https://github.com/topics/collection" target="_blank">#collection</a>
-                    </span>
-                </li>
-            </ul>
-        </div>
-
 <div class="category" id="search">
             <h2>🔍 Search Engines & Metasearch Tools</h2>
             <ul>
@@ -1222,6 +1141,89 @@ flex: 1 1 100%;
             </ul>
         </div>
 
+<div class="category" id="mega">
+            <h2>📚 Megathreads & Indexes</h2>
+            <ul>
+                <li>
+                    <strong>Featured Indexes:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://mefrraz.github.io/hattered" target="_blank">mefrraz.github.io/hattered</a><br>
+                        • <a href="https://megathread.pages.dev" target="_blank">megathread.pages.dev</a><br>
+                        • <a href="https://github.com/privateersclub/wiki" target="_blank">privateersclub/wiki</a> | <a href="https://github.com/LeFishe/piratedgames-megathread" target="_blank">LeFishe Mega</a><br>
+                        • <strong>YarrList:</strong> <a href="https://yarrlist.com" target="_blank">yarrlist.com</a> | <a href="https://yarrlist.xyz" target="_blank">.xyz</a> | <a href="https://yarrlist.icu" target="_blank">.icu</a> | <a href="https://yarrlist.cc" target="_blank">.cc</a> | <a href="https://github.com/yarrlist/YarrList" target="_blank">GitHub</a> | [<a href="https://reddit.com/r/YarrList" target="_blank">Reddit</a>]<br>
+                        • <a href="https://rentry.org/pgames" target="_blank">rentry.org/pgames</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>FMHY (Free Media Heck Yeah):</strong><br>
+                    <span class="subtext">
+                        • Main: <a href="https://fmhy.net" target="_blank">fmhy.net</a> | <a href="https://fmhy.pages.dev" target="_blank">fmhy.pages.dev</a> | <a href="https://ffmhy.pages.dev" target="_blank">ffmhy.pages.dev</a> | <a href="https://fmhyclone.pages.dev" target="_blank">clone</a> | <a href="https://fmhy.bid" target="_blank">fmhy.bid</a> | <a href="https://d.fmhy.bid" target="_blank">d.fmhy.bid</a> | <a href="https://retrofmhy.pages.dev" target="_blank">retro</a><br>
+                        • Mirrors: <a href="https://fmhy.samidy.com" target="_blank">samidy</a> | <a href="https://fmhy.jbugel.xyz" target="_blank">jbugel</a> | <a href="https://a-fmhy.pages.dev" target="_blank">a-fmhy</a> | <a href="https://fmhy.artistgrid.cx" target="_blank">artistgrid</a> | <a href="https://fmhy.artistgrid.pp.ua" target="_blank">pp.ua</a> | <a href="https://fmhy.blooketbot.me" target="_blank">blooketbot</a> | <a href="https://fmhy.joyconlab.net" target="_blank">joyconlab</a> | <a href="https://fmhy.monochrome.tf" target="_blank">monochrome</a> | <a href="https://fmhy.piperagossip.org" target="_blank">piperagossip</a> | <a href="https://fmhy.pp.ua" target="_blank">pp.ua</a> | <a href="https://fmhy.prigoana.com" target="_blank">prigoana</a> | <a href="https://fmhy.prigoana.pp.ua" target="_blank">pp.ua</a> | <a href="https://fmhy.vercel.app" target="_blank">vercel</a><br>
+                        • <strong>Not Official / Avoid:</strong> <span class="tag-dead">bitbucket.io</span> <span class="tag-dead">archive.ph/Qb9uq</span> <span class="tag-dead">ww1.lat/fmhy</span> <span class="tag-dead">fmhy.cloud</span><br>
+                        • Wiki/API/Search: [<a href="https://reddit.com/r/FREEMEDIAHECKYEAH/wiki/index" target="_blank">Reddit Wiki</a>] [<a href="https://github.com/fmhy/FMHY" target="_blank">GitHub</a>] [<a href="https://api.fmhy.net/single-page" target="_blank">API Single Page</a>] [<a href="https://fmhyapi.wispy.qzz.io/single-page" target="_blank">API 2</a>] [<a href="https://reddit.com/r/FREEMEDIAHECKYEAH/comments/105xraz/howto_search_fmhy" target="_blank">Search Guide</a>]<br>
+                        • Backups: [<a href="https://github.com/fmhy/FMHY/wiki/Backups" target="_blank">GitHub Backups</a>] [<a href="https://github.com/fmhy/bookmarks" target="_blank">Bookmarks</a>] [<a href="https://fmhy.net/other/backups" target="_blank">Site Backups</a>] [<a href="https://raw.githubusercontent.com/fmhy/FMHY-SafeGuard/refs/heads/main/fmhy-filterlist.txt" target="_blank">Filterlist</a>]
+                    </span>
+                </li>
+                <li>
+                    <strong>Reddit & Forum Megathreads:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://old.reddit.com/r/Piracy/wiki/megathread/games#wiki_.1F4D1_.279C_direct_downloads" target="_blank">r/Piracy Games DDL</a> | <a href="https://rentry.co/megathread-games#direct-downloads" target="_blank">Rentry Games</a> | <a href="https://reddit.com/r/FREEMEDIAHECKYEAH/wiki/games/#wiki_.25BA_download_games" target="_blank">FMHY Games Wiki</a><br>
+                        • <a href="https://cs.rin.ru/forum/viewtopic.php?f=10&t=95461" target="_blank">CS.RIN.RU (The Hub)</a><br>
+                        • <a href="https://wiki.dbzer0.com/piracy/megathread" target="_blank">dbzer0 Wiki Piracy</a> | <a href="https://wiki.dbzer0.com/_dir" target="_blank">_dir</a> | [<a href="https://lemmy.dbzer0.com/c/piracy" target="_blank">Lemmy</a>]<br>
+                        • <a href="https://reddit.com/r/PiratedGames/wiki/index" target="_blank">r/PiratedGames Wiki</a><br>
+                        • <a href="https://old.reddit.com/r/Piracy/wiki/megathread" target="_blank">r/Piracy Megathread</a><br>
+                        • Archives & Backups: [<a href="https://reddit.com/r/PiracyArchive/comments/1498u6f/megathread" target="_blank">PiracyArchive</a>] [<a href="https://reddit.com/r/PiracyBackup/wiki/megathread" target="_blank">PiracyBackup</a>] [<a href="https://github.com/DareDevil2000/MegaThread" target="_blank">DareDevil2000</a>] [<a href="https://gist.github.com/teraflik/f718fd2611cb1eb589a3e5e6599290f6" target="_blank">Gist Mega</a>] [<a href="https://github.com/magicoflolis/Reddit-Piracy-Megathread" target="_blank">magicoflolis</a>] [<a href="https://sajayprakash.github.io/megathread" target="_blank">sajayprakash</a>]
+                    </span>
+                </li>
+                <li>
+                    <strong>Alternative Collections & Scribd Dumps:</strong><br>
+                    <span class="subtext">
+                        • Scribd Docs: [<a href="https://www.scribd.com/document/686326681/Mega-Thread" target="_blank">Doc 1</a>] [<a href="https://www.scribd.com/document/587241059/pgames-mega-thread" target="_blank">Doc 2</a>] [<a href="https://www.scribd.com/document/932254219/Megathread-games-Piracy" target="_blank">Doc 3</a>] [<a href="https://www.scribd.com/document/747698708/Pirate-websites-you-should-know-UPDATED-Tutorials-Methods-OneHack-Us" target="_blank">Doc 4</a>] [<a href="https://www.scribd.com/document/843569922/r-Piracy-Megathread-Guide-Resources-Tools" target="_blank">Doc 5</a>]<br>
+                        • Wayback Archive: <a href="https://web.archive.org/web/20240803063904/https://www.reddit.com/r/FreeContentOnline" target="_blank">FreeContentOnline Archive</a><br>
+                        • Community Indexes: <a href="https://pixelated-pathways.neocities.org" target="_blank">pixelated-pathways.neocities.org</a> | <a href="https://courage-1984.github.io/pixelated-pathways" target="_blank">GitHub</a> | <a href="https://rentry.org/Pixelated_Pathways" target="_blank">Rentry</a><br>
+                        • <a href="https://champagne.pages.dev" target="_blank">champagne.pages.dev</a><br>
+                        • <a href="https://ripped.guide" target="_blank">ripped.guide</a><br>
+                        • <a href="https://mediasavvy.pages.dev" target="_blank">mediasavvy.pages.dev</a><br>
+                        • <a href="https://wiki-index.pages.dev" target="_blank">wiki-index.pages.dev</a><br>
+                        • <a href="https://pirataria.link" target="_blank">pirataria.link</a><br>
+                        • <a href="https://piracybound.com" target="_blank">piracybound.com</a><br>
+                        • <a href="https://mana.blue" target="_blank">mana.blue</a><br>
+                        • <strong>THE OMEGATHREAD:</strong> <a href="https://hunterthief.github.io/THE-OMEGATHREAD" target="_blank">hunterthief.github.io/THE-OMEGATHREAD</a> | <a href="https://github.com/Hunterthief/THE-OMEGATHREAD" target="_blank">GitHub</a><br>
+                        • <a href="https://saidit.net/s/freemediaheckyeah/wiki/download?v=c8fbe472-3985-11ec-86ea-f23c92dfc260" target="_blank">SaidIt FMHY Archive</a><br>
+                        • <a href="https://reddit.com/r/RepackWatchers/comments/1r4vakr/repack_games_mega_thread" target="_blank">r/RepackWatchers Mega Thread</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>GitHub Repos & Awesome Lists:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://gitlab.com/ZediAlreadyTaken/guides/-/blob/main/megathread.md" target="_blank">ZediAlreadyTaken Guides</a><br>
+                        • <a href="https://shakil-shahadat.github.io/awesome-piracy" target="_blank">Shakil-Shahadat Awesome-Piracy</a> (<a href="https://web.archive.org/web/20220000000000*/https://github.com/Shakil-Shahadat/awesome-piracy" target="_blank">Archive</a>)<br>
+                        • <a href="https://notabug.org/TheChumBucket/PiracySubreddit/src/master/wiki/megathread.md" target="_blank">TheChumBucket Megathread</a><br>
+                        • <a href="https://github.com/Rekulous/PiratedGames" target="_blank">Rekulous/PiratedGames</a> | <a href="https://github.com/Rekulous/piratedgames-megathread" target="_blank">Mega</a><br>
+                        • <a href="https://github.com/riverstore/piratedgames-megathread" target="_blank">riverstore/piratedgames-megathread</a><br>
+                        • <a href="https://github.com/aviranzerioniac/awesome-piracy" target="_blank">aviranzerioniac/awesome-piracy</a><br>
+                        • <span class="tag-dead">Outdated Forks (Watch out):</span> <a href="https://github.com/Igglybuff/awesome-piracy" target="_blank">Igglybuff</a>, <a href="https://github.com/alienthief/thesourc" target="_blank">alienthief</a>, <a href="https://github.com/qmarcelle/getting_things" target="_blank">qmarcelle</a>, <a href="https://github.com/0xL33t/awesome-piracy" target="_blank">0xL33t</a>, <a href="https://github.com/Juized/FORGK" target="_blank">Juized</a><br>
+                        • <a href="https://archive.org/details/software" target="_blank">Archive.org Software Index</a><br>
+                        • <a href="https://thepiratelist.com" target="_blank">thepiratelist.com</a> | [<a href="https://reddit.com/r/internetarchive" target="_blank">r/internetarchive</a>]<br>
+                        • <a href="https://saidit.net/s/piracy/comments/g5u/rpiracy_megathread_mirror" target="_blank">SaidIt r/Piracy Megathread Mirror</a><br>
+                        • <a href="https://rentry.co/piratelinks" target="_blank">Rentry Pirate Links</a><br>
+                        • <a href="https://github.com/trimstray/the-book-of-secret-knowledge" target="_blank">trimstray/the-book-of-secret-knowledge</a><br>
+                        • Indexes & Portals: <a href="https://indexer.is-an.app" target="_blank">indexer.is-an.app</a> | <a href="https://entertainment.is-not-a.dev" target="_blank">entertainment.is-not-a.dev</a> | <a href="https://programming.dev/post/1050/5069" target="_blank">Programming.dev</a><br>
+                        • DesiDime Ultimate Map: <a href="https://desidime.com/discussions/the-ultimate-guide-map-to-everything-on-the-internet-privacy-p-r-cy-many-more" target="_blank">DesiDime Guide Map</a><br>
+                        • <a href="https://github.com/sindresorhus/awesome" target="_blank">sindresorhus/awesome</a><br>
+                        • SaidIt Guides Archive: [<a href="https://web.archive.org/web/20210328020828/https://www.saidit.net/s/sjain_guides" target="_blank">Archive 1</a>] [<a href="https://web.archive.org/web/20210404162910/https://saidit.net/s/sjain_guides/wiki/index" target="_blank">Archive 2</a>]<br>
+                        • <a href="https://bukmark.club" target="_blank">bukmark.club</a><br>
+                        • <a href="https://wez.data.blog/2023/05/22/piracy-megathread" target="_blank">wez.data.blog</a><br>
+                        • <a href="https://github.com/anymeofu/Indian-Piracy-Index" target="_blank">Indian-Piracy-Index</a><br>
+                        • Caliwyr Software: <a href="https://github.com/caliwyr/Software/blob/main/45-ILLEGAL-SERVICES.md" target="_blank">Illegal Services</a> | <a href="https://github.com/caliwyr/Software" target="_blank">Repo</a><br>
+                        • <a href="https://lkrjangid1.github.io/Awesome-Warez" target="_blank">lkrjangid1.github.io/Awesome-Warez</a><br>
+                        • Subreddits & Communities: [<a href="https://reddit.com/r/lostmedia" target="_blank">r/lostmedia</a>] [<a href="https://reddit.com/r/pirating" target="_blank">r/pirating</a>] [<a href="https://reddit.com/r/PiracyUncensored" target="_blank">r/PiracyUncensored</a>] [<a href="https://lemmy.eco.br/c/leftpiracy@lemmygrad.ml" target="_blank">LeftPiracy Lemmy</a>] [<a href="https://onehack.st" target="_blank">onehack.st</a>] [<a href="https://t.me/s/PiratedHubOfficial" target="_blank">PiratedHub Telegram</a>]<br>
+                        • GitHub Topics Explorer: <a href="https://github.com/topics/piracy" target="_blank">#piracy</a> | <a href="https://github.com/topics/piracy-index" target="_blank">#piracy-index</a> | <a href="https://github.com/topics/awesome-list" target="_blank">#awesome-list</a> | <a href="https://github.com/topics/awesome" target="_blank">#awesome</a> | <a href="https://github.com/topics/megathread" target="_blank">#megathread</a> | <a href="https://github.com/topics/list" target="_blank">#list</a> | <a href="https://github.com/topics/links" target="_blank">#links</a> | <a href="https://github.com/topics/link-directory" target="_blank">#link-directory</a> | <a href="https://github.com/topics/directory" target="_blank">#directory</a> | <a href="https://github.com/topics/collection" target="_blank">#collection</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
         <div class="category" id="film">
             <h2>🎬 Film & Sori</h2>
             <ul>
@@ -1343,6 +1345,240 @@ flex: 1 1 100%;
                 </li>
             </ul>
         </div>
+
+<div class="category" id="revanced">
+            <h2>🛠️ ReVanced / Morphe Guides & Tools</h2>
+            <ul>
+                <li>
+                    <strong>ARMv7 Troubleshooting:</strong><br>
+                    <span class="subtext">
+                        • If ReVanced Manager gives an ARMv7 error, patch the APK on a compatible device (like an ARM64 Android emulator) and send it to the incompatible ARMv7 device.<br>
+                        • Make sure 'MicroG Support' is ticked if non-rooted, and unticked if rooted.<br>
+                        • You can customize the patch to your liking before installation.
+                    </span>
+                </li>
+                <li>
+                    <strong>Fastest EZ Way (Pre-patched APKs):</strong><br>
+                    <span class="subtext">
+                        • <strong>Orion Store:</strong> <a href="https://github.com/RookieEnough/Orion-Store" target="_blank">GitHub</a><br>
+                        • <strong>De-Vanced (De-ReVanced):</strong> <a href="https://github.com/RookieEnough/De-Vanced" target="_blank">GitHub</a><br>
+                        • <a href="https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root" target="_blank">FiorenMas Non-Root GitHub</a><br>
+                        • <a href="https://github.com/SinAble716/RVX_music_patched/releases" target="_blank">SinAble716 RVX Music Releases</a><br>
+                        • <a href="https://github.com/krvstek/rvx-apks" target="_blank">krvstek rvx-apks GitHub</a><br>
+                        • <a href="https://github.com/Svznify/RVX" target="_blank">Svznify RVX GitHub</a> | <a href="https://svznify.github.io/RVX" target="_blank">Website</a><br>
+                        • <a href="https://github.com/peternmuller/revanced-morphe-builder" target="_blank">peternmuller Morphe Builder</a><br>
+                        • <a href="https://github.com/nullcpy/rvb" target="_blank">nullcpy rvb GitHub</a><br>
+                        • <a href="https://github.com/mentalblank/YouTube-Revanced" target="_blank">mentalblank YouTube-Revanced</a><br>
+                        • <a href="https://revanced-apks.github.io" target="_blank">revanced-apks.github.io</a><br>
+                        • <a href="https://github.com/revanced-apks/build-apps/releases" target="_blank">revanced-apks Build Apps Releases</a><br>
+                        • <a href="https://github.com/driftywinds/YTm-builds" target="_blank">driftywinds YTm-builds</a><br>
+                        • <a href="https://reddit.com/r/revancedapks" target="_blank">Reddit r/revancedapks</a><br>
+                        • <a href="https://xdaforums.com/t/app-guides-unofficial-revanced-megathread.4523967" target="_blank">XDA Unofficial ReVanced Megathread</a><br>
+                        • <a href="https://xdaforums.com/t/app-guides-unofficial-morphe-megathread.4774994" target="_blank">XDA Unofficial Morphe Megathread</a><br>
+                        • Topics: <a href="https://github.com/topics/morphe" target="_blank">#morphe</a> | <a href="https://github.com/topics/revanced-extended" target="_blank">#revanced-extended</a> | <a href="https://github.com/topics/revanced-music" target="_blank">#revanced-music</a> | <a href="https://github.com/topics/revanced-patches" target="_blank">#revanced-patches</a> | <a href="https://github.com/topics/revanced-builder" target="_blank">#revanced-builder</a> | <a href="https://github.com/topics/revanced" target="_blank">#revanced</a> | <a href="https://github.com/topics/vanced" target="_blank">#vanced</a><br>
+                        • Telegram: <a href="https://t.me/rvb27" target="_blank">t.me/rvb27</a> | <a href="https://t.me/revanced_apks_web" target="_blank">t.me/revanced_apks_web</a> | <a href="https://t.me/revanced_apks_1" target="_blank">t.me/revanced_apks_1</a><br>
+                        • <a href="https://github.com/NoName-exe/revanced-extended" target="_blank">NoName-exe ReVanced Extended</a> <span class="subtext">// need root</span><br>
+                        • <span class="tag-risky">vanced.to</span> (Not trusted, use VirusTotal) <span class="tag-risky">❗❗ DONT USE vanced.to and revanced.net</span>
+                    </span>
+                </li>
+                <li>
+                    <strong>EZ Way to Patch Original YT / YTM APK:</strong><br>
+                    <span class="subtext">
+                        • <strong>Morphe Manager (was RVX):</strong> <a href="https://morphe.software" target="_blank">morphe.software</a> | <a href="https://github.com/MorpheApp" target="_blank">GitHub</a><br>
+                        • <strong>RVX Manager:</strong> <a href="https://revanced.app/download" target="_blank">revanced.app/download</a> (Safe link)<br>
+                        • <strong>Morphe Patches:</strong> <a href="https://reddit.com/r/MorpheApp/comments/1recqxc/morphe_manager_patch_index" target="_blank">Reddit Patch Index</a> | De-ReVanced (<a href="https://github.com/RookieEnough/De-ReVanced" target="_blank">GitHub</a>) | <a href="https://github.com/MorpheApp/morphe-patches" target="_blank">Morphe Patches GitHub</a> | <a href="https://github.com/brosssh/morphe-patches" target="_blank">brosssh Patches GitHub</a><br>
+                        • <strong>ReVanced Extended (RVX) Patches:</strong> <a href="https://github.com/anddea/revanced-patches" target="_blank">anddea Patches GitHub</a><br>
+                        • <strong>Steps:</strong> Open ReVanced Manager > Patcher > Select App. Click compatible version (e.g., 20.14.43). Download it from APKMirror (<a href="https://apkmirror.com/apk/google-inc/youtube" target="_blank">YT</a> / <a href="https://apkmirror.com/apk/google-inc/youtube-music" target="_blank">YTM</a>). Go back to ReVanced Manager > Storage, find the downloaded APK version, then hit patch.<br>
+                        • <strong>Check Status:</strong> <a href="https://github.com/inotia00/revanced-documentation/blob/main/docs/announcement.md" target="_blank">Inotia00 Documentation</a><br>
+                        • <strong>ReVanced Manager Downloaders:</strong> <a href="https://github.com/ReVanced/revanced-manager-downloaders" target="_blank">ReVanced GitHub</a> | <a href="https://github.com/brosssh/revanced-manager-downloaders" target="_blank">brosssh GitHub</a><br>
+                        • <strong>Universal ReVanced Manager (URV Manager):</strong> <a href="https://github.com/Jman-Github/Universal-ReVanced-Manager" target="_blank">GitHub</a><br>
+                        • <strong>ReVanced Obtainium Guide:</strong> <a href="https://gist.github.com/VVispy/50172b4ab77940b2d1ec09d5af70c8a7" target="_blank">Gist Guide</a><br>
+                        • <strong>ReX Method (Video):</strong> <a href="https://reddit.com/r/YTadvanced/comments/1b5f292/guide_for_rex" target="_blank">Reddit Guide</a><br>
+                        • <strong>RVX Auto Builder:</strong> <a href="https://github.com/IMXEren/rvx-builds" target="_blank">GitHub</a><br>
+                        • <strong>ReVanced Magisk Module:</strong> <a href="https://github.com/j-hc/revanced-magisk-module" target="_blank">GitHub</a> <span class="subtext">// Root required</span> | Telegram: <a href="https://t.me/rvc_magisk" target="_blank">t.me/rvc_magisk</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>PC Required Methods:</strong><br>
+                    <span class="subtext">
+                        • <strong>Morphe Desktop:</strong> <a href="https://github.com/MorpheApp/morphe-cli" target="_blank">GitHub</a><br>
+                        • <strong>RVX Auto Builder PC:</strong> <a href="https://github.com/Spacellary/ReVanced-Extended-Automated-Builder" target="_blank">GitHub</a><br>
+                        • <strong>Docker-Py-ReVanced:</strong> <a href="https://github.com/nikhilbadyal/docker-py-revanced" target="_blank">GitHub</a><br>
+                        • <strong>ReVanced CLI Patch Guide:</strong> <a href="https://sodawithoutsparkles.github.io/revanced-troubleshooting-guide/06-revanced-cli" target="_blank">Troubleshooting Guide</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>Sources & References:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://github.com/inotia00/revanced-manager" target="_blank">Inotia00 ReVanced Manager GitHub</a><br>
+                        • <a href="https://reddit.com/r/revancedapp/wiki/links" target="_blank">Reddit r/revancedapp Wiki Links</a><br>
+                        • <a href="https://github.com/YT-Advanced/revanced-documentation" target="_blank">YT-Advanced Documentation GitHub</a><br>
+                        • <a href="https://reddit.com/r/YTadvanced/comments/1brg6y1/follow_these_steps_to_fix_your_youtube" target="_blank">Reddit Fix Guide</a><br>
+                        • **Note:** Morphe is formerly known as RVX (<a href="https://morphe.software" target="_blank">morphe.software</a> | <a href="https://github.com/MorpheApp" target="_blank">GitHub</a>)
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+<div class="category" id="DDL">
+            <h2>📥 DDL Game Sites</h2>
+            <ul>
+                <li>
+                    <strong>Daily Check Tip:</strong><br>
+                    <span class="subtext">Check around daily for news on sites you download from!</span>
+                </li>
+                <li>
+                    <strong>Safety Thread:</strong><br>
+                    <span class="subtext"><a href="https://reddit.com/r/FREEMEDIAHECKYEAH/comments/10bh0h9/unsafe_sites_software_thread" target="_blank">Unsafe Sites / Software Thread (FMHY)</a></span>
+                </li>
+                <li>
+                    <strong>My Portal:</strong><br>
+                    <span class="subtext"><a href="https://robika420.github.io/portal" target="_blank">robika420.github.io/portal</a> | <a href="https://github.com/Robika420/portal" target="_blank">GitHub</a></span>
+                </li>
+                <li>
+                    <strong>-DDL Meta Search Engines:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://fmhy.net/internet-tools#custom-search-engines" target="_blank">FMHY Custom Search Engines</a><br>
+                        • <strong>My CSE (Sites Only):</strong> <a href="https://cse.google.com/cse?cx=b6b36d25f19b34e54" target="_blank">Google CSE</a><br>
+                        • <a href="https://virgil.samidy.com/Games" target="_blank">virgil.samidy.com/Games</a><br>
+                        • <strong>Rave Game Search:</strong> <a href="https://ravegamesearch.pages.dev" target="_blank">ravegamesearch.pages.dev</a> | <a href="https://idleendeavor.github.io/gamesearch" target="_blank">GitHub</a><br>
+                        • <a href="https://rezi.one" target="_blank">rezi.one</a><br>
+                        • <a href="https://playseek.app" target="_blank">playseek.app</a><br>
+                        • <a href="https://cse.google.com/cse?cx=006516753008110874046:cbjowp5sdqg" target="_blank">Google CSE 2</a> | <a href="https://cse.google.com/cse?cx=20c2a3e5f702049aa" target="_blank">CSE 3</a><br>
+                        • <a href="https://archive.org" target="_blank">Archive.org</a><br>
+                        • <a href="https://library.hydra.wiki/search" target="_blank">library.hydra.wiki/search</a><br>
+                        • <strong>Hatt:</strong> <a href="https://github.com/FrenchGithubUser/Hatt" target="_blank">GitHub App</a> <span class="tag-risky">NVM top AVs found virus ❗</span> | <a href="https://alternativeto.net/software/hatt" target="_blank">AlternativeTo</a><br>
+                        • <strong>pSearch Piracy Multi-Search:</strong> <a href="https://serjsx.github.io/wpSearch" target="_blank">serjsx.github.io/wpSearch</a> | <a href="https://github.com/SerjSX/pSearch" target="_blank">GitHub</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>--Pre-installed (mostly) DDL:</strong><br>
+                    <span class="subtext">
+                        <em>Use JDownloader2 (set Max Chunks 1 to 20) or IDM (better speed). See 'file hosting sites tier list' note.</em><br><br>
+                        <strong>MP (Multiplayer):</strong><br>
+                        • <a href="https://steamrip.com/category/multiplayer" target="_blank">SteamRIP.com/category/multiplayer</a> <span class="subtext">(Ready to play/portable, 2x more files due to 7z; Mirrors: datanodes.to, gofile.io, buzzheavier.com)</span><br>
+                        • <a href="https://online-fix.me" target="_blank">Online-Fix.me</a> <span class="subtext">(Account required)</span><br><br>
+                        <strong>SP (Singleplayer):</strong><br>
+                        • <a href="https://steamrip.com" target="_blank">SteamRIP.com</a> <span class="subtext">(Mirrors: datanodes.to, gofile.io, buzzheavier.com)</span><br>
+                        • <a href="https://gamebounty.world" target="_blank">GameBounty.World</a> <span class="subtext">(Mirror: filemirage.com)</span><br>
+                        • <a href="https://gamdie.com" target="_blank">GamDie.com</a> <span class="subtext">(GAM w/o E; Mirror: gofile.io)</span><br>
+                        • <a href="https://ovagames.com" target="_blank">OvaGames.com</a> <span class="subtext">(Requires install; Mirrors: drive.google.com, mediafire.com, gofile.io, pixeldrain.com [slow])</span><br>
+                        • <a href="https://gog-games.to" target="_blank">GOG-Games.To</a> <span class="subtext">(Old & rare games too)</span>
+                    </span>
+                </li>
+                <li>
+                    <strong>More from Megathreads & Lists:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://rentry.org/pgames#direct-download-ddl-sites" target="_blank">Rentry pgames DDL</a><br>
+                        • <a href="https://fmhy.net/gaming" target="_blank">FMHY Gaming</a><br>
+                        • <a href="https://ankergames.net" target="_blank">AnkerGames.net</a> <span class="subtext">(Old/rare games too)</span><br>
+                        • <a href="https://steamunderground.net" target="_blank">SteamUnderground.net</a><br>
+                        • <a href="https://g4u.to" target="_blank">g4u.to</a><br>
+                        • <a href="https://gload.to" target="_blank">GLoad.To</a><br>
+                        • <a href="https://gamesdrive.net" target="_blank">GameSDrive.net AKA Scene.Cat</a> <span class="subtext">(gameS with an S)</span><br>
+                        • <a href="https://atopgames.com" target="_blank">ATopGames.com</a><br>
+                        • <a href="https://rexagames.com" target="_blank">RexaGames.com</a><br>
+                        • <a href="https://steamgg.net" target="_blank">SteamGG.net</a><br>
+                        • <a href="https://union-crax.xyz" target="_blank">union-crax.xyz</a><br>
+                        • <a href="https://downloadha.com" target="_blank">downloadha.com</a><br>
+                        • <a href="https://vgdl.ir" target="_blank">vgdl.ir</a><br>
+                        • <a href="https://dlfox.com" target="_blank">dlfox.com</a><br>
+                        • <a href="https://gbox.ir" target="_blank">gbox.ir</a><br>
+                        • <a href="https://forum.mobilism.org/viewforum.php?f=1097" target="_blank">Mobilism Forum</a><br>
+                        • <strong>RLSBB / ReleaseBB:</strong> <a href="https://log.rlsbb.to/category/games/pc" target="_blank">log.rlsbb.to</a> | <a href="http://comment2.rlsbb.ru/category/games/pc" target="_blank">comment2.rlsbb.ru</a><br>
+                        • <a href="https://champagne.pages.dev/docs/getting-started/gaming-emulation#vr-gaming" target="_blank">Champagne VR Gaming</a><br>
+                        • <strong>Scene Rules:</strong> <a href="https://www.scenerules.org" target="_blank">scenerules.org</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>--Old/Rare Games & Abandonware:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://reddit.com/r/abandonware/wiki/index" target="_blank">r/abandonware Wiki</a><br>
+                        • <a href="https://gog-games.to" target="_blank">GOG-Games.To</a><br>
+                        • <a href="https://ankergames.net" target="_blank">AnkerGames.net</a><br>
+                        • <a href="https://www.myabandonware.com" target="_blank">myabandonware.com</a><br>
+                        • <a href="https://magipack.games" target="_blank">magipack.games</a><br>
+                        • <a href="https://oldgamesdownload.com" target="_blank">oldgamesdownload.com</a><br>
+                        • <a href="https://archive.org/search?query=subject%3A%22Windows+games%22" target="_blank">Archive.org Windows Games</a><br>
+                        • <a href="https://archive.org/search?query=subject%3A%22Shareware+CD-ROM%22" target="_blank">Archive.org Shareware CD-ROM</a><br>
+                        • <a href="https://archive.org/search?query=subject%3A%22android%22" target="_blank">Archive.org Android</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>--PCVR & Quest:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://reddit.com/r/QuestPiracy/wiki/index" target="_blank">r/QuestPiracy Wiki</a><br>
+                        • <a href="https://steamrip.com/category/vr/" target="_blank">SteamRIP VR Category</a><br>
+                        • <strong>ARMGDDN Browser:</strong> <a href="https://rentry.co/armgddn" target="_blank">Rentry</a> | <a href="https://rentry.co/IsARMGDDNSafe" target="_blank">Safety Check</a> | <a href="https://github.com/KaladinDMP/AGBrowser" target="_blank">GitHub App</a> | <a href="https://t.me/ARMGDDNGames" target="_blank">Telegram</a><br>
+                        • <a href="https://movielist.3dflickfix.net/QuestPiracyPCVRGuide2025.html" target="_blank">Quest Piracy PCVR Guide 2025</a><br>
+                        • Flagged/GitHub fixes & guides: [<a href="https://reddit.com/r/QuestPiracy/comments/18re2si/is_there_a_different_way_to_download_armageddon" target="_blank">Reddit 1</a>] [<a href="https://reddit.com/r/QuestPiracy/comments/1fx6653/armgddn_github" target="_blank">Reddit 2</a>] [<a href="https://reddit.com/r/QuestPiracy/comments/zveyjh/pcvr_games_direct_download_no_p2p_armgddn_games" target="_blank">Guide</a>]<br>
+                        • <strong>Rookie-PCVR / VRPirates:</strong> <a href="https://vrpirates.wiki" target="_blank">vrpirates.wiki</a> | <a href="https://torrents.vrpirates.wiki" target="_blank">Torrents</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>n00b Guide (Filecrypt & DLC):</strong><br>
+                    <span class="subtext">
+                        <em>"Also, they use filecrypt, so downloads are fragmented into (usually) 5gb parts. There is some .dlc file to download when landing on that page (you should be able to see quite easily), that allows you to add all parts in a queue, so you don't have to download parts individually, BUT you have to use something like Jdownloader2 for that and I would absolutely recommend getting it, if you plan to download from OVAGames."</em><br>
+                        Source: <a href="https://reddit.com/r/PiratedGames/comments/18r6bcf/why_is_no_one_talking_about_elamigos" target="_blank">r/PiratedGames</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category" id="launchers">
+            <h2>🎮 Game Launchers / Downloaders</h2>
+            <ul>
+                <li>
+                    <strong>-pirate:</strong><br>
+                    <span class="subtext">
+                        • <strong>Playnite + addons:</strong> <a href="https://playnite.link" target="_blank">playnite.link</a> | <a href="https://github.com/JosefNemec/Playnite" target="_blank">GitHub</a><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;↳ Addons Guide: [<a href="https://reddit.com/r/PiratedGames/comments/17pjczx/playnite_launcher_automatically_search_fitgirl" target="_blank">Reddit</a>]<br>
+                        • <strong>Heroic Games Launcher</strong><br>
+                        • <strong>RomStation:</strong> <a href="https://romstation.fr" target="_blank">romstation.fr</a> <span class="subtext">// get games, any console, cloud gaming too</span><br>
+                        • <strong>OpenGameInstaller:</strong> <a href="https://ogi.nat3z.com" target="_blank">ogi.nat3z.com</a> | <a href="https://github.com/Nat3z/OpenGameInstaller" target="_blank">GitHub</a><br>
+                        • <strong>Yamata:</strong> <a href="https://yamata-launcher.gregoryc.dev" target="_blank">yamata-launcher.gregoryc.dev</a> | <a href="https://github.com/Gr3gorywolf/Yamata-launcher" target="_blank">GitHub</a><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;↳ Sources: <a href="https://powerindex-x.github.io/yamata-launcher-links/sources/download-source" target="_blank">Link</a> (reads Hydra sources for PC games)<br>
+                        • <strong>Hydra:</strong> <a href="https://hydralauncher.gg" target="_blank">hydralauncher.gg</a> (false positives found ✅) | <a href="https://github.com/hydralauncher/hydra" target="_blank">GitHub</a><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;↳ <code>winget install HydraLauncher.Hydra</code><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;↳ Links & Wiki: <a href="https://hydralinks.cloud" target="_blank">hydralinks.cloud</a> | <a href="https://library.hydra.wiki/search" target="_blank">Library</a> | <a href="https://help.hydralauncher.gg" target="_blank">Help</a><br>
+                        • <strong>Ascendara:</strong> <a href="https://ascendara.app" target="_blank">ascendara.app</a> | <a href="https://github.com/ascendara/ascendara" target="_blank">GitHub</a> <span class="tag-risky">MS Def Warning: Program:Win32/Contebrew.A!ml</span><br>
+                        • <strong>Project GLD:</strong> <a href="https://y0urd34th.github.io/Project-GLD" target="_blank">y0urd34th.github.io</a> | <a href="https://github.com/Y0URD34TH/Project-GLD" target="_blank">GitHub</a> <span class="subtext">- FOSS Launcher for Cracked Games with torrent included & scripts (FitGirl, SteamRip, etc.)</span><br>
+                        • <strong>UnionCrax.Direct (UC.Direct):</strong> <a href="https://union-crax.xyz/direct" target="_blank">union-crax.xyz/direct</a> | <a href="https://github.com/UnionCrax-Team/UnionCrax.Direct" target="_blank">GitHub</a><br>
+                        • <strong>Fit Launcher:</strong> <a href="https://github.com/CarrotRub/Fit-Launcher" target="_blank">GitHub</a> (false positives found ✅)<br>
+                        • <strong>Black Pearl Origin (BPO):</strong> <a href="https://blackpearlorigin.github.io" target="_blank">blackpearlorigin.github.io</a> | <a href="https://github.com/BlackPearlOrigin/blackpearlorigin" target="_blank">GitHub</a><br>
+                        • <strong>Fuzion Game Dock:</strong> <a href="https://github.com/stomane/fuzion" target="_blank">GitHub</a><br>
+                        • <strong>Vapor Store 2:</strong> <a href="https://github.com/SushyDev/vapor-store" target="_blank">GitHub</a><br>
+                        • <strong>Falkor:</strong> <a href="https://github.com/Team-Falkor/falkor" target="_blank">GitHub</a><br>
+                        • <strong>PacSteam</strong><br>
+                        • <strong>UnderTaker141:</strong> <a href="https://github.com/AbdelrhmanNile/UnderTaker141" target="_blank">GitHub</a><br>
+                        • <strong>More:</strong> <a href="https://fmhy.net/gaming-tools#game-launchers" target="_blank">FMHY Game Launchers</a> | <a href="https://emulation.wtf" target="_blank">emulation.wtf</a> | <a href="https://github.com/topics/gamelauncher" target="_blank">#gamelauncher</a> | <a href="https://fmhy.net/gaming#rom-resources" target="_blank">FMHY ROMs</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>Pirate Tools for Gaming:</strong><br>
+                    <span class="subtext">
+                        • <strong>SteamTools:</strong> <a href="https://steamtools.net" target="_blank">steamtools.net</a> <span class="tag-risky">risky af</span><br>
+                        • <strong>CreamAPI / CreamInstaller:</strong> Steam DLC Unlocker
+                    </span>
+                </li>
+                <li>
+                    <strong>-non-pirate:</strong><br>
+                    <span class="subtext">
+                        • <strong>Greenlight:</strong> <a href="https://unknownskl.github.io/greenlight" target="_blank">unknownskl.github.io/greenlight</a><br>
+                        • <strong>Better xCloud:</strong> <a href="https://better-xcloud.github.io" target="_blank">better-xcloud.github.io</a><br>
+                        • <strong>Steam ROM Manager:</strong> <a href="https://steamgriddb.github.io/steam-rom-manager" target="_blank">steamgriddb.github.io/steam-rom-manager</a><br>
+                        • Playnite w/o pirate addons<br>
+                        • <strong>GameVault:</strong> <a href="https://gamevau.lt" target="_blank">gamevau.lt</a><br>
+                        • Heroic Games Launcher w/o pirate addons<br>
+                        • GOG Galaxy<br>
+                        • <strong>SteamWidget:</strong> <a href="https://github.com/PixCats/SteamWidget" target="_blank">GitHub</a><br>
+                        • Game Launcher Cloud<br>
+                        • <strong>More Alternatives:</strong> <a href="https://alternativeto.net/software/game-launcher" target="_blank">AlternativeTo</a> | <a href="https://raindrop.io/Interneto/game-launcher-19045692" target="_blank">Raindrop Collection</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
 
 <div class="category" id="android-browsers">
             <h2>🌐 Android Browsers with Extension Support</h2>
@@ -1522,240 +1758,6 @@ flex: 1 1 100%;
                         • <a href="https://shakil-shahadat.github.io/awesome-piracy/#userscripts" target="_blank">Awesome Piracy Userscripts</a><br>
                         • Topics: <a href="https://github.com/topics/scriptcat" target="_blank">#scriptcat</a> | <a href="https://github.com/topics/userscript" target="_blank">#userscript</a> | <a href="https://github.com/topics/tampermonkey" target="_blank">#tampermonkey</a> | <a href="https://github.com/topics/violentmonkey" target="_blank">#violentmonkey</a><br>
                         • Collections: <a href="https://github.com/hoothin/UserScripts" target="_blank">Hoothin UserScripts</a> | <a href="https://github.com/awesome-scripts/awesome-userscripts" target="_blank">Awesome Scripts</a>
-                    </span>
-                </li>
-            </ul>
-        </div>
-
-<div class="category" id="DDL">
-            <h2>📥 DDL Game Sites</h2>
-            <ul>
-                <li>
-                    <strong>Daily Check Tip:</strong><br>
-                    <span class="subtext">Check around daily for news on sites you download from!</span>
-                </li>
-                <li>
-                    <strong>Safety Thread:</strong><br>
-                    <span class="subtext"><a href="https://reddit.com/r/FREEMEDIAHECKYEAH/comments/10bh0h9/unsafe_sites_software_thread" target="_blank">Unsafe Sites / Software Thread (FMHY)</a></span>
-                </li>
-                <li>
-                    <strong>My Portal:</strong><br>
-                    <span class="subtext"><a href="https://robika420.github.io/portal" target="_blank">robika420.github.io/portal</a> | <a href="https://github.com/Robika420/portal" target="_blank">GitHub</a></span>
-                </li>
-                <li>
-                    <strong>-DDL Meta Search Engines:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://fmhy.net/internet-tools#custom-search-engines" target="_blank">FMHY Custom Search Engines</a><br>
-                        • <strong>My CSE (Sites Only):</strong> <a href="https://cse.google.com/cse?cx=b6b36d25f19b34e54" target="_blank">Google CSE</a><br>
-                        • <a href="https://virgil.samidy.com/Games" target="_blank">virgil.samidy.com/Games</a><br>
-                        • <strong>Rave Game Search:</strong> <a href="https://ravegamesearch.pages.dev" target="_blank">ravegamesearch.pages.dev</a> | <a href="https://idleendeavor.github.io/gamesearch" target="_blank">GitHub</a><br>
-                        • <a href="https://rezi.one" target="_blank">rezi.one</a><br>
-                        • <a href="https://playseek.app" target="_blank">playseek.app</a><br>
-                        • <a href="https://cse.google.com/cse?cx=006516753008110874046:cbjowp5sdqg" target="_blank">Google CSE 2</a> | <a href="https://cse.google.com/cse?cx=20c2a3e5f702049aa" target="_blank">CSE 3</a><br>
-                        • <a href="https://archive.org" target="_blank">Archive.org</a><br>
-                        • <a href="https://library.hydra.wiki/search" target="_blank">library.hydra.wiki/search</a><br>
-                        • <strong>Hatt:</strong> <a href="https://github.com/FrenchGithubUser/Hatt" target="_blank">GitHub App</a> <span class="tag-risky">NVM top AVs found virus ❗</span> | <a href="https://alternativeto.net/software/hatt" target="_blank">AlternativeTo</a><br>
-                        • <strong>pSearch Piracy Multi-Search:</strong> <a href="https://serjsx.github.io/wpSearch" target="_blank">serjsx.github.io/wpSearch</a> | <a href="https://github.com/SerjSX/pSearch" target="_blank">GitHub</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>--Pre-installed (mostly) DDL:</strong><br>
-                    <span class="subtext">
-                        <em>Use JDownloader2 (set Max Chunks 1 to 20) or IDM (better speed). See 'file hosting sites tier list' note.</em><br><br>
-                        <strong>MP (Multiplayer):</strong><br>
-                        • <a href="https://steamrip.com/category/multiplayer" target="_blank">SteamRIP.com/category/multiplayer</a> <span class="subtext">(Ready to play/portable, 2x more files due to 7z; Mirrors: datanodes.to, gofile.io, buzzheavier.com)</span><br>
-                        • <a href="https://online-fix.me" target="_blank">Online-Fix.me</a> <span class="subtext">(Account required)</span><br><br>
-                        <strong>SP (Singleplayer):</strong><br>
-                        • <a href="https://steamrip.com" target="_blank">SteamRIP.com</a> <span class="subtext">(Mirrors: datanodes.to, gofile.io, buzzheavier.com)</span><br>
-                        • <a href="https://gamebounty.world" target="_blank">GameBounty.World</a> <span class="subtext">(Mirror: filemirage.com)</span><br>
-                        • <a href="https://gamdie.com" target="_blank">GamDie.com</a> <span class="subtext">(GAM w/o E; Mirror: gofile.io)</span><br>
-                        • <a href="https://ovagames.com" target="_blank">OvaGames.com</a> <span class="subtext">(Requires install; Mirrors: drive.google.com, mediafire.com, gofile.io, pixeldrain.com [slow])</span><br>
-                        • <a href="https://gog-games.to" target="_blank">GOG-Games.To</a> <span class="subtext">(Old & rare games too)</span>
-                    </span>
-                </li>
-                <li>
-                    <strong>More from Megathreads & Lists:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://rentry.org/pgames#direct-download-ddl-sites" target="_blank">Rentry pgames DDL</a><br>
-                        • <a href="https://fmhy.net/gaming" target="_blank">FMHY Gaming</a><br>
-                        • <a href="https://ankergames.net" target="_blank">AnkerGames.net</a> <span class="subtext">(Old/rare games too)</span><br>
-                        • <a href="https://steamunderground.net" target="_blank">SteamUnderground.net</a><br>
-                        • <a href="https://g4u.to" target="_blank">g4u.to</a><br>
-                        • <a href="https://gload.to" target="_blank">GLoad.To</a><br>
-                        • <a href="https://gamesdrive.net" target="_blank">GameSDrive.net AKA Scene.Cat</a> <span class="subtext">(gameS with an S)</span><br>
-                        • <a href="https://atopgames.com" target="_blank">ATopGames.com</a><br>
-                        • <a href="https://rexagames.com" target="_blank">RexaGames.com</a><br>
-                        • <a href="https://steamgg.net" target="_blank">SteamGG.net</a><br>
-                        • <a href="https://union-crax.xyz" target="_blank">union-crax.xyz</a><br>
-                        • <a href="https://downloadha.com" target="_blank">downloadha.com</a><br>
-                        • <a href="https://vgdl.ir" target="_blank">vgdl.ir</a><br>
-                        • <a href="https://dlfox.com" target="_blank">dlfox.com</a><br>
-                        • <a href="https://gbox.ir" target="_blank">gbox.ir</a><br>
-                        • <a href="https://forum.mobilism.org/viewforum.php?f=1097" target="_blank">Mobilism Forum</a><br>
-                        • <strong>RLSBB / ReleaseBB:</strong> <a href="https://log.rlsbb.to/category/games/pc" target="_blank">log.rlsbb.to</a> | <a href="http://comment2.rlsbb.ru/category/games/pc" target="_blank">comment2.rlsbb.ru</a><br>
-                        • <a href="https://champagne.pages.dev/docs/getting-started/gaming-emulation#vr-gaming" target="_blank">Champagne VR Gaming</a><br>
-                        • <strong>Scene Rules:</strong> <a href="https://www.scenerules.org" target="_blank">scenerules.org</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>--Old/Rare Games & Abandonware:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://reddit.com/r/abandonware/wiki/index" target="_blank">r/abandonware Wiki</a><br>
-                        • <a href="https://gog-games.to" target="_blank">GOG-Games.To</a><br>
-                        • <a href="https://ankergames.net" target="_blank">AnkerGames.net</a><br>
-                        • <a href="https://www.myabandonware.com" target="_blank">myabandonware.com</a><br>
-                        • <a href="https://magipack.games" target="_blank">magipack.games</a><br>
-                        • <a href="https://oldgamesdownload.com" target="_blank">oldgamesdownload.com</a><br>
-                        • <a href="https://archive.org/search?query=subject%3A%22Windows+games%22" target="_blank">Archive.org Windows Games</a><br>
-                        • <a href="https://archive.org/search?query=subject%3A%22Shareware+CD-ROM%22" target="_blank">Archive.org Shareware CD-ROM</a><br>
-                        • <a href="https://archive.org/search?query=subject%3A%22android%22" target="_blank">Archive.org Android</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>--PCVR & Quest:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://reddit.com/r/QuestPiracy/wiki/index" target="_blank">r/QuestPiracy Wiki</a><br>
-                        • <a href="https://steamrip.com/category/vr/" target="_blank">SteamRIP VR Category</a><br>
-                        • <strong>ARMGDDN Browser:</strong> <a href="https://rentry.co/armgddn" target="_blank">Rentry</a> | <a href="https://rentry.co/IsARMGDDNSafe" target="_blank">Safety Check</a> | <a href="https://github.com/KaladinDMP/AGBrowser" target="_blank">GitHub App</a> | <a href="https://t.me/ARMGDDNGames" target="_blank">Telegram</a><br>
-                        • <a href="https://movielist.3dflickfix.net/QuestPiracyPCVRGuide2025.html" target="_blank">Quest Piracy PCVR Guide 2025</a><br>
-                        • Flagged/GitHub fixes & guides: [<a href="https://reddit.com/r/QuestPiracy/comments/18re2si/is_there_a_different_way_to_download_armageddon" target="_blank">Reddit 1</a>] [<a href="https://reddit.com/r/QuestPiracy/comments/1fx6653/armgddn_github" target="_blank">Reddit 2</a>] [<a href="https://reddit.com/r/QuestPiracy/comments/zveyjh/pcvr_games_direct_download_no_p2p_armgddn_games" target="_blank">Guide</a>]<br>
-                        • <strong>Rookie-PCVR / VRPirates:</strong> <a href="https://vrpirates.wiki" target="_blank">vrpirates.wiki</a> | <a href="https://torrents.vrpirates.wiki" target="_blank">Torrents</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>n00b Guide (Filecrypt & DLC):</strong><br>
-                    <span class="subtext">
-                        <em>"Also, they use filecrypt, so downloads are fragmented into (usually) 5gb parts. There is some .dlc file to download when landing on that page (you should be able to see quite easily), that allows you to add all parts in a queue, so you don't have to download parts individually, BUT you have to use something like Jdownloader2 for that and I would absolutely recommend getting it, if you plan to download from OVAGames."</em><br>
-                        Source: <a href="https://reddit.com/r/PiratedGames/comments/18r6bcf/why_is_no_one_talking_about_elamigos" target="_blank">r/PiratedGames</a>
-                    </span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="category" id="launchers">
-            <h2>🎮 Game Launchers / Downloaders</h2>
-            <ul>
-                <li>
-                    <strong>-pirate:</strong><br>
-                    <span class="subtext">
-                        • <strong>Playnite + addons:</strong> <a href="https://playnite.link" target="_blank">playnite.link</a> | <a href="https://github.com/JosefNemec/Playnite" target="_blank">GitHub</a><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;↳ Addons Guide: [<a href="https://reddit.com/r/PiratedGames/comments/17pjczx/playnite_launcher_automatically_search_fitgirl" target="_blank">Reddit</a>]<br>
-                        • <strong>Heroic Games Launcher</strong><br>
-                        • <strong>RomStation:</strong> <a href="https://romstation.fr" target="_blank">romstation.fr</a> <span class="subtext">// get games, any console, cloud gaming too</span><br>
-                        • <strong>OpenGameInstaller:</strong> <a href="https://ogi.nat3z.com" target="_blank">ogi.nat3z.com</a> | <a href="https://github.com/Nat3z/OpenGameInstaller" target="_blank">GitHub</a><br>
-                        • <strong>Yamata:</strong> <a href="https://yamata-launcher.gregoryc.dev" target="_blank">yamata-launcher.gregoryc.dev</a> | <a href="https://github.com/Gr3gorywolf/Yamata-launcher" target="_blank">GitHub</a><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;↳ Sources: <a href="https://powerindex-x.github.io/yamata-launcher-links/sources/download-source" target="_blank">Link</a> (reads Hydra sources for PC games)<br>
-                        • <strong>Hydra:</strong> <a href="https://hydralauncher.gg" target="_blank">hydralauncher.gg</a> (false positives found ✅) | <a href="https://github.com/hydralauncher/hydra" target="_blank">GitHub</a><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;↳ <code>winget install HydraLauncher.Hydra</code><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;↳ Links & Wiki: <a href="https://hydralinks.cloud" target="_blank">hydralinks.cloud</a> | <a href="https://library.hydra.wiki/search" target="_blank">Library</a> | <a href="https://help.hydralauncher.gg" target="_blank">Help</a><br>
-                        • <strong>Ascendara:</strong> <a href="https://ascendara.app" target="_blank">ascendara.app</a> | <a href="https://github.com/ascendara/ascendara" target="_blank">GitHub</a> <span class="tag-risky">MS Def Warning: Program:Win32/Contebrew.A!ml</span><br>
-                        • <strong>Project GLD:</strong> <a href="https://y0urd34th.github.io/Project-GLD" target="_blank">y0urd34th.github.io</a> | <a href="https://github.com/Y0URD34TH/Project-GLD" target="_blank">GitHub</a> <span class="subtext">- FOSS Launcher for Cracked Games with torrent included & scripts (FitGirl, SteamRip, etc.)</span><br>
-                        • <strong>UnionCrax.Direct (UC.Direct):</strong> <a href="https://union-crax.xyz/direct" target="_blank">union-crax.xyz/direct</a> | <a href="https://github.com/UnionCrax-Team/UnionCrax.Direct" target="_blank">GitHub</a><br>
-                        • <strong>Fit Launcher:</strong> <a href="https://github.com/CarrotRub/Fit-Launcher" target="_blank">GitHub</a> (false positives found ✅)<br>
-                        • <strong>Black Pearl Origin (BPO):</strong> <a href="https://blackpearlorigin.github.io" target="_blank">blackpearlorigin.github.io</a> | <a href="https://github.com/BlackPearlOrigin/blackpearlorigin" target="_blank">GitHub</a><br>
-                        • <strong>Fuzion Game Dock:</strong> <a href="https://github.com/stomane/fuzion" target="_blank">GitHub</a><br>
-                        • <strong>Vapor Store 2:</strong> <a href="https://github.com/SushyDev/vapor-store" target="_blank">GitHub</a><br>
-                        • <strong>Falkor:</strong> <a href="https://github.com/Team-Falkor/falkor" target="_blank">GitHub</a><br>
-                        • <strong>PacSteam</strong><br>
-                        • <strong>UnderTaker141:</strong> <a href="https://github.com/AbdelrhmanNile/UnderTaker141" target="_blank">GitHub</a><br>
-                        • <strong>More:</strong> <a href="https://fmhy.net/gaming-tools#game-launchers" target="_blank">FMHY Game Launchers</a> | <a href="https://emulation.wtf" target="_blank">emulation.wtf</a> | <a href="https://github.com/topics/gamelauncher" target="_blank">#gamelauncher</a> | <a href="https://fmhy.net/gaming#rom-resources" target="_blank">FMHY ROMs</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>Pirate Tools for Gaming:</strong><br>
-                    <span class="subtext">
-                        • <strong>SteamTools:</strong> <a href="https://steamtools.net" target="_blank">steamtools.net</a> <span class="tag-risky">risky af</span><br>
-                        • <strong>CreamAPI / CreamInstaller:</strong> Steam DLC Unlocker
-                    </span>
-                </li>
-                <li>
-                    <strong>-non-pirate:</strong><br>
-                    <span class="subtext">
-                        • <strong>Greenlight:</strong> <a href="https://unknownskl.github.io/greenlight" target="_blank">unknownskl.github.io/greenlight</a><br>
-                        • <strong>Better xCloud:</strong> <a href="https://better-xcloud.github.io" target="_blank">better-xcloud.github.io</a><br>
-                        • <strong>Steam ROM Manager:</strong> <a href="https://steamgriddb.github.io/steam-rom-manager" target="_blank">steamgriddb.github.io/steam-rom-manager</a><br>
-                        • Playnite w/o pirate addons<br>
-                        • <strong>GameVault:</strong> <a href="https://gamevau.lt" target="_blank">gamevau.lt</a><br>
-                        • Heroic Games Launcher w/o pirate addons<br>
-                        • GOG Galaxy<br>
-                        • <strong>SteamWidget:</strong> <a href="https://github.com/PixCats/SteamWidget" target="_blank">GitHub</a><br>
-                        • Game Launcher Cloud<br>
-                        • <strong>More Alternatives:</strong> <a href="https://alternativeto.net/software/game-launcher" target="_blank">AlternativeTo</a> | <a href="https://raindrop.io/Interneto/game-launcher-19045692" target="_blank">Raindrop Collection</a>
-                    </span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-<div class="category" id="revanced">
-            <h2>🛠️ ReVanced / Morphe Guides & Tools</h2>
-            <ul>
-                <li>
-                    <strong>ARMv7 Troubleshooting:</strong><br>
-                    <span class="subtext">
-                        • If ReVanced Manager gives an ARMv7 error, patch the APK on a compatible device (like an ARM64 Android emulator) and send it to the incompatible ARMv7 device.<br>
-                        • Make sure 'MicroG Support' is ticked if non-rooted, and unticked if rooted.<br>
-                        • You can customize the patch to your liking before installation.
-                    </span>
-                </li>
-                <li>
-                    <strong>Fastest EZ Way (Pre-patched APKs):</strong><br>
-                    <span class="subtext">
-                        • <strong>Orion Store:</strong> <a href="https://github.com/RookieEnough/Orion-Store" target="_blank">GitHub</a><br>
-                        • <strong>De-Vanced (De-ReVanced):</strong> <a href="https://github.com/RookieEnough/De-Vanced" target="_blank">GitHub</a><br>
-                        • <a href="https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root" target="_blank">FiorenMas Non-Root GitHub</a><br>
-                        • <a href="https://github.com/SinAble716/RVX_music_patched/releases" target="_blank">SinAble716 RVX Music Releases</a><br>
-                        • <a href="https://github.com/krvstek/rvx-apks" target="_blank">krvstek rvx-apks GitHub</a><br>
-                        • <a href="https://github.com/Svznify/RVX" target="_blank">Svznify RVX GitHub</a> | <a href="https://svznify.github.io/RVX" target="_blank">Website</a><br>
-                        • <a href="https://github.com/peternmuller/revanced-morphe-builder" target="_blank">peternmuller Morphe Builder</a><br>
-                        • <a href="https://github.com/nullcpy/rvb" target="_blank">nullcpy rvb GitHub</a><br>
-                        • <a href="https://github.com/mentalblank/YouTube-Revanced" target="_blank">mentalblank YouTube-Revanced</a><br>
-                        • <a href="https://revanced-apks.github.io" target="_blank">revanced-apks.github.io</a><br>
-                        • <a href="https://github.com/revanced-apks/build-apps/releases" target="_blank">revanced-apks Build Apps Releases</a><br>
-                        • <a href="https://github.com/driftywinds/YTm-builds" target="_blank">driftywinds YTm-builds</a><br>
-                        • <a href="https://reddit.com/r/revancedapks" target="_blank">Reddit r/revancedapks</a><br>
-                        • <a href="https://xdaforums.com/t/app-guides-unofficial-revanced-megathread.4523967" target="_blank">XDA Unofficial ReVanced Megathread</a><br>
-                        • <a href="https://xdaforums.com/t/app-guides-unofficial-morphe-megathread.4774994" target="_blank">XDA Unofficial Morphe Megathread</a><br>
-                        • Topics: <a href="https://github.com/topics/morphe" target="_blank">#morphe</a> | <a href="https://github.com/topics/revanced-extended" target="_blank">#revanced-extended</a> | <a href="https://github.com/topics/revanced-music" target="_blank">#revanced-music</a> | <a href="https://github.com/topics/revanced-patches" target="_blank">#revanced-patches</a> | <a href="https://github.com/topics/revanced-builder" target="_blank">#revanced-builder</a> | <a href="https://github.com/topics/revanced" target="_blank">#revanced</a> | <a href="https://github.com/topics/vanced" target="_blank">#vanced</a><br>
-                        • Telegram: <a href="https://t.me/rvb27" target="_blank">t.me/rvb27</a> | <a href="https://t.me/revanced_apks_web" target="_blank">t.me/revanced_apks_web</a> | <a href="https://t.me/revanced_apks_1" target="_blank">t.me/revanced_apks_1</a><br>
-                        • <a href="https://github.com/NoName-exe/revanced-extended" target="_blank">NoName-exe ReVanced Extended</a> <span class="subtext">// need root</span><br>
-                        • <span class="tag-risky">vanced.to</span> (Not trusted, use VirusTotal) <span class="tag-risky">❗❗ DONT USE vanced.to and revanced.net</span>
-                    </span>
-                </li>
-                <li>
-                    <strong>EZ Way to Patch Original YT / YTM APK:</strong><br>
-                    <span class="subtext">
-                        • <strong>Morphe Manager (was RVX):</strong> <a href="https://morphe.software" target="_blank">morphe.software</a> | <a href="https://github.com/MorpheApp" target="_blank">GitHub</a><br>
-                        • <strong>RVX Manager:</strong> <a href="https://revanced.app/download" target="_blank">revanced.app/download</a> (Safe link)<br>
-                        • <strong>Morphe Patches:</strong> <a href="https://reddit.com/r/MorpheApp/comments/1recqxc/morphe_manager_patch_index" target="_blank">Reddit Patch Index</a> | De-ReVanced (<a href="https://github.com/RookieEnough/De-ReVanced" target="_blank">GitHub</a>) | <a href="https://github.com/MorpheApp/morphe-patches" target="_blank">Morphe Patches GitHub</a> | <a href="https://github.com/brosssh/morphe-patches" target="_blank">brosssh Patches GitHub</a><br>
-                        • <strong>ReVanced Extended (RVX) Patches:</strong> <a href="https://github.com/anddea/revanced-patches" target="_blank">anddea Patches GitHub</a><br>
-                        • <strong>Steps:</strong> Open ReVanced Manager > Patcher > Select App. Click compatible version (e.g., 20.14.43). Download it from APKMirror (<a href="https://apkmirror.com/apk/google-inc/youtube" target="_blank">YT</a> / <a href="https://apkmirror.com/apk/google-inc/youtube-music" target="_blank">YTM</a>). Go back to ReVanced Manager > Storage, find the downloaded APK version, then hit patch.<br>
-                        • <strong>Check Status:</strong> <a href="https://github.com/inotia00/revanced-documentation/blob/main/docs/announcement.md" target="_blank">Inotia00 Documentation</a><br>
-                        • <strong>ReVanced Manager Downloaders:</strong> <a href="https://github.com/ReVanced/revanced-manager-downloaders" target="_blank">ReVanced GitHub</a> | <a href="https://github.com/brosssh/revanced-manager-downloaders" target="_blank">brosssh GitHub</a><br>
-                        • <strong>Universal ReVanced Manager (URV Manager):</strong> <a href="https://github.com/Jman-Github/Universal-ReVanced-Manager" target="_blank">GitHub</a><br>
-                        • <strong>ReVanced Obtainium Guide:</strong> <a href="https://gist.github.com/VVispy/50172b4ab77940b2d1ec09d5af70c8a7" target="_blank">Gist Guide</a><br>
-                        • <strong>ReX Method (Video):</strong> <a href="https://reddit.com/r/YTadvanced/comments/1b5f292/guide_for_rex" target="_blank">Reddit Guide</a><br>
-                        • <strong>RVX Auto Builder:</strong> <a href="https://github.com/IMXEren/rvx-builds" target="_blank">GitHub</a><br>
-                        • <strong>ReVanced Magisk Module:</strong> <a href="https://github.com/j-hc/revanced-magisk-module" target="_blank">GitHub</a> <span class="subtext">// Root required</span> | Telegram: <a href="https://t.me/rvc_magisk" target="_blank">t.me/rvc_magisk</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>PC Required Methods:</strong><br>
-                    <span class="subtext">
-                        • <strong>Morphe Desktop:</strong> <a href="https://github.com/MorpheApp/morphe-cli" target="_blank">GitHub</a><br>
-                        • <strong>RVX Auto Builder PC:</strong> <a href="https://github.com/Spacellary/ReVanced-Extended-Automated-Builder" target="_blank">GitHub</a><br>
-                        • <strong>Docker-Py-ReVanced:</strong> <a href="https://github.com/nikhilbadyal/docker-py-revanced" target="_blank">GitHub</a><br>
-                        • <strong>ReVanced CLI Patch Guide:</strong> <a href="https://sodawithoutsparkles.github.io/revanced-troubleshooting-guide/06-revanced-cli" target="_blank">Troubleshooting Guide</a>
-                    </span>
-                </li>
-                <li>
-                    <strong>Sources & References:</strong><br>
-                    <span class="subtext">
-                        • <a href="https://github.com/inotia00/revanced-manager" target="_blank">Inotia00 ReVanced Manager GitHub</a><br>
-                        • <a href="https://reddit.com/r/revancedapp/wiki/links" target="_blank">Reddit r/revancedapp Wiki Links</a><br>
-                        • <a href="https://github.com/YT-Advanced/revanced-documentation" target="_blank">YT-Advanced Documentation GitHub</a><br>
-                        • <a href="https://reddit.com/r/YTadvanced/comments/1brg6y1/follow_these_steps_to_fix_your_youtube" target="_blank">Reddit Fix Guide</a><br>
-                        • **Note:** Morphe is formerly known as RVX (<a href="https://morphe.software" target="_blank">morphe.software</a> | <a href="https://github.com/MorpheApp" target="_blank">GitHub</a>)
                     </span>
                 </li>
             </ul>
@@ -2771,10 +2773,9 @@ function removeChecklistItem(index) {
         if (!categorySelect) return;
 
         const categoriesList = [
-            "top-sites", "docu", "PIN", "share", "AI", "mega", "search", "film", 
-            "YT", "hangover", "android-browsers", "extensions", "DDL", "launchers", 
-            "revanced", "pkg-man", "winget", "altstores", "Niagara", "pic", 
-            "browser-games", "FPS-boost", "m4a", "play"
+            "top-sites", "docu", "PIN", "share", "AI", "search", "mega", "film", 
+            "YT", "hangover", "revanced", "DDL", "launchers", "android-browsers", "extensions", "pkg-man",
+	    "winget", "altstores", "Niagara", "pic", "browser-games", "FPS-boost", "m4a", "play"
         ];
 
         categoriesList.forEach(cat => {
@@ -2858,22 +2859,25 @@ async function loadCloudData() {
 }
 
     // Handle form submission event
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("add-bm-form");
-        if (form) {
-            form.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const name = document.getElementById("bm-name").value.trim();
-                const url = document.getElementById("bm-url").value.trim();
-                const category = document.getElementById("bm-category").value;
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("add-bm-form"); // Or target your form card class/ID
+    const addBtn = document.querySelector(".bookmark-btn");
+    
+    if (addBtn) {
+        addBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const name = document.getElementById("quickName").value.trim();
+            const url = document.getElementById("quickUrl").value.trim();
+            const category = document.getElementById("bm-category").value;
 
-                if (name && url && category) {
-                    addCloudBookmark(name, url, category);
-                    form.reset();
-                }
-            });
-        }
-    });
+            if (name && url && category) {
+                addCloudBookmark(name, url, category);
+                document.getElementById("quickName").value = "";
+                document.getElementById("quickUrl").value = "";
+            }
+        });
+    }
+});
 </script>
 
 <script>
@@ -2896,16 +2900,15 @@ async function loadCloudData() {
     // Weather Widget (Open-Meteo free API)
 async function fetchWeather() {
     try {
-        const lat = 47.4979, lon = 19.0402; // Change to your coordinates if needed
+        const lat = 47.5316, lon = 21.6273; // Debrecen coordinates
         const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
         if (!response.ok) throw new Error('Network error');
         const data = await response.json();
         const temp = data.current_weather.temperature;
         
-        // Displays just the number and °C cleanly as plain text
         document.getElementById('weather-info').innerText = `${temp}°C`;
     } catch (error) {
-        document.getElementById('weather-info').innerText = ''; // Hides text if it fails
+        document.getElementById('weather-info').innerText = ''; 
     }
 }
 fetchWeather();
