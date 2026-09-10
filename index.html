@@ -482,7 +482,9 @@ border-radius: 8px;
 <button id="shuffle-btn" class="shuffle-btn" style="padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.85rem; outline: none; transition: all 0.2s ease;" title="Toggle Shuffle">🔀</button>
   <button id="repeat-btn" class="repeat-btn "style="padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.85rem; outline: none; transition: all 0.2s ease;" title="Toggle Repeat Track">🔄</button>
   <button id="prevBtn" class="control-btn" aria-label="Previous">⏮</button>
+<button id="seek-back">↺ 5s</button>
   <button id="playPauseBtn" class="control-btn" aria-label="Play">▶</button>
+<button id="seek-fwd">5s ↻</button>
   <button id="nextBtn" class="control-btn" aria-label="Next">⏭</button>
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" class="volume-slider" title="Volume">
   <div class="progress-container" id="progressContainer">
@@ -2560,6 +2562,18 @@ const timeDisplay = document.getElementById('timeDisplay');
 const playlistEl = document.getElementById('playlist');
 const fileSelector = document.getElementById('fileSelector');
 
+const audio = document.querySelector('audio');
+const seekBackBtn = document.getElementById('seek-back');
+const seekFwdBtn = document.getElementById('seek-fwd');
+
+seekBackBtn.addEventListener('click', () => {
+  audio.currentTime = Math.max(audio.currentTime - 5, 0);
+});
+
+seekFwdBtn.addEventListener('click', () => {
+  audio.currentTime = Math.min(audio.currentTime + 5, audio.duration);
+});
+
 function initPlaylist() {
   playlistEl.innerHTML = '';
   tracks.forEach((track, index) => {
@@ -2741,6 +2755,20 @@ if ('mediaSession' in navigator) {
   navigator.mediaSession.setActionHandler('nexttrack', () => {
     // Call your function that plays the next song
     playNextTrack();
+  });
+}
+
+const audio = document.querySelector('audio');
+
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+    const skipTime = details.seekOffset || 5; // Fallback to 5 seconds
+    audio.currentTime = Math.max(audio.currentTime - skipTime, 0);
+  });
+
+  navigator.mediaSession.setActionHandler('seekforward', (details) => {
+    const skipTime = details.seekOffset || 5; // Fallback to 5 seconds
+    audio.currentTime = Math.min(audio.currentTime + skipTime, audio.duration);
   });
 }
 
