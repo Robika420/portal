@@ -269,7 +269,7 @@ border-radius: 8px;
   list-style: none;
   padding: 0;
   margin-top: 8px;
-  max-height: 166px;
+  max-height: 175px;
   overflow-y: auto;
   border: 1px solid rgba(0, 255, 255, 0.2);
   border-radius: 4px;
@@ -508,7 +508,7 @@ border-radius: 8px;
             <input type="text" id="new-task-input" placeholder="New task..." style="flex: 1; padding: 6px 10px; background-color: var(--code-bg); border: 1px solid #323238; color: var(--text-main); border-radius: 4px; outline: none;">
             <button onclick="handleAddTask()" class="widget-btn" style="margin-top:0;">Add</button>
         </div>
-        <ul id="checklist-container" style="max-height: 150px; overflow-y: auto; padding-right: 4px;"></ul>
+        <ul id="checklist-container" style="max-height: 150px; overflow-y: auto; padding-bottom: 1px; padding-right: 4px;"></ul>
     </div>
 
 <div class="search-wrapper">
@@ -571,9 +571,23 @@ border-radius: 8px;
 
 </div>
 
+<div class="search-hub" style="margin-bottom: 12px; margin-top: 5px; display: flex; flex-direction: column; gap: 8px;">
+  <!-- YouTube Search -->
+  <div style="display: flex; gap: 6px;">
+    <input type="text" id="ytSearchBox" placeholder="Search YouTube..." style="flex: 1; padding: 6px 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; font-size: 0.85rem; outline: none;" />
+    <button id="ytSearchBtn" style="padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.85rem; background: #2a2a2a; color: #fff; border: 1px solid #444; transition: all 0.2s ease;">YT</button>
+  </div>
+  
+  <!-- YouTube Music Search -->
+  <div style="display: flex; gap: 6px;">
+    <input type="text" id="ytmSearchBox" placeholder="Search YouTube Music..." style="flex: 1; padding: 6px 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff; font-size: 0.85rem; outline: none;" />
+    <button id="ytmSearchBtn" style="padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.85rem; background: #2a2a2a; color: #fff; border: 1px solid #444; transition: all 0.2s ease;">YTM</button>
+  </div>
+</div>
+
         <!-- Network Speed Widget -->
         <div class="card">
-            <div id="speed-info" class="subtext" style="margin-top: 6px;">Click to test</div>
+            <div id="speed-info" class="subtext" style="margin-top: 5px;">Click to test</div>
             <button class="widget-btn" onclick="measureNetSpeed()">Test Net Speed</button>
         </div>
     </div>
@@ -2340,6 +2354,37 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 }
             });
         });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ytSearchBox = document.getElementById('ytSearchBox');
+  const ytSearchBtn = document.getElementById('ytSearchBtn');
+  const ytmSearchBox = document.getElementById('ytmSearchBox');
+  const ytmSearchBtn = document.getElementById('ytmSearchBtn');
+
+  if (ytSearchBtn && ytSearchBox) {
+    const handleYtSearch = () => {
+      const query = encodeURIComponent(ytSearchBox.value.trim());
+      if (query) window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
+    };
+
+    ytSearchBtn.addEventListener('click', handleYtSearch);
+    ytSearchBox.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleYtSearch();
+    });
+  }
+
+  if (ytmSearchBtn && ytmSearchBox) {
+    const handleYtmSearch = () => {
+      const query = encodeURIComponent(ytmSearchBox.value.trim());
+      if (query) window.open(`https://music.youtube.com/search?q=${query}`, '_blank');
+    };
+
+    ytmSearchBtn.addEventListener('click', handleYtmSearch);
+    ytmSearchBox.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleYtmSearch();
+    });
+  }
+});
 
         // Copy full winget script
         function copyFullScript() {
