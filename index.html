@@ -77,6 +77,89 @@ html {
         }
         .widget-btn:hover { opacity: 0.9; }
 
+.widget-card-wide {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            max-width: 500px;
+            margin: 0 auto 1.5rem auto;
+            border: 1px solid #323238;
+        }
+        .widget-card-wide h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--accent);
+            border-bottom: 1px solid #323238;
+            padding-bottom: 0.4rem;
+        }
+        .widget-card-wide textarea {
+            width: 100%;
+            height: 100px;
+            background-color: var(--code-bg);
+            color: var(--text-main);
+            border: 1px solid #323238;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+            box-sizing: border-box;
+            outline: none;
+            margin-top: 8px;
+        }
+        .widget-card-wide textarea:focus { border-color: var(--accent); }
+
+.bookmark-form-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            max-width: 500px;
+            margin: 0 auto 1.5rem auto;
+            border: 1px solid #323238;
+            text-align: center;
+        }
+        .bookmark-form-card h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--accent);
+            border-bottom: 1px solid #323238;
+            padding-bottom: 0.4rem;
+        }
+        .bookmark-inputs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .bookmark-inputs input, .bookmark-inputs select {
+            flex: 1;
+            min-width: 140px;
+            padding: 6px 10px;
+            background-color: var(--code-bg);
+            border: 1px solid #323238;
+            color: var(--text-main);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .bookmark-inputs input:focus, .bookmark-inputs select:focus {
+            border-color: var(--accent);
+        }
+        .bookmark-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .bookmark-btn:hover { opacity: 0.9; }
+
 .opus-player-wrapper {
       max-width: 500px;
       margin: 20px 0;
@@ -362,6 +445,20 @@ flex: 1 1 100%;
             <div id="speed-info" class="subtext" style="margin-top: 8px;">Click to test</div>
             <button class="widget-btn" onclick="measureNetSpeed()">Test Speed</button>
         </div>
+    </div>
+
+<div class="widget-card-wide">
+        <h3>Scratchpad (Cloud Synced)</h3>
+        <textarea id="scratchpad" placeholder="Type notes or code snippets here..."></textarea>
+    </div>
+
+<div class="widget-card-wide">
+        <h3>Task Checklist</h3>
+        <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 12px;">
+            <input type="text" id="new-task-input" placeholder="New task..." style="flex: 1; padding: 6px 10px; background-color: var(--code-bg); border: 1px solid #323238; color: var(--text-main); border-radius: 4px; outline: none;">
+            <button onclick="handleAddTask()" class="widget-btn" style="margin-top:0;">Add</button>
+        </div>
+        <ul id="checklist-container" style="max-height: 150px; overflow-y: auto; padding-right: 4px;"></ul>
     </div>
 
 <div class="search-wrapper">
@@ -2137,6 +2234,20 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     <ul id="playlist" class="playlist"></ul>
   </div>
 
+<div class="bookmark-form-card">
+        <h3>Add Quick Bookmark</h3>
+        <form id="add-bm-form">
+            <div class="bookmark-inputs">
+                <input type="text" id="bm-name" placeholder="Site Name" required>
+                <input type="url" id="bm-url" placeholder="https://example.com" required>
+                <select id="bm-category" required>
+                    <option value="" disabled selected>Select Category</option>
+                </select>
+            </div>
+            <button type="submit" class="bookmark-btn">Add to Portal</button>
+        </form>
+    </div>
+
 <section class="games-hub">
     <h2>Mini Arcade</h2>
     <p>Choose a game to play:</p>
@@ -2553,6 +2664,124 @@ audio.addEventListener('ended', () => {
 });
 
 loadTrack(currentTrackIndex);
+    });
+</script>
+
+<script>
+    const BIN_ID = "6aa217ceffd5d16053f4533a";
+    const API_KEY = "$2a$10$SA2WYLWEYDaSb42MEjW/5.Ceb5GwRbqOJhUbQlzM1j/JN3ah623O2";
+    const API_URL = `https://api.jsonbin.io/v3/b/6aa217ceffd5d16053f4533a`;
+
+    let cloudData = { scratchpad: "", checklist: [], bookmarks: [] };
+
+    // 1. Fetch all data from the cloud on page load
+    async function loadCloudData() {
+        try {
+            const response = await fetch(API_URL, {
+                headers: { "X-Master-Key": API_KEY }
+            });
+            const json = await response.json();
+            cloudData = json.record;
+            
+            // Populate UI elements
+            document.getElementById("scratchpad").value = cloudData.scratchpad || "";
+            renderChecklist();
+            renderBookmarks();
+        } catch (error) {
+            console.error("Failed to load cloud data", error);
+        }
+    }
+
+    // 2. Push updated state back to the cloud
+    async function saveCloudData() {
+        try {
+            await fetch(API_URL, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": API_KEY
+                },
+                body: JSON.stringify(cloudData)
+            });
+        } catch (error) {
+            console.error("Failed to sync changes to cloud", error);
+        }
+    }
+
+    // --- SCRATCHPAD SYNC ---
+    document.addEventListener("DOMContentLoaded", () => {
+        loadCloudData();
+
+        const scratchpadEl = document.getElementById("scratchpad");
+        let timeout;
+        scratchpadEl.addEventListener("input", () => {
+            clearTimeout(timeout);
+            cloudData.scratchpad = scratchpadEl.value;
+            // Debounce saves so it syncs 1 second after you stop typing
+            timeout = setTimeout(() => saveCloudData(), 1000);
+        });
+    });
+
+    // --- CHECKLIST SYNC LOGIC ---
+    function renderChecklist() {
+        const listEl = document.getElementById("checklist-container");
+        if (!listEl) return;
+        listEl.innerHTML = "";
+        cloudData.checklist.forEach((item, index) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" ${item.done ? "checked" : ""} onclick="toggleCheck(${index})">
+                    <span style="${item.done ? "text-decoration: line-through; color: var(--text-sub);" : ""}">${item.text}</span>
+                </label>`;
+            listEl.appendChild(li);
+        });
+    }
+
+    function addChecklistItem(text) {
+        cloudData.checklist.push({ text, done: false });
+        saveCloudData();
+        renderChecklist();
+    }
+
+    function toggleCheck(index) {
+        cloudData.checklist[index].done = !cloudData.checklist[index].done;
+        saveCloudData();
+        renderChecklist();
+    }
+
+    // --- DYNAMIC BOOKMARKS SYNC LOGIC ---
+    function renderBookmarks() {
+        // Integrates with your existing category DOM mapping
+        cloudData.bookmarks.forEach(bm => {
+            const targetUl = document.querySelector(`[data-category="${bm.category}"] ul`) || document.querySelector(".category ul");
+            if (targetUl) {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="${bm.url}" target="_blank">${bm.name}</a>`;
+                targetUl.appendChild(li);
+            }
+        });
+    }
+
+    function addCloudBookmark(name, url, category) {
+        cloudData.bookmarks.push({ name, url, category });
+        saveCloudData();
+    }
+</script>
+
+<script>
+    function handleAddTask() {
+        const input = document.getElementById("new-task-input");
+        const text = input.value.trim();
+        if (text) {
+            addChecklistItem(text);
+            input.value = "";
+        }
+    }
+    
+    // Allow pressing 'Enter' to add task
+    document.getElementById("new-task-input")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") handleAddTask();
     });
 </script>
 
