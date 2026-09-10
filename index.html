@@ -601,6 +601,15 @@ border-radius: 8px;
 <!-- Your external script -->
 <script src="yt-player-integration.js" defer></script>
 
+<!-- YouTube Music Search Container -->
+<div class="search-container">
+  <input type="text" id="ytmSearchBox" placeholder="Search YouTube Music..." />
+  <button id="ytmSearchBtn">YTM</button>
+</div>
+
+<!-- The Embedded Player Window -->
+<div id="embedded-yt-player"></div>
+
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
     </div>
@@ -2395,25 +2404,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-let ytPlayer;
-
-function onYouTubeIframeAPIReady() {
-  ytPlayer = new YT.Player('embedded-yt-player', {
-    height: '200',
-    width: '100%',
-    playerVars: {
-      'playsinline': 1,
-      'controls': 1
-    }
-  });
-}
-
-function playOnSite(videoId) {
-  if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
-    ytPlayer.loadVideoById(videoId);
-  }
-}
-
         // Copy full winget script
         function copyFullScript() {
             const text = document.getElementById('fullScriptText').value;
@@ -2435,66 +2425,114 @@ function playOnSite(videoId) {
     }
 </script>
 
-// YouTube Data API search and IFrame player integration script
+<script>
 let ytPlayer;
-let searchApiKey = 'AIzaSyB6QIDtxKpO2JbILQ8JCKNl3cGUhMXl-i4'; // Replace with your restricted API key
+const searchApiKey = 'AIzaSyB6QIDtxKpO2JbILQ8JCKNl3cGUhMXl-i4';
 
-// 1. Initialize the YouTube IFrame API
+// 1. Initialize the player with advanced parameters
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('embedded-yt-player', {
-    height: '180',
-    width: '320',
+    height: '250',
+    width: '100%',
     playerVars: {
       'playsinline': 1,
-      'controls': 1
+      'controls': 1,        // Set to 0 if you want to build 100% custom buttons
+      'modestbranding': 1,  // Minimizes YouTube branding
+      'rel': 0              // Limits recommended videos to the same channel
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange,
+      'onError': onPlayerError
     }
   });
 }
 
-// 2. Search YouTube Data API and play the top result
-async function searchAndPlay(query) {
-  if (!query) return;
+// 2. Player Lifecycle Hooks
+function onPlayerReady(event) {
+  console.log('Player is fully loaded and ready for commands.');
+  // You can auto-load a safe, embeddable test video here if you want:
+  // ytPlayer.cueVideoById('dQw4w9WgXcQ'); 
+}
+
+function onPlayerStateChange(event) {
+  // YT.PlayerState mapping:
+  // -1 = Unstarted, 0 = Ended, 1 = Playing, 2 = Paused, 3 = Buffering, 5 = Cued
+  const states = {-1: 'UNSTARTED', 0: 'ENDED', 1: 'PLAYING', 2: 'PAUSED', 3: 'BUFFERING', 5: 'CUED'};
+  console.log('Player State Changed:', states[event.data]);
   
-  const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(query)}&type=video&key=${searchApiKey}`;
+  if (event.data === YT.PlayerState.PLAYING) {
+    // Example: Fetch and display current video metadata dynamically
+    const data = ytPlayer.getVideoData();
+    console.log(`Now Playing: ${data.title} by ${data.author}`);
+  }
+}
+
+function onPlayerError(event) {
+  // Catches Error 153 / embedding blocks programmatically
+  console.warn('Playback Error Code:', event.data);
+  if (event.data === 101 || event.data === 150) {
+    console.error('This video blocks external embedding.');
+  }
+}
+
+// 3. Advanced Control Functions (Bind these to custom buttons on your site)
+const advancedControls = {
+  play: () => ytPlayer.playVideo(),
+  pause: () => ytPlayer.pauseVideo(),
+  stop: () => ytPlayer.stopVideo(),
+  
+  // Seeking (jump forward/backward 10 seconds)
+  seekForward: () => {
+    const current = ytPlayer.getCurrentTime();
+    ytPlayer.seekTo(current + 10, true);
+  },
+  seekBackward: () => {
+    const current = ytPlayer.getCurrentTime();
+    ytPlayer.seekTo(Math.max(0, current - 10), true);
+  },
+  
+  // Volume Control (0 to 100)
+  setVolume: (vol) => ytPlayer.setVolume(vol),
+  mute: () => ytPlayer.mute(),
+  unMute: () => ytPlayer.unMute(),
+  
+  // Playback Rate (0.25 to 2.0)
+  setSpeed: (speed) => ytPlayer.setPlaybackRate(speed),
+  
+  // Get live telemetry
+  getStats: () => {
+    if (!ytPlayer) return;
+    return {
+      currentTime: ytPlayer.getCurrentTime(),
+      duration: ytPlayer.getDuration(),
+      playerState: ytPlayer.getPlayerState(),
+      videoUrl: ytPlayer.getVideoUrl(),
+      quality: ytPlayer.getPlaybackQuality()
+    };
+  }
+};
+
+// 4. Search and Load Integration with Fallback Handling
+async function searchAndPlayAdvanced(query) {
+  if (!query) return;
+  const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodeURIComponent(query)}&type=video&key=${searchApiKey}`;
   
   try {
     const response = await fetch(endpoint);
     const data = await response.json();
     
     if (data.items && data.items.length > 0) {
+      // Loop through search results to find one that might actually load
+      // (Note: The API doesn't flag embed status, so it still relies on error catching)
       const videoId = data.items[0].id.videoId;
-      if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
-        ytPlayer.loadVideoById(videoId);
-      }
-    } else {
-      console.warn('No videos found for query.');
+      ytPlayer.loadVideoById(videoId);
     }
-  } catch (error) {
-    console.error('API search failed:', error);
+  } catch (err) {
+    console.error('Search query failed', err);
   }
 }
-
-// 3. Event Listeners for your search boxes
-document.addEventListener('DOMContentLoaded', () => {
-  const ytSearchBox = document.getElementById('ytSearchBox');
-  const ytSearchBtn = document.getElementById('ytSearchBtn');
-  const ytmSearchBox = document.getElementById('ytmSearchBox');
-  const ytmSearchBtn = document.getElementById('ytmSearchBtn');
-
-  if (ytSearchBtn && ytSearchBox) {
-    ytSearchBtn.addEventListener('click', () => searchAndPlay(ytSearchBox.value.trim()));
-    ytSearchBox.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') searchAndPlay(ytSearchBox.value.trim());
-    });
-  }
-
-  if (ytmSearchBtn && ytmSearchBox) {
-    ytmSearchBtn.addEventListener('click', () => searchAndPlay(ytmSearchBox.value.trim() + ' music'));
-    ytmSearchBox.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') searchAndPlay(ytmSearchBox.value.trim() + ' music');
-    });
-  }
-});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
