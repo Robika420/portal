@@ -296,10 +296,11 @@ flex: 1 1 100%;
         }
         
 .grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    /* Uses 100% width on small screens, scaling up to 300px columns when space permits */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: 1.5rem;
-    align-items: flex-start;
+    align-items: start;
 }
 
 .category {
@@ -307,11 +308,10 @@ flex: 1 1 100%;
     border-radius: 8px;
     padding: 1.25rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    flex: 1 1 300px;
-    max-width: calc(33.333% - 1rem); /* Forces a maximum of 3 columns per row without full-height stretching */
+    border: 1px solid #323238;
     box-sizing: border-box;
+    width: 100%;
 }
-
         .category h2 {
             margin-top: 0;
             font-size: 1.25rem;
