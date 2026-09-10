@@ -429,6 +429,7 @@ flex: 1 1 100%;
   <a href="#browser-games" style="color: #ff00ff; text-decoration: none;">browser-games</a>
   <a href="#FPS-boost" style="color: #ff00ff; text-decoration: none;">FPS-boost</a>
   <a href="#m4a" style="color: #ff00ff; text-decoration: none;">m4a</a>
+  <a href="#play" style="color: #ff00ff; text-decoration: none;">play</a>
 </nav>
     <div id="clock"></div>
 
@@ -2248,7 +2249,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         </form>
     </div>
 
-<section class="games-hub">
+<section class="games-hub" id="play'>
     <h2>Mini Arcade</h2>
     <p>Choose a game to play:</p>
     <ul>
@@ -2724,19 +2725,26 @@ loadTrack(currentTrackIndex);
 
     // --- CHECKLIST SYNC LOGIC ---
     function renderChecklist() {
-        const listEl = document.getElementById("checklist-container");
-        if (!listEl) return;
-        listEl.innerHTML = "";
-        cloudData.checklist.forEach((item, index) => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                    <input type="checkbox" ${item.done ? "checked" : ""} onclick="toggleCheck(${index})">
-                    <span style="${item.done ? "text-decoration: line-through; color: var(--text-sub);" : ""}">${item.text}</span>
-                </label>`;
-            listEl.appendChild(li);
-        });
-    }
+    const listEl = document.getElementById("checklist-container");
+    if (!listEl) return;
+    listEl.innerHTML = "";
+    
+    cloudData.checklist.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.style.display = "flex";
+        li.style.alignItems = "center";
+        li.style.justifyContent = "space-between";
+        li.style.marginBottom = "6px";
+        
+        li.innerHTML = `
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; flex: 1; word-break: break-all;">
+                <input type="checkbox" ${item.done ? "checked" : ""} onclick="toggleCheck(${index})">
+                <span style="${item.done ? "text-decoration: line-through; color: var(--text-sub);" : ""}">${item.text}</span>
+            </label>
+            <button onclick="removeChecklistItem(${index})" style="background: transparent; border: none; color: #f87171; cursor: pointer; font-weight: bold; font-size: 1.1rem; padding: 0 6px;" title="Remove task">×</button>`;
+        listEl.appendChild(li);
+    });
+}
 
     function addChecklistItem(text) {
         cloudData.checklist.push({ text, done: false });
@@ -2750,9 +2758,36 @@ loadTrack(currentTrackIndex);
         renderChecklist();
     }
 
+function removeChecklistItem(index) {
+    cloudData.checklist.splice(index, 1);
+    saveCloudData();
+    renderChecklist();
+}
+
     // --- DYNAMIC BOOKMARKS SYNC LOGIC ---
+// Populate dropdown options on load
+    document.addEventListener("DOMContentLoaded", () => {
+        const categorySelect = document.getElementById("bm-category");
+        if (!categorySelect) return;
+
+        const categoriesList = [
+            "top-sites", "docu", "PIN", "share", "AI", "mega", "search", "film", 
+            "YT", "hangover", "android-browsers", "extensions", "DDL", "launchers", 
+            "revanced", "pkg-man", "winget", "altstores", "Niagara", "pic", 
+            "browser-games", "FPS-boost", "m4a", "play"
+        ];
+
+        categoriesList.forEach(cat => {
+            const option = document.createElement("option");
+            option.value = cat;
+            option.textContent = cat;
+            categorySelect.appendChild(option);
+        });
+    });
+
     function renderBookmarks() {
-        // Integrates with your existing category DOM mapping
+        // If your portal renders bookmarks dynamically or via your main script, 
+        // you can target specific lists if they exist on your page layout.
         cloudData.bookmarks.forEach(bm => {
             const targetUl = document.querySelector(`[data-category="${bm.category}"] ul`) || document.querySelector(".category ul");
             if (targetUl) {
@@ -2766,7 +2801,26 @@ loadTrack(currentTrackIndex);
     function addCloudBookmark(name, url, category) {
         cloudData.bookmarks.push({ name, url, category });
         saveCloudData();
+        renderBookmarks();
     }
+
+    // Handle form submission event
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("add-bm-form");
+        if (form) {
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const name = document.getElementById("bm-name").value.trim();
+                const url = document.getElementById("bm-url").value.trim();
+                const category = document.getElementById("bm-category").value;
+
+                if (name && url && category) {
+                    addCloudBookmark(name, url, category);
+                    form.reset();
+                }
+            });
+        }
+    });
 </script>
 
 <script>
