@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1 { margin-bottom: 8px; font-size: 2.2rem; color: #3399ff; text-shadow: 0 0 10px rgba(51, 153, 255, 0.4); }
+        .scoreboard {
+            display: flex;
+            gap: 20px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .score-box { background: #1e1e1e; padding: 8px 16px; border-radius: 8px; border: 1px solid #333; }
+        canvas { background-color: #1a1a1a; border: 4px solid #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        
+	.controls {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            width: 100%;
+            z-index: 100;
+            pointer-events: none; /* Let clicks pass through empty space */
+        }
+        .controls button {
+            pointer-events: auto; /* Enable clicks on buttons */
+            background: rgba(37, 37, 37, 0.85);
+            color: white;
+            border: 2px solid #555;
+            font-size: 1.5rem;
+            width: 85px;
+            height: 65px;
+            border-radius: 12px;
+            cursor: pointer;
+            user-select: none;
+            backdrop-filter: blur(4px);
+        }
+        .controls button:active { background: #3399ff; color: #121212; border-color: #3399ff; }
+
+        .instructions { margin-top: 15px; color: #888; font-size: 0.9rem; text-align: center; }
+        .back-link { margin-top: 15px; color: #3399ff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>SPACE INVADERS</h1>
+    <div class="scoreboard">
+        <div class="score-box">Score: <span id="score">0</span></div>
+        <div class="score-box">Lives: <span id="lives">3</span></div>
+    </div>
+    <canvas id="invadersCanvas" width="440" height="380"></canvas>
+
+<div class="controls">
+        <button onpointerdown="leftPressed=true" onpointerup="leftPressed=false" onpointerleave="leftPressed=false">◀</button>
+        <button onpointerdown="fireBullet()">🎯</button>
+        <button onpointerdown="rightPressed=true" onpointerup="rightPressed=false" onpointerleave="rightPressed=false">▶</button>
+    </div>
+
+    <div class="instructions">Use Arrow Keys / Touch buttons to move and shoot.</div>
+    <a href="../index.html" class="back-link">← Back to Portal</a>
+
+    <script>
+        const canvas = document.getElementById("invadersCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let score = 0;
+        let lives = 3;
+        let isGameOver = false;
+        let isVictory = false;
+
+        let player = { x: canvas.width / 2 - 20, y: canvas.height - 40, width: 40, height: 16, speed: 5 };
+        let bullets = [];
+        let aliens = [];
+        let alienBullets = [];
+
+        let leftPressed = false;
+        let rightPressed = false;
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") leftPressed = true;
+            if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") rightPressed = true;
+            if (e.key === " ") {
+                e.preventDefault();
+                if (isGameOver || isVictory) resetGame();
+                else fireBullet();
+            }
+        });
+
+        document.addEventListener("keyup", (e) => {
+            if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") leftPressed = false;
+            if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") rightPressed = false;
+        });
+
+        function fireBullet() {
+            if (isGameOver || isVictory) {
+                resetGame();
+                return;
+            }
+            if (bullets.length < 3) {
+                bullets.push({ x: player.x + player.width / 2 - 2, y: player.y, width: 4, height: 10, speed: 7 });
+            }
+        }
+
+        function initAliens() {
+            aliens = [];
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 7; c++) {
+                    aliens.push({
+                        x: 50 + c * 50,
+                        y: 40 + r * 32,
+                        width: 30,
+                        height: 20,
+                        alive: true
+                    });
+                }
+            }
+        }
+        initAliens();
+
+        let alienDirection = 1;
+        let alienSpeedTimer = 0;
+
+        function update() {
+            if (isGameOver || isVictory) return;
+
+            if (leftPressed && player.x > 15) player.x -= player.speed;
+            if (rightPressed && player.x < canvas.width - player.width - 15) player.x += player.speed;
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                bullets[i].y -= bullets[i].speed;
+                if (bullets[i].y < 15) {
+                    bullets.splice(i, 1);
+                    continue;
+                }
+
+                for (let j = 0; j < aliens.length; j++) {
+                    let a = aliens[j];
+                    if (a.alive && bullets[i] &&
+                        bullets[i].x < a.x + a.width &&
+                        bullets[i].x + bullets[i].width > a.x &&
+                        bullets[i].y < a.y + a.height &&
+                        bullets[i].y + bullets[i].height > a.y
+                    ) {
+                        a.alive = false;
+                        bullets.splice(i, 1);
+                        score += 20;
+                        document.getElementById("score").innerText = score;
+                        if (aliens.every(al => !al.alive)) isVictory = true;
+                        break;
+                    }
+                }
+            }
+
+            alienSpeedTimer++;
+            if (alienSpeedTimer > 30) {
+                let hitEdge = false;
+                aliens.forEach(a => {
+                    if (a.alive) {
+                        a.x += alienDirection * 12;
+                        if (a.x + a.width >= canvas.width - 25 || a.x <= 25) hitEdge = true;
+                    }
+                });
+
+                if (hitEdge) {
+                    alienDirection *= -1;
+                    aliens.forEach(a => {
+                        a.y += 14;
+                        if (a.alive && a.y + a.height >= player.y) isGameOver = true;
+                    });
+                }
+                alienSpeedTimer = 0;
+            }
+
+            if (Math.random() < 0.025) {
+                let livingAliens = aliens.filter(a => a.alive);
+                if (livingAliens.length > 0) {
+                    let shooter = livingAliens[Math.floor(Math.random() * livingAliens.length)];
+                    alienBullets.push({ x: shooter.x + shooter.width / 2 - 2, y: shooter.y + shooter.height, width: 4, height: 10, speed: 4 });
+                }
+            }
+
+            for (let i = alienBullets.length - 1; i >= 0; i--) {
+                alienBullets[i].y += alienBullets[i].speed;
+                if (alienBullets[i].y > canvas.height - 15) {
+                    alienBullets.splice(i, 1);
+                    continue;
+                }
+
+                let ab = alienBullets[i];
+                if (
+                    ab.x < player.x + player.width &&
+                    ab.x + ab.width > player.x &&
+                    ab.y < player.y + player.height &&
+                    ab.y + ab.height > player.y
+                ) {
+                    alienBullets.splice(i, 1);
+                    lives--;
+                    document.getElementById("lives").innerText = lives;
+                    if (lives <= 0) isGameOver = true;
+                }
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = "#1a1a1a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Visible arcade cabinet border walls
+            ctx.strokeStyle = "#444";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+
+            ctx.fillStyle = "#3399ff";
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.fillRect(player.x + player.width / 2 - 3, player.y - 6, 6, 6);
+
+            ctx.fillStyle = "#ffffff";
+            bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+
+            ctx.fillStyle = "#ff3366";
+            aliens.forEach(a => { if (a.alive) ctx.fillRect(a.x, a.y, a.width, a.height); });
+
+            ctx.fillStyle = "#ffcc00";
+            alienBullets.forEach(ab => ctx.fillRect(ab.x, ab.y, ab.width, ab.height));
+
+            if (isGameOver || isVictory) {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "white";
+                ctx.font = "bold 24px 'Segoe UI'";
+                ctx.textAlign = "center";
+                ctx.fillText(isVictory ? "VICTORY! 🎉" : "GAME OVER", canvas.width / 2, canvas.height / 2 - 10);
+                ctx.font = "13px 'Segoe UI'";
+                ctx.fillStyle = "#888";
+                ctx.fillText("Tap or Press Space to Restart", canvas.width / 2, canvas.height / 2 + 20);
+            }
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            document.getElementById("score").innerText = 0;
+            document.getElementById("lives").innerText = 3;
+            isGameOver = false;
+            isVictory = false;
+            bullets = [];
+            alienBullets = [];
+            player.x = canvas.width / 2 - 20;
+            initAliens();
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

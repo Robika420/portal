@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Trivia Quiz</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1 { margin-bottom: 15px; font-size: 2.2rem; color: #3399ff; text-shadow: 0 0 10px rgba(51, 153, 255, 0.5); }
+        .quiz-card {
+            background: #1a1a1a;
+            border: 4px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .question { font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .btn-opt {
+            background: #2a2a2a;
+            color: white;
+            border: 1px solid #444;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s;
+        }
+        .btn-opt:hover { background: #333; border-color: #3399ff; }
+        .btn-opt.correct { background: #33cc66 !important; color: #121212; }
+        .btn-opt.wrong { background: #ff3366 !important; }
+        .back-link { margin-top: 15px; color: #3399ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>TECH TRIVIA</h1>
+    <div class="quiz-card" id="quizContainer">
+        <div class="question" id="questionText">Loading...</div>
+        <div class="options" id="optionsContainer"></div>
+    </div>
+    <a href="../index.html" class="back-link">← Back to Portal</a>
+
+    <script>
+        const quizData = [
+            { q: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Multi Language", "Hyperlinks and Text Management Language", "Home Tool Markup Language"], answer: 0 },
+            { q: "Which symbol is used for single-line comments in JavaScript?", options: ["<!-- -->", "/* */", "//", "#"], answer: 2 },
+            { q: "What is the primary function of a GPU?", options: ["Managing system memory", "Executing parallel graphic/compute tasks", "Storing permanent files", "Regulating power supply"], answer: 1 },
+            { q: "Which Linux command lists directory contents?", options: ["cd", "mkdir", "ls", "pwd"], answer: 2 }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function loadQuiz() {
+            if (currentQ >= quizData.length) {
+                document.getElementById("quizContainer").innerHTML = `<h2>Quiz Complete! 🎉</h2><p style="margin-top:10px;">Your Score: ${score} / ${quizData.length}</p><button class="btn-opt" style="margin-top:15px; text-align:center;" onclick="location.reload()">Play Again</button>`;
+                return;
+            }
+            let data = quizData[currentQ];
+            document.getElementById("questionText").innerText = `${currentQ + 1}. ${data.q}`;
+            let optContainer = document.getElementById("optionsContainer");
+            optContainer.innerHTML = "";
+            data.options.forEach((opt, idx) => {
+                let btn = document.createElement("button");
+                btn.className = "btn-opt";
+                btn.innerText = opt;
+                btn.onclick = () => selectAnswer(idx, btn);
+                optContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selected, btn) {
+            let data = quizData[currentQ];
+            let buttons = document.querySelectorAll(".btn-opt");
+            buttons.forEach(b => b.onclick = null);
+
+            if (selected === data.answer) {
+                btn.classList.add("correct");
+                score++;
+            } else {
+                btn.classList.add("wrong");
+                buttons[data.answer].classList.add("correct");
+            }
+
+            currentQ++;
+            setTimeout(loadQuiz, 1200);
+        }
+
+        loadQuiz();
+    </script>
+</body>
+</html>
