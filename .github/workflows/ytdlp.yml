@@ -1,5 +1,5 @@
 
-  name: Setup yt-dlp
-  uses: AnimMouse/setup-yt-dlp@v3
+  Setup yt-dlp
+  AnimMouse/setup-yt-dlp@v3
     
-  run: yt-dlp https://music.youtube.com/watch?v=AzS8X2DLM20
+  yt-dlp https://music.youtube.com/watch?v=AzS8X2DLM20
