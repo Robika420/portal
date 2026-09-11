@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Android Custom ROM & Root Flashing Guide</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --border: #334155;
+            --code-bg: #090d16;
+            --tag-bg: #0284c7;
+            --warn-bg: rgba(239, 68, 68, 0.1);
+            --warn-border: #ef4444;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            color: var(--accent);
+            margin: 0 0 0.5rem 0;
+        }
+
+        p.subtitle {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .nav-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            background-color: var(--card-bg);
+            color: var(--accent);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s, border-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: var(--border);
+            border-color: var(--accent);
+            text-decoration: none;
+        }
+
+        .category {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .category h2 {
+            font-size: 1.35rem;
+            color: var(--accent);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .subtext {
+            color: var(--text-sub);
+            display: block;
+            margin-top: 0.35rem;
+            font-size: 0.95rem;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            color: #38bdf8;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        .warning-box {
+            background-color: var(--warn-bg);
+            border-left: 4px solid var(--warn-border);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+        
+        .steps-list {
+            padding-left: 1.5rem;
+            list-style-type: decimal;
+        }
+        
+        .steps-list li {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--card-bg);
+            color: var(--accent);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--border);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body id="top">
+    <div class="container">
+        <header>
+            <h1>Android Custom ROM & Root Flashing Guide</h1>
+            <p class="subtitle">Complete manual installation reference, security info, and ecosystem tools</p>
+            <div class="nav-actions">
+                <a href="index.html" class="btn">🏠 Back to Portal</a>
+            </div>
+        </header>
+
+        <div class="category" id="security-overview">
+            <h2>🔒 Security Info, Banking Apps & GApps</h2>
+            <ul>
+                <li>
+                    <strong>Bootloader Re-locking:</strong><br>
+                    <span class="subtext">You can re-lock the bootloader on some custom ROMs after install. Calyx and Graphene OS will let you re-lock bootloader after install.</span>
+                </li>
+                <li>
+                    <strong>Banking App vs. GApps / Custom ROM Fixes (No Root):</strong><br>
+                    <span class="subtext">
+                        Try VMOS PRO, F1 VM, Vectress VM, Shelter, VPhoneOS etc. or any other VM, container, sandbox etc.<br>
+                        • More info: <a href="https://reddit.com/r/androidapps/comments/1i2uf4s/is_there_an_app_like_virtual_machine_or_sandbox" target="_blank">Reddit Discussion</a><br>
+                        • XDA Guide: <a href="https://xdaforums.com/t/banking-apps-on-lineageos-roms.4635646" target="_blank">xdaforums.com/t/banking-apps-on-lineageos-roms.4635646</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category" id="pros-cons">
+            <h2>⚖️ Pros & Cons of Custom ROMs</h2>
+            <ul>
+                <li>
+                    <strong>Pros:</strong>
+                    <span class="subtext">
+                        • More apps will work (since Android version isn't outdated)<br>
+                        • Highly customizable (lots of features)<br>
+                        • No bloatware and built-in ads (makes it noticeably faster)<br>
+                        • Can be significantly faster than stock ROM due to superior optimization
+                    </span>
+                </li>
+                <li>
+                    <strong>Cons:</strong>
+                    <span class="subtext">
+                        • Banking & payment apps might detect custom ROMs <em>(Fix: Play Integrity Fix module + Hide Root built-in setting for Magisk)</em><br>
+                        • If rooted: Banking & payment apps will very likely detect root <em>(Fix: Need a module to pass hardware attestation and updates to SafetyNet and Play Integrity CTS profile checks)</em>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category" id="reminders">
+            <h2>⚠️ Critical Reminder Before Flashing</h2>
+            <div class="warning-box">
+                <span class="subtext" style="color: var(--text-main); margin-top: 0;">
+                    "Are you switching Roms? If you are, <strong>DO NOT RESTORE the data partition</strong>. If its just a ROM update you can usually just flash the update without any wipe. If the ROM developer specifically said to wipe after UPDATING you may have issues if you restore the data partition after flashing. Run a full backup before doing any of this just in case!"
+                </span>
+            </div>
+        </div>
+
+        <div class="category" id="root-tools">
+            <h2>⚡ Root Tools & Safety Warnings</h2>
+            <ul>
+                <li>
+                    <strong>AVOID 1-Click Root Apps (Spyware & Broken):</strong><br>
+                    <span class="subtext" style="color: #ef4444;">KingRoot, KingoRoot, iRoot, vRoot, OneClickRoot, TowelRoot</span>
+                </li>
+                <li>
+                    <strong>Universal Root Tools & Documentation:</strong><br>
+                    <span class="subtext">
+                        Magisk, KernelSU Next, KernelSU, APatch, SukiSU-Ultra, RootKHP, Zykuroot<br>
+                        • <a href="https://topjohnwu.github.io/Magisk/install.html" target="_blank">Magisk Installation Guide</a><br>
+                        • <a href="https://xdaforums.com/t/understanding-rooting-and-mods.4763223" target="_blank">XDA Understanding Rooting and Mods</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category" id="flashing-steps">
+            <h2>🛠️ Step-by-Step Flashing Instructions</h2>
+            <ol class="steps-list">
+                <li><strong>Unlock Bootloader:</strong> Verify compatibility via the <a href="https://github.com/zenfyrdev/bootloader-unlock-wall-of-shame" target="_blank">Bootloader Unlock Wall of Shame</a>.</li>
+                <li><strong>Sideload Recovery:</strong> Download <a href="https://orangefox.download" target="_blank">OrangeFox</a>.<br>
+                    Run: <code>fastboot boot recovery.img</code> (for A/B partitions) OR <code>fastboot flash recovery recovery.img</code> (for anything else).<br>
+                    <em>Tools: PC, Bugjaeger, or <a href="https://github.com/termux/termux-app" target="_blank">Termux (ADB OTG)</a></em>
+                </li>
+                <li><strong>Install Recovery ZIP:</strong> Inside OrangeFox, flash the zip file of recovery to permanently install it.</li>
+                <li><strong>Backup:</strong> Perform a comprehensive <strong>BACKUP</strong>.</li>
+                <li><strong>Wipe:</strong> Wipe Data, Cache (Dalvik), and System partitions.</li>
+                <li><strong>Flash ROM:</strong> Flash the ROM zip file, making sure the option <em>"flash TWRP after install"</em> is checked.</li>
+                <li><strong>Wipe Dalvik:</strong> Wipe Dalvik cache.</li>
+                <li><strong>Re-flash Recovery:</strong> In OrangeFox, flash the recovery zip file to install it again.</li>
+                <li><em>(Optional)</em> <strong>Flash Custom Kernel:</strong> e.g., Franco kernel.</li>
+                <li><em>(Optional)</em> <span>Flash GApps before 1st boot. Note: <strong>MicroG CAN be installed inside OS!</strong></span></li>
+                <li><em>(Optional)</em> <strong>Flash Root:</strong> Magisk / APatch / KernelSU. *(AP and KSU can also be installed in OS, but ONLY if the ROM kernel supports it. Get the <code>boot.img</code> extracted from the ROM you just installed using any app, preferably KSU).* <a href="https://github.com/topjohnwu/Magisk" target="_blank">Magisk GitHub</a></li>
+                <li><em>(Optional)</em> <strong>Flash Mods:</strong> Flash any other mods like V4AFX etc. (can also be installed through Magisk).</li>
+                <li><strong>Final Wipe:</strong> Wipe Dalvik cache one last time.</li>
+            </ol>
+        </div>
+
+        <div class="category" id="ecosystem">
+            <h2>📦 Recoveries, ROMs, Kernels & GApps</h2>
+            <ul>
+                <li>
+                    <strong>Custom Recoveries:</strong><br>
+                    <span class="subtext">
+                        • <strong>OrangeFox Recovery</strong> (Recommended for A/B partitions)<br>
+                        • PitchBlack (PBRP) Recovery Project<br>
+                        • <a href="https://twrp.me/Devices" target="_blank">TWRP (Team Win Recovery Project)</a><br>
+                        • LineageOS Recovery | SKYHAWK Recovery (SHRP) | Pixel Experience (PE) Recovery
+                    </span>
+                </li>
+                <li>
+                    <strong>Custom ROMs:</strong><br>
+                    <span class="subtext">
+                        Project Matrixx, crDroid, Resurrection Remix (RR), OmniRom, Evolution X, Project Sakura, Rising, Pixys, TenX, Project Elixir, SuperiorExtended, Superior / Syberia Project, Octavi, Calyx, Murena (/e/OS), iodé, Graphene, XOS, MIUI (NOT 12)<br>
+                        • Repositories & Lists: <a href="https://github.com/AloneAxe/Mi-A2-Lite-Roms/blob/master/Roms.md" target="_blank">GitHub Mi-A2-Lite Roms</a> | <a href="https://xdaforums.com/all-forums-by-manufacturer" target="_blank">XDA Manufacturers</a> | <a href="https://customrombay.org" target="_blank">Custom Rom Bay</a> | <a href="https://sourceforge.net/directory/roms" target="_blank">SourceForge</a> | <a href="https://getdroidtips.com/category/custom-rom" target="_blank">GetDroidTips</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>Custom Kernels:</strong><br>
+                    <span class="subtext">Franco kernel v Elemental X</span>
+                </li>
+                <li>
+                    <strong>GApps & MicroG:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://microg.org" target="_blank">microG Project aka GmsCore</a> (can bypass Google restrictions, install as system app or via Magisk MinMicroG mod)<br>
+                        • Alternatives: OpenGApps Pico, MindTheGapps, NikGapps Core, FlameGapps, BiTGApps<br>
+                        • <strong>MinMicroG Setup:</strong> MinMicroG + LSPosed + <a href="https://modules.lsposed.org/module/inc.whew.android.fakegapps" target="_blank">FakeGApps (LSPosed mod)</a>. *(FakeGApps only needed if ROM has no Signature Spoofing)*<br>
+                        • Signature Spoofing Lists & Checkers: <a href="https://github.com/microg/GmsCore/wiki/Signature-Spoofing" target="_blank">MicroG Wiki Signature Spoofing</a> | <a href="https://xdaforums.com/t/index-how-to-get-signature-spoofing-support.3557047" target="_blank">XDA Index Guide</a> | <a href="https://github.com/Lanchon/sigspoof-checker" target="_blank">Signature Spoofing Checker</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="category" id="gsi-guides">
+            <h2>📚 GSI ROMs & Comprehensive Guides</h2>
+            <ul>
+                <li>
+                    <strong>GSI (Generic System Image) Custom ROMs:</strong><br>
+                    <span class="subtext">
+                        GSI is universal, but that means potential bugs.<br>
+                        • <a href="https://customrombay.org/posts/gsi_roms" target="_blank">Custom Rom Bay GSI Guide</a><br>
+                        • <a href="https://github.com/phhusson/treble_experimentations/wiki/Generic-System-Image-%28GSI%29-list" target="_blank">Community GSIs (Phh-Treble)</a><br>
+                        • <a href="https://developer.android.com/topic/generic-system-image/releases" target="_blank">Official Google GSIs</a><br>
+                        • <a href="https://github.com/VegaBobo/DSU-Sideloader" target="_blank">DSU Sideloader</a>
+                    </span>
+                </li>
+                <li>
+                    <strong>Great Community Guides:</strong><br>
+                    <span class="subtext">
+                        • <a href="https://reddit.com/r/HyperOS/comments/1ld12wh/switch_from_hyperos_to_custom_roms_a_guide_to" target="_blank">Switch from HyperOS to Custom ROMs Guide</a><br>
+                        • <a href="https://reddit.com/r/PocoPhones/comments/s64jxl/a_beginners_guide_to_everything_you_need_to_know" target="_blank">Poco Phones Beginner's Guide</a><br>
+                        • <a href="https://reddit.com/r/androidroot/comments/vr812f/to_everyone_whos_asking_about_root" target="_blank">Android Root FAQ</a><br>
+                        • <a href="https://reddit.com/r/CustomROMsGuide" target="_blank">r/CustomROMsGuide Subreddit</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="#top" class="btn">⬆️ Back to Top</a>
+        </div>
+    </div>
+
+    <a href="#top" class="back-to-top" id="backToTopBtn">⬆️ Top</a>
+
+    <script>
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
