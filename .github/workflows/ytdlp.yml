@@ -1,5 +1,40 @@
-steps:
-  - name: Setup yt-dlp
-  -  uses: AnimMouse/setup-yt-dlp@v3
-    
-  - run: yt-dlp https://www.youtube.com/watch?v=DTi8wZ1a1TA
+name: YTMDL Batch Download
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download-playlist:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install yt-dlp and ffmpeg
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+          pip install yt-dlp
+
+      - name: Download songs from YTMDL.txt
+        run: |
+          mkdir -p downloads
+          while IFS= read -r url || [ -n "$url" ]; do
+            [[ -z "$url" || "$url" =~ ^# ]] && continue
+            echo "Downloading: $url"
+            yt-dlp -x --audio-format mp3 -o "downloads/%(title)s.%(ext)s" "$url" || echo "Failed to download $url"
+          done < YTMDL.txt
+
+      - name: Commit and push downloaded music
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add downloads/
+          git commit -m "Add downloaded batch music from YTMDL.txt" || echo "No changes to commit"
+          git push
