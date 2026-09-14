@@ -1,0 +1,15 @@
+remote_theme: just-the-docs/just-the-docs
+
+# Site Settings
+title: My Portal
+description: Personal web portal and project showcase.
+
+# Enable color scheme support if desired (optional)
+color_scheme: dark # or light
+
+# Navigation Footer & Search
+aux_links:
+  "GitHub Repo": "https://github.com/robika420/portal"
+
+# Footer text
+footer_content: "Powered by GitHub Pages & Just the Docs."
