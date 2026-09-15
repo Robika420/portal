@@ -19,11 +19,11 @@ permalink: /
 	@media (min-width: 50rem) {
     /* Set narrow width for sidebar */
     .side-bar {
-        width: 180px !important;
+        width: 150px !important;
     }
     /* Adjust main content positioning to match */
     .main {
-        margin-left: 180px !important;
+        margin-left: 160px !important;
     }
     .portal-root {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -3017,7 +3017,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             cloudData.isPlaying = audio ? !audio.paused : false;
             saveCloudData();
         }
-
 if (fileSelector) {
             fileSelector.addEventListener('change', (event) => {
                 const files = event.target.files;
@@ -3165,7 +3164,6 @@ if (fileSelector) {
                 updateCloudAudioState();
             });
         }
-
 // Restore track position from cloud state without auto-playing
         if (cloudData && cloudData.trackTitle) {
             const foundIndex = tracks.findIndex(t => t.title === cloudData.trackTitle);
@@ -3185,14 +3183,12 @@ if (fileSelector) {
         updatePlayState(false);
     }
 </script>
-
 // Gmail inboxes (Multi-Account Setup)
 <script>
 (() => {
   const loadInbox = (url, elementId, cacheKey, accountKey) => {
     const container = document.getElementById(elementId);
     if (!container) return;
-
     // 1. Instant load from localStorage cache if available
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
@@ -3200,7 +3196,6 @@ if (fileSelector) {
         renderMessages(container, JSON.parse(cached));
       } catch (e) {}
     }
-
     // 2. Fetch fresh data silently in the background
     fetch(url, { headers: { Accept: "application/json" }, cache: "no-store" })
       .then(res => res.ok ? res.json() : null)
@@ -3211,14 +3206,12 @@ if (fileSelector) {
       })
       .catch(() => console.warn(`Inbox sync skipped for ${elementId}`));
   };
-
   const renderMessages = (container, messages) => {
     container.innerHTML = "";
     if (messages.length === 0) {
       container.textContent = "No messages found.";
       return;
     }
-
     messages.forEach(email => {
       const a = document.createElement("a");
       a.href = email.permalink || "#";
@@ -3226,35 +3219,28 @@ if (fileSelector) {
       a.rel = "noopener noreferrer";
       a.className = "email-item";
       a.style.cssText = "display: block; text-decoration: none; color: inherit; margin-bottom: 10px; padding: 6px; border-radius: 4px; transition: background 0.2s;";
-      
       // Hover effect for clickable items
       a.onmouseover = () => a.style.background = "rgba(255,255,255,0.05)";
       a.onmouseout = () => a.style.background = "transparent";
-
       const timeSpan = document.createElement("span");
       timeSpan.style.cssText = "font-size: 0.8em; opacity: 0.6; display: block; margin-bottom: 2px;";
       timeSpan.textContent = email.date || "";
-
       const textDiv = document.createElement("div");
       textDiv.textContent = `${email.sender || "Unknown"}: ${email.subject || "No subject"}`;
-
       a.appendChild(timeSpan);
       a.appendChild(textDiv);
       container.appendChild(a);
     });
   };
-
   const loadAllInboxes = () => {
     loadInbox("https://script.google.com/macros/s/AKfycbw3gyEaqIOj-j3T7_wRjaZiPI6ffAaqdtGpRWUaenUCgHmq2pj-hJWFHmiJtpPoRloS/exec", "gmail-list-1", "gmail_cache_1", "account1");
     loadInbox("https://script.google.com/macros/s/AKfycbxypOYHU8TbQhymM7Ox5cx40XAMkA162el9LssFnqhrpYYXS5tbx1r8m9jfdhvNMOQS2Q/exec", "gmail-list-2", "gmail_cache_2", "account2");
   };
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", loadAllInboxes);
   } else {
     loadAllInboxes();
-  }
-  
+  }  
   setInterval(loadAllInboxes, 180000); // Refresh every 3 minutes
 })();
 </script>
