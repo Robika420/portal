@@ -6,502 +6,457 @@ description: "personal space"
 permalink: /
 ---
 
-    <style>
-        :root {
-            --bg-color: #121214;
-            --card-bg: #1e1e24;
-            --accent: #7952b3;
-            --text-main: #e1e1e6;
-            --text-sub: #a8a8b3;
-            --code-bg: #0d0d10;
-        }
+<div markdown="0">
+<style>
+    :root {
+        --bg-color: #121214;
+        --card-bg: #1e1e24;
+        --accent: #7952b3;
+        --text-main: #e1e1e6;
+        --text-sub: #a8a8b3;
+        --code-bg: #0d0d10;
+    }
+    .portal-root {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        padding-top: 20px;
+        scroll-padding-top: 50px;
+    }
+    .portal-root h1 { text-align: center; margin-bottom: 0.25rem; }
+    .portal-root #clock {
+        text-align: center;
+        font-family: monospace;
+        font-size: 60px;
+        font-weight: bold;
+        color: var(--text-sub);
+        padding: 0rem;
+        margin-top: 0;
+        margin-bottom: 0.4rem;
+    }
 
-html {
-  scroll-padding-top: 50px;
-}
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-	    padding-top: 20px;
-        }
-
-        h1 { text-align: center; margin-bottom: 0.25rem; }
-        
-        #clock {
-            text-align: center;
-            font-family: monospace;
-            font-size: 60px;
-            font-weight: bold;
-            color: var(--text-sub);
-            padding: 0rem;
-            margin-top: 0;
-            margin-bottom: 0.4rem;
-        }
-
-/* Widget Styles */
-.widget-container { 
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 500px;
-            margin: 0 auto 0.5rem auto;
-        }
-        .widget-card {
-            background-color: var(--card-bg);
-            border-radius: 8px; 
-            padding: 0.5rem; 
-	    margin-top: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
-            flex: 1; 
-            min-width: 200px; 
-            text-align: center; 
-            border: 1px solid #323238; 
-        }
-        .widget-card h3 { 
-            margin-top: 0; 
-            font-size: 1.1rem; 
-            color: var(--accent); 
-            border-bottom: 1px solid #323238; 
-            padding-bottom: 0.4rem; 
-        }
-        .widget-btn { 
-            background: var(--accent); 
-            color: white; 
-            border: none; 
-            padding: 4px 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            margin-top: 6px; 
-            font-size: 0.8rem; 
-        }
-        .widget-btn:hover { opacity: 0.9; }
-
-.widget-card-wide {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            max-width: 500px;
-            margin: 0 auto 1.5rem auto;
-	    margin-bottom: 0.5rem;
-            border: 1px solid #323238;
-        }
-        .widget-card-wide h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
-            color: var(--accent);
-            border-bottom: 1px solid #323238;
-            padding-bottom: 0.4rem;
-        }
-        .widget-card-wide textarea {
-            width: 100%;
-            height: 100px;
-            background-color: var(--code-bg);
-            color: var(--text-main);
-            border: 1px solid #323238;
-            border-radius: 4px;
-            padding: 0.5rem;
-            font-family: monospace;
-            font-size: 0.85rem;
-            resize: vertical;
-            box-sizing: border-box;
-            outline: none;
-            margin-top: 8px;
-        }
-        .widget-card-wide textarea:focus { border-color: var(--accent); }
-
-.bookmark-form-card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            border: 1px solid #323238;
-            text-align: center;
-        }
-        .bookmark-form-card h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
-            color: var(--accent);
-            border-bottom: 1px solid #323238;
-            padding-bottom: 0.4rem;
-        }
-        .bookmark-inputs {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        .bookmark-inputs input, .bookmark-inputs select {
-            flex: 1;
-            min-width: 140px;
-            padding: 6px 10px;
-            background-color: var(--code-bg);
-            border: 1px solid #323238;
-            color: var(--text-main);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .bookmark-inputs input:focus, .bookmark-inputs select:focus {
-            border-color: var(--accent);
-        }
-        .bookmark-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            width: 100%;
-            margin-top: 8px;
-        }
-        .bookmark-btn:hover { opacity: 0.9; }
-
-.network-widget {
-    background: #1e1e1e;
-    color: #ffffff;
-    padding: 3px;
-    border-radius: 8px;
-    font-family: sans-serif;
-    width: 220px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-.status-row {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-    background: #888;
-    transition: background 0.3s;
-}
-.dot.online { background: #4caf50; } /* Zöld */
-.dot.offline { background: #f44336; } /* Piros */
-.speed-info {
-    font-size: 0.9em;
-    color: #ccc;
-    line-height: 1.4;
-}
-
-.opus-player-wrapper {
-  max-width: 500px;
-  margin: 0 auto 20px auto;
-  margin-bottom: 0.5rem;
-  font-family: system-ui, sans-serif;
-}
-
-.upload-btn {
-  display: inline-block;
-  background: transparent;
-  color: #00ffff;
-  border: 1px solid #00ffff;
-  padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  margin-bottom: 10px;
-  transition: all 0.2s;
-}
-
-.upload-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-}
-
-.opus-player {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  padding: 10px 14px;
-  border-radius: 6px;
-}
-
-.control-btn, .shuffle-btn, .repeat-btn {
-  background: transparent;
-  color: #a8a8b3;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-  position: relative;
-  z-index: 5;
-  pointer-events: auto;
-}
-
-.control-btn:hover, .shuffle-btn:hover, .repeat-btn:hover {
-  border-color: #00ffff;
-  color: #00ffff;
-}
-
-/* Shuffle Active State: */
-.shuffle-btn.active, 
-.shuffle-btn[data-active="true"] {
-background: rgba(255, 255, 255, 0.03) !important;
-  color: #e2e8f0 !important;
-border: 1px solid;
-  border-color: #f87171 !important;
-border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); !important;
-}
-
-/* Repeat Active State: */
-.repeat-btn.active, 
-.repeat-btn[data-active="true"] {
-  background: #00ffff !important;
-  color: #000000 !important;
-  border-color: #00ffff !important;
-  font-weight: bold !important;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important;
-}
-
-.progress-container {
-  flex: 1 1 100%;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  height: 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid rgba(0, 255, 255, 0.3);
-}
-
-.progress-bar {
-  background: #00ffff;
-  width: 0%;
-  height: 100%;
-  border-radius: 3px;
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-  pointer-events: none;
-}
-
-.time-display {
-  font-size: 11px;
-  color: #00ffff;
-  min-width: 60px;
-  text-align: right;
-}
-
-.playlist {
-  list-style: none;
-  padding: 0;
-  margin-top: 8px;
-  max-height: 175px;
-  overflow-y: auto;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.playlist li {
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #ccc;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  cursor: pointer;
-}
-
-.playlist li:hover {
-  background: rgba(0, 255, 255, 0.05);
-  color: #00ffff;
-}
-
-.playlist li.active {
-  background: rgba(0, 255, 255, 0.15);
-  color: #00ffff;
-  font-weight: bold;
-}
-
-  .search-wrapper {
-    margin-bottom: 11px;
-    margin-top: 0.5px;
-	gap: 2.5px;
-  }
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto 0.6rem auto;
-            text-align: center;
-        }
-
-        .search-container input[type="text"] {
-            width: 100%;
-            padding: 0.3rem 1rem;
-    	    margin-top: 1px;
-            border-radius: 8px;
-            border: 1px solid #323238;
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .search-container input[type="text"]:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(121, 82, 179, 0.3);
-        }
-        
-.grid {
-    display: grid;
-    /* Uses 100% width on small screens, scaling up to 300px columns when space permits */
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-    gap: 1.5rem;
-    align-items: start;
-}
-
-.category {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    padding: 1.25rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    border: 1px solid #323238;
-    box-sizing: border-box;
-    width: 100%;
-}
-        .category h2 {
-            margin-top: 0;
-            font-size: 1.25rem;
-            color: var(--accent);
-            border-bottom: 1px solid #323238;
-            padding-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        ul { list-style: none; padding: 0; margin: 0; }
-        li { margin-bottom: 0.85rem; font-size: 0.95rem; }
-
-        a {
-            color: #61dafb;
-            text-decoration: none;
-        }
-        a:hover { text-decoration: underline; }
-
-        code {
-            background-color: var(--code-bg);
-            color: #00ff66;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.82rem;
-            display: inline-block;
-            margin-top: 4px;
-            user-select: all;
-            word-break: break-all;
-        }
-
-        .subtext {
-            color: var(--text-sub);
-            font-size: 0.85rem;
-        }
-
-        .tag-risky {
-            color: #f87171;
-            font-size: 0.75rem;
-            border: 1px solid #f87171;
-            padding: 1px 4px;
-            border-radius: 3px;
-        }
-
-        .tag-dead {
-            color: #94a3b8;
-            font-size: 0.75rem;
-            text-decoration: line-through;
-        }
-
-        /* Script runner block */
-        .full-script-container {
-            margin-bottom: 1rem;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 0.75rem;
-            border-radius: 6px;
-            border: 1px solid #323238;
-        }
-
-        .full-script-container details summary {
-            cursor: pointer;
-            color: #61dafb;
-            font-size: 0.9rem;
-            font-weight: bold;
-            user-select: none;
-        }
-
-        .full-script-container textarea {
-            width: 100%;
-            height: 120px;
-            margin-top: 0.5rem;
-            background-color: var(--code-bg);
-            color: #00ff66;
-            border: 1px solid #323238;
-            border-radius: 4px;
-            padding: 0.5rem;
-            font-family: monospace;
-            font-size: 0.75rem;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        .copy-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            margin-top: 4px;
-        }
-        .copy-btn:hover { opacity: 0.9; }
-
-.back-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: var(--card-bg, #1e293b);
-    color: var(--accent, #38bdf8);
-    border: 1px solid var(--border, #334155);
-    padding: 0.75rem 1rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: none;
-    align-items: center;
-    gap: 0.5rem;
-    z-index: 1000;
-    text-decoration: none;
-}
-
-.back-to-top:hover {
-    background-color: var(--border, #334155);
-    border-color: var(--accent, #38bdf8);
-}
-    .gmail-container {
+    /* Widget Styles */
+   .portal-root .widget-container { 
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 500px;
+        margin: 0 auto 0.5rem auto;
+    }
+    .portal-root .widget-card {
+        background-color: var(--card-bg);
+        border-radius: 8px; 
+        padding: 0.5rem; 
+        margin-top: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
+        flex: 1; 
+        min-width: 200px; 
+        text-align: center; 
+        border: 1px solid #323238; 
+    }
+    .portal-root .widget-card h3 { 
+        margin-top: 0; 
+        font-size: 1.1rem; 
+        color: var(--accent); 
+        border-bottom: 1px solid #323238; 
+        padding-bottom: 0.4rem; 
+    }
+    .portal-root .widget-btn { 
+        background: var(--accent); 
+        color: white; 
+        border: none; 
+        padding: 4px 10px; 
+        border-radius: 4px; 
+        cursor: pointer; 
+        margin-top: 6px; 
+        font-size: 0.8rem; 
+    }
+    .portal-root .widget-btn:hover { opacity: 0.9; }
+    .portal-root .widget-card-wide {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        max-width: 500px;
+        margin: 0 auto 1.5rem auto;
+        margin-bottom: 0.5rem;
+        border: 1px solid #323238;
+    }
+    .portal-root .widget-card-wide h3 {
+        margin-top: 0;
+        font-size: 1.1rem;
+        color: var(--accent);
+        border-bottom: 1px solid #323238;
+        padding-bottom: 0.4rem;
+    }
+    .portal-root .widget-card-wide textarea {
+        width: 100%;
+        height: 100px;
+        background-color: var(--code-bg);
+        color: var(--text-main);
+        border: 1px solid #323238;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-family: monospace;
+        font-size: 0.85rem;
+        resize: vertical;
+        box-sizing: border-box;
+        outline: none;
+        margin-top: 8px;
+    }
+    .portal-root .widget-card-wide textarea:focus { border-color: var(--accent); }
+    .portal-root .bookmark-form-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        border: 1px solid #323238;
+        text-align: center;
+    }
+    .portal-root .bookmark-form-card h3 {
+        margin-top: 0;
+        font-size: 1.1rem;
+        color: var(--accent);
+        border-bottom: 1px solid #323238;
+        padding-bottom: 0.4rem;
+    }
+    .portal-root .bookmark-inputs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+    .portal-root .bookmark-inputs input, .portal-root .bookmark-inputs select {
+        flex: 1;
+        min-width: 140px;
+        padding: 6px 10px;
+        background-color: var(--code-bg);
+        border: 1px solid #323238;
+        color: var(--text-main);
+        border-radius: 4px;
+        font-size: 0.9rem;
+        outline: none;
+    }
+    .portal-root .bookmark-inputs input:focus, .portal-root .bookmark-inputs select:focus {
+        border-color: var(--accent);
+    }
+    .portal-root .bookmark-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        width: 100%;
+        margin-top: 8px;
+    }
+    .portal-root .bookmark-btn:hover { opacity: 0.9; }
+    .portal-root .network-widget {
+        background: #1e1e1e;
+        color: #ffffff;
+        padding: 3px;
+        border-radius: 8px;
+        font-family: sans-serif;
+        width: 220px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .portal-root .status-row {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    .portal-root .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        background: #888;
+        transition: background 0.3s;
+    }
+    .portal-root .dot.online { background: #4caf50; }
+    .portal-root .dot.offline { background: #f44336; }
+    .portal-root .speed-info {
+        font-size: 0.9em;
+        color: #ccc;
+        line-height: 1.4;
+    }
+    .portal-root .opus-player-wrapper {
+        max-width: 500px;
+        margin: 0 auto 20px auto;
+        margin-bottom: 0.5rem;
+        font-family: system-ui, sans-serif;
+    }
+    .portal-root .upload-btn {
+        display: inline-block;
+        background: transparent;
+        color: #00ffff;
+        border: 1px solid #00ffff;
+        padding: 6px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-bottom: 10px;
+        transition: all 0.2s;
+    }
+    .portal-root .upload-btn:hover {
+        background: rgba(0, 255, 255, 0.1);
+    }
+    .portal-root .opus-player {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        padding: 10px 14px;
+        border-radius: 6px;
+    }
+    .portal-root .control-btn, .portal-root .shuffle-btn, .portal-root .repeat-btn {
+        background: transparent;
+        color: #a8a8b3;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 5;
+        pointer-events: auto;
+    }
+    .portal-root .control-btn:hover, .portal-root .shuffle-btn:hover, .portal-root .repeat-btn:hover {
+        border-color: #00ffff;
+        color: #00ffff;
+    }
+    .portal-root .shuffle-btn.active, 
+    .portal-root .shuffle-btn[data-active="true"] {
+        background: rgba(255, 255, 255, 0.03) !important;
+        color: #e2e8f0 !important;
+        border: 1px solid;
+        border-color: #f87171 !important;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    .portal-root .repeat-btn.active, 
+    .portal-root .repeat-btn[data-active="true"] {
+        background: #00ffff !important;
+        color: #000000 !important;
+        border-color: #00ffff !important;
+        font-weight: bold !important;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important;
+    }
+    .portal-root .progress-container {
+        flex: 1 1 100%;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        height: 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(0, 255, 255, 0.3);
+    }
+    .portal-root .progress-bar {
+        background: #00ffff;
+        width: 0%;
+        height: 100%;
+        border-radius: 3px;
+        box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+        pointer-events: none;
+    }
+    .portal-root .time-display {
+        font-size: 11px;
+        color: #00ffff;
+        min-width: 60px;
+        text-align: right;
+    }
+    .portal-root .playlist {
+        list-style: none;
+        padding: 0;
+        margin-top: 8px;
+        max-height: 175px;
+        overflow-y: auto;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.8);
+    }
+    .portal-root .playlist li {
+        padding: 8px 12px;
+        font-size: 13px;
+        color: #ccc;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+    }
+    .portal-root .playlist li:hover {
+        background: rgba(0, 255, 255, 0.05);
+        color: #00ffff;
+    }
+    .portal-root .playlist li.active {
+        background: rgba(0, 255, 255, 0.15);
+        color: #00ffff;
+        font-weight: bold;
+    }
+    .portal-root .search-wrapper {
+        margin-bottom: 11px;
+        margin-top: 0.5px;
+        gap: 2.5px;
+    }
+    .portal-root .search-container {
+        max-width: 500px;
+        margin: 0 auto 0.6rem auto;
+        text-align: center;
+    }
+    .portal-root .search-container input[type="text"] {
+        width: 100%;
+        padding: 0.3rem 1rem;
+        margin-top: 1px;
+        border-radius: 8px;
+        border: 1px solid #323238;
+        background-color: var(--card-bg);
+        color: var(--text-main);
+        font-size: 1rem;
+        outline: none;
+        box-sizing: border-box;
+    }
+    .portal-root .search-container input[type="text"]:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(121, 82, 179, 0.3);
+    }   
+    .portal-root .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+        gap: 1.5rem;
+        align-items: start;
+    }
+    .portal-root .category {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 1.25rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        border: 1px solid #323238;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .portal-root .category h2 {
+        margin-top: 0;
+        font-size: 1.25rem;
+        color: var(--accent);
+        border-bottom: 1px solid #323238;
+        padding-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .portal-root ul { list-style: none; padding: 0; margin: 0; }
+    .portal-root li { margin-bottom: 0.85rem; font-size: 0.95rem; }
+    .portal-root a {
+        color: #61dafb;
+        text-decoration: none;
+    }
+    .portal-root a:hover { text-decoration: underline; }
+    .portal-root code {
+        background-color: var(--code-bg);
+        color: #00ff66;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.82rem;
+        display: inline-block;
+        margin-top: 4px;
+        user-select: all;
+        word-break: break-all;
+    }
+    .portal-root .subtext {
+        color: var(--text-sub);
+        font-size: 0.85rem;
+    }
+    .portal-root .tag-risky {
+        color: #f87171;
+        font-size: 0.75rem;
+        border: 1px solid #f87171;
+        padding: 1px 4px;
+        border-radius: 3px;
+    }
+    .portal-root .tag-dead {
+        color: #94a3b8;
+        font-size: 0.75rem;
+        text-decoration: line-through;
+    }
+    .portal-root .full-script-container {
+        margin-bottom: 1rem;
+        background: rgba(0, 0, 0, 0.25);
+        padding: 0.75rem;
+        border-radius: 6px;
+        border: 1px solid #323238;
+    }
+    .portal-root .full-script-container details summary {
+        cursor: pointer;
+        color: #61dafb;
+        font-size: 0.9rem;
+        font-weight: bold;
+        user-select: none;
+    }
+    .portal-root .full-script-container textarea {
+        width: 100%;
+        height: 120px;
+        margin-top: 0.5rem;
+        background-color: var(--code-bg);
+        color: #00ff66;
+        border: 1px solid #323238;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-family: monospace;
+        font-size: 0.75rem;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+    .portal-root .copy-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        margin-top: 4px;
+    }
+    .portal-root .copy-btn:hover { opacity: 0.9; }
+    .portal-root .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background-color: var(--card-bg, #1e293b);
+        color: var(--accent, #38bdf8);
+        border: 1px solid var(--border, #334155);
+        padding: 0.75rem 1rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        display: none;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 1000;
+        text-decoration: none;
+    }
+    .portal-root .back-to-top:hover {
+        background-color: var(--border, #334155);
+        border-color: var(--accent, #38bdf8);
+    }
+    .portal-root .gmail-container {
         display: flex;
         gap: 5px;
         flex-wrap: wrap;
     }
-    .gmail-widget {
+    .portal-root .gmail-widget {
         background: #1e1e1e;
         color: #fff;
         padding: 15px;
@@ -511,18 +466,18 @@ border-radius: 8px;
         min-width: 280px;
         max-width: 350px;
     }
+    .portal-root .gmail-widget h3 {
+        margin-top: 1px;
+    }
+    .portal-root .gmail-widget ul { list-style: none; padding: 0; margin: 0; }
+    .portal-root .gmail-widget li { margin-bottom: 10px; font-size: 13px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+    .portal-root .gmail-widget li:last-child { border-bottom: none; margin-bottom: 0; }
+    .portal-root .gmail-sender { font-weight: bold; color: #4dabf7; display: block; }
+    .portal-root .gmail-subject { color: #ced4da; }
+</style>
+</div>
 
-.gmail-widget h3 {
-    margin-top: 1px;
-}
-    .gmail-widget ul { list-style: none; padding: 0; margin: 0; }
-    .gmail-widget li { margin-bottom: 10px; font-size: 13px; border-bottom: 1px solid #333; padding-bottom: 8px; }
-    .gmail-widget li:last-child { border-bottom: none; margin-bottom: 0; }
-    .gmail-sender { font-weight: bold; color: #4dabf7; display: block; }
-    .gmail-subject { color: #ced4da; }
-    </style>
-</head>
-<body>
+<div class="portal-root">	
 <div id="top"></div>
 <nav style="background: #111; padding: 0.75rem 0.5rem; margin-bottom: 0px; font-family: monospace; position: sticky; top: 0; z-index: 1000; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 0.6rem;">
   <a href="#m4a" style="color: #ff00ff; text-decoration: none;">m4a</a>
@@ -578,7 +533,6 @@ border-radius: 8px;
   </div>
   <span id="timeDisplay" class="time-display">0:00 / 0:00</span>
 </div>
-
     <!-- Playlist UI -->
     <ul id="playlist" class="playlist"></ul>
   </div>
@@ -686,14 +640,12 @@ border-radius: 8px;
         Sebesség: <strong id="net-speed">- Mbps</strong>
     </div>
 </div>
-
         <!-- Network Speed Widget -->
         <div class="card">
             <div id="speed-info" class="subtext" style="margin-top: 5px;">Click to test</div>
             <button class="widget-btn" onclick="measureNetSpeed()">Test Net Speed</button>
         </div>
     </div>
-
 <div class="gmail-container">
     <div class="gmail-widget">
         <h3>📬 Inbox: Account 1</h3>
@@ -704,7 +656,6 @@ border-radius: 8px;
         <ul id="gmail-list-2"><li>Loading...</li></ul>
     </div>
 </div>
-
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Filter your links & commands..." autocomplete="off">
     </div>
@@ -775,7 +726,6 @@ border-radius: 8px;
         </select>
     </div>
     <button class="bookmark-btn">Add to Portal</button>
-    
     <!-- Added id="manage-bookmarks-list" here -->
     <div id="manage-bookmarks-list" class="bookmark-list" style="margin-top: 1rem; text-align: left;">
         <span style="color: #888; font-size: 0.9rem;">No custom bookmarks added yet.</span>
@@ -882,7 +832,6 @@ border-radius: 8px;
                 </li>
             </ul>
         </div>
-
         <div class="category" id="AI">
     <h2>🤖 AI</h2>
     <ul>
@@ -1999,8 +1948,7 @@ border-radius: 8px;
         </div>
 
 <div class="category" id="winget">
-            <h2>💻 Winget Apps (Fresh Install)</h2>
-            
+            <h2>💻 Winget Apps (Fresh Install)</h2>      
             <div class="full-script-container">
                 <details>
                     <summary>🚀 Click to view/copy full installer script</summary>
@@ -2030,7 +1978,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                     <button class="copy-btn" onclick="copyFullScript()">Copy All Commands</button>
                 </details>
             </div>
-
             <ul>
                 <li>
                     <strong>UniGetUI (WingetUI)</strong> [<a href="https://github.com/marticliment/UniGetUI" target="_blank">GitHub</a>]<br>
@@ -2126,7 +2073,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 </li>
             </ul>
         </div>
-
         <div class="category" id="altstores">
             <h2>📱 Android Altstores & Tools</h2>
             <ul>
@@ -2199,7 +2145,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 </li>
             </ul>
         </div>
-
         <div class="category" id="Niagara">
             <h2>📱 Android Niagara Launcher fav apps</h2>
             <ul>
@@ -2369,7 +2314,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 </li>
             </ul>
         </div>
-
         <div class="category" id="FPS-boost">
             <h2>⚡ PC FPS booster apps</h2>
             <ul>
@@ -2443,19 +2387,16 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
 	<li><a href="games/quiz.html">Tech Trivia Quiz</a></li>
     </ul>
 </section>
-
         <div style="text-align: center; margin: 3rem 0;">
             <a href="#top" class="btn">⬆️ Back to Top</a>
         </div>
     </div>
-
     <a href="#top" class="back-to-top" id="backToTopBtn">⬆️ Top</a>
-
+        </div>
 <script>
     const BIN_ID = "6aa217ceffd5d16053f4533a";
     const API_KEY = "$2a$10$SA2WYLWEYDaSb42MEjW/5.Ceb5GwRbqOJhUbQlzM1j/JN3ah623O2";
     const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-
     // Unified state containing both Audio Player and Portal Data (Bookmarks & Checklist & Scratchpad)
     let cloudData = {
         trackTitle: "",
@@ -2465,10 +2406,8 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         checklist: [],
         bookmarks: []
     };
-
     let isSaving = false;
     let saveQueued = false;
-
     // Unified Load Function
     async function loadCloudData() {
         try {
@@ -2479,11 +2418,9 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             if (json && json.record) {
                 cloudData = { ...cloudData, ...json.record };
             }
-            
             // Populate UI elements after loading
             const scratchpadEl = document.getElementById("scratchpad");
             if (scratchpadEl) scratchpadEl.value = cloudData.scratchpad || "";
-            
             renderChecklist();
             renderBookmarks();
             renderManageBookmarks();
@@ -2491,7 +2428,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             console.error("Failed to load cloud data", error);
         }
     }
-
     // Unified Debounced Save Function
     async function saveCloudData() {
         if (isSaving) {
@@ -2518,7 +2454,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             }
         }
     }
-
     // Dynamic Bookmarks Categories Dropdown & Form Handler
     document.addEventListener("DOMContentLoaded", () => {
         const categorySelect = document.getElementById("bm-category");
@@ -2528,7 +2463,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 "YT", "hangover", "revanced", "DDL", "launchers", "android-browsers", "extensions", "pkg-man",
                 "winget", "altstores", "Niagara", "pic", "browser-games", "FPS-boost", "m4a", "play"
             ];
-
             categoriesList.forEach(cat => {
                 const option = document.createElement("option");
                 option.value = cat;
@@ -2536,7 +2470,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 categorySelect.appendChild(option);
             });
         }
-
         const addBtn = document.querySelector(".bookmark-btn");
         if (addBtn) {
             addBtn.addEventListener("click", (e) => {
@@ -2544,13 +2477,10 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 const nameInput = document.getElementById("quickName");
                 const urlInput = document.getElementById("quickUrl");
                 const catSelect = document.getElementById("bm-category");
-                
                 if (!nameInput || !urlInput || !catSelect) return;
-
                 const name = nameInput.value.trim();
                 const url = urlInput.value.trim();
                 const category = catSelect.value;
-
                 if (name && url && category) {
                     addCloudBookmark(name, url, category);
                     nameInput.value = "";
@@ -2558,7 +2488,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 }
             });
         }
-
         // Back-to-top button
         const backToTopBtn = document.getElementById('backToTopBtn');
         if (backToTopBtn) {
@@ -2566,7 +2495,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 backToTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
             });
         }
-
         // Clock & Date Script
         const currentDateEl = document.getElementById("current-date");
         if (currentDateEl) {
@@ -2577,7 +2505,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 day: "numeric"
             });
         }
-
         function updateClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -2588,18 +2515,15 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         }
         updateClock();
         setInterval(updateClock, 1000);
-
         // Instant Filter Script
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
             searchInput.addEventListener('input', function() {
                 const query = this.value.toLowerCase();
                 const categories = document.querySelectorAll('.category');
-
                 categories.forEach(category => {
                     const items = category.querySelectorAll('li');
                     let hasVisibleItem = false;
-
                     items.forEach(item => {
                         const text = item.textContent.toLowerCase();
                         if (text.includes(query)) {
@@ -2609,18 +2533,15 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                             item.style.display = 'none';
                         }
                     });
-
                     category.style.display = hasVisibleItem ? '' : 'none';
                 });
             });
         }
-
         // YouTube / YouTube Music Search Handlers
         const ytSearchBox = document.getElementById('ytSearchBox');
         const ytSearchBtn = document.getElementById('ytSearchBtn');
         const ytmSearchBox = document.getElementById('ytmSearchBox');
         const ytmSearchBtn = document.getElementById('ytmSearchBtn');
-
         if (ytSearchBtn && ytSearchBox) {
             const handleYtSearch = () => {
                 const query = encodeURIComponent(ytSearchBox.value.trim());
@@ -2629,7 +2550,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             ytSearchBtn.addEventListener('click', handleYtSearch);
             ytSearchBox.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleYtSearch(); });
         }
-
         if (ytmSearchBtn && ytmSearchBox) {
             const handleYtmSearch = () => {
                 const query = encodeURIComponent(ytmSearchBox.value.trim());
@@ -2638,7 +2558,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             ytmSearchBtn.addEventListener('click', handleYtmSearch);
             ytmSearchBox.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleYtmSearch(); });
         }
-
         // Scratchpad Auto-sync
         const scratchpadEl = document.getElementById("scratchpad");
         if (scratchpadEl) {
@@ -2649,7 +2568,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 scratchpadTimeout = setTimeout(() => saveCloudData(), 1000);
             });
         }
-
         // Checklist Enter Key Handler
         const newTaskInput = document.getElementById("new-task-input");
         if (newTaskInput) {
@@ -2657,13 +2575,11 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 if (e.key === "Enter") handleAddTask();
             });
         }
-
         // Initialize Master App Boot Sequence
         initApp();
         fetchWeather();
         frissitHalozatot();
     });
-
     // Bookmarks Functions
     function renderBookmarks() {
         if (!Array.isArray(cloudData.bookmarks)) cloudData.bookmarks = [];
@@ -2676,7 +2592,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             }
         });
     }
-
     function addCloudBookmark(name, url, category) {
         if (!Array.isArray(cloudData.bookmarks)) cloudData.bookmarks = [];
         cloudData.bookmarks.push({ name, url, category });
@@ -2684,17 +2599,14 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         renderBookmarks();
         renderManageBookmarks();
     }
-
     function renderManageBookmarks() {
         const listEl = document.getElementById("manage-bookmarks-list");
         if (!listEl) return;
-        listEl.innerHTML = "";
-        
+        listEl.innerHTML = "";     
         if (!cloudData.bookmarks || cloudData.bookmarks.length === 0) {
             listEl.innerHTML = `<li class="subtext" style="list-style: none; padding: 4px 0;">No custom bookmarks added yet.</li>`;
             return;
         }
-
         cloudData.bookmarks.forEach((bm, index) => {
             const li = document.createElement("li");
             li.style.display = "flex";
@@ -2702,8 +2614,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             li.style.alignItems = "center";
             li.style.marginBottom = "6px";
             li.style.fontSize = "0.9rem";
-            li.style.listStyle = "none";
-            
+            li.style.listStyle = "none";            
             li.innerHTML = `
                 <span style="word-break: break-all; padding-right: 10px;"><strong style="color: var(--accent);">[${bm.category}]</strong> <a href="${bm.url}" target="_blank">${bm.name}</a></span>
                 <button onclick="removeCloudBookmark(${index})" style="background: transparent; border: none; color: #f87171; cursor: pointer; font-weight: bold; font-size: 1.2rem; padding: 0 4px;" title="Delete bookmark">×</button>
@@ -2711,7 +2622,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             listEl.appendChild(li);
         });
     }
-
     function removeCloudBookmark(index) {
         if (Array.isArray(cloudData.bookmarks)) {
             cloudData.bookmarks.splice(index, 1);
@@ -2720,7 +2630,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             renderBookmarks();
         }
     }
-
     // Copy full winget script helper
     function copyFullScript() {
         const textEl = document.getElementById('fullScriptText');
@@ -2729,7 +2638,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             alert('All winget install commands copied to clipboard!');
         });
     }
-
     // PIN Screen Handler
     function checkPin() {
         const pinInput = document.getElementById('pinInput');
@@ -2744,22 +2652,18 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             alert("Wrong PIN");
         }
     }
-
     // Checklist Management Functions
     function renderChecklist() {
         const listEl = document.getElementById("checklist-container");
         if (!listEl) return;
-        listEl.innerHTML = "";
-        
+        listEl.innerHTML = "";       
         if (!Array.isArray(cloudData.checklist)) cloudData.checklist = [];
-
         cloudData.checklist.forEach((item, index) => {
             const li = document.createElement("li");
             li.style.display = "flex";
             li.style.alignItems = "center";
             li.style.justifyContent = "space-between";
-            li.style.marginBottom = "6px";
-            
+            li.style.marginBottom = "6px";      
             li.innerHTML = `
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; flex: 1; word-break: break-all;">
                     <input type="checkbox" ${item.done ? "checked" : ""} onclick="toggleCheck(${index})">
@@ -2769,14 +2673,12 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             listEl.appendChild(li);
         });
     }
-
     function addChecklistItem(text) {
         if (!Array.isArray(cloudData.checklist)) cloudData.checklist = [];
         cloudData.checklist.push({ text, done: false });
         saveCloudData();
         renderChecklist();
     }
-
     function handleAddTask() {
         const input = document.getElementById("new-task-input");
         if (!input) return;
@@ -2786,7 +2688,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             input.value = "";
         }
     }
-
     function toggleCheck(index) {
         if (cloudData.checklist[index]) {
             cloudData.checklist[index].done = !cloudData.checklist[index].done;
@@ -2794,7 +2695,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             renderChecklist();
         }
     }
-
     function removeChecklistItem(index) {
         if (Array.isArray(cloudData.checklist)) {
             cloudData.checklist.splice(index, 1);
@@ -2802,7 +2702,6 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             renderChecklist();
         }
     }
-
     // Weather Widget (Open-Meteo free API for Debrecen)
     async function fetchWeather() {
         try {
@@ -2818,46 +2717,36 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             if (weatherEl) weatherEl.innerText = ''; 
         }
     }
-
     // Network Speed Widget via Image Ping
     function measureNetSpeed() {
         const speedDisplay = document.getElementById('speed-info');
         if (!speedDisplay) return;
-        speedDisplay.innerText = 'Testing...';
-        
+        speedDisplay.innerText = 'Testing...';       
         const imageAddr = "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=5000&auto=format&fit=crop";
-        const downloadSize = 1000000; 
-        
+        const downloadSize = 1000000;         
         let startTime = new Date().getTime();
-        let download = new Image();
-        
+        let download = new Image();        
         download.onload = function () {
             let endTime = new Date().getTime();
             let duration = (endTime - startTime) / 1000;
             let mbps = ((downloadSize * 8) / duration / (1024 * 1024)).toFixed(2);
             speedDisplay.innerHTML = `Download:<br><strong style="color: var(--text-main); font-size: 1.1rem;">${mbps} Mbps</strong>`;
-        };
-        
+        };        
         download.onerror = function () {
             speedDisplay.innerText = 'Test failed';
-        };
-        
+        };        
         download.src = imageAddr + "&cache=" + startTime;
     }
-
     // Network Status Manager
     function frissitHalozatot() {
         const dot = document.getElementById('status-dot');
         const txt = document.getElementById('status-text');
         const netType = document.getElementById('net-type');
         const netSpeed = document.getElementById('net-speed');
-
         if (!dot || !txt) return;
-
         if (navigator.onLine) {
             dot.className = "dot online";
             txt.innerText = "Online";
-
             if (navigator.connection && netType && netSpeed) {
                 netType.innerText = navigator.connection.effectiveType ? navigator.connection.effectiveType.toUpperCase() : "4G";
                 netSpeed.innerText = navigator.connection.downlink ? navigator.connection.downlink + " Mbps" : "N/A";
@@ -2869,13 +2758,11 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             if (netSpeed) netSpeed.innerText = "0 Mbps";
         }
     }
-
     window.addEventListener('online', frissitHalozatot);
     window.addEventListener('offline', frissitHalozatot);
     if (navigator.connection) {
         navigator.connection.addEventListener('change', frissitHalozatot);
     }
-
     // Master Application Initializer (Audio Player + Cloud Data)
     async function initApp() {
         const tracks = [
@@ -3058,11 +2945,9 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             { title: "192 - Ha máshogyan lenne", src: "./tracks/192-ha-mashogyan-lenne.m4a" },
             { title: "193 - Headlights (feat. KIDDO & Issam Alnajjar) (Radio Edit)", src: "./tracks/193-headlights-feat-kiddo-issam-alnajjar-radio-edit.m4a" }
         ];
-
         let currentTrackIndex = 0;
         let isShuffling = false;
         let isRepeating = false;
-
         const audio = document.getElementById('audioElement');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -3077,18 +2962,15 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
         const fileSelector = document.getElementById('fileSelector');
         const seekBackBtn = document.getElementById('seek-back');
         const seekFwdBtn = document.getElementById('seek-fwd');
-
         // First, fetch the latest unified state from the cloud
         await loadCloudData();
-
         function initPlaylist() {
             if (!playlistEl) return;
             playlistEl.innerHTML = '';
             tracks.forEach((track, index) => {
                 const li = document.createElement('li');
                 li.textContent = track.title;
-                if (index === currentTrackIndex) li.classList.add('active');
-                
+                if (index === currentTrackIndex) li.classList.add('active');            
                 li.addEventListener('click', () => {
                     currentTrackIndex = index;
                     loadTrack(currentTrackIndex);
@@ -3099,14 +2981,12 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 playlistEl.appendChild(li);
             });
         }
-
         function loadTrack(index) {
             if (tracks.length === 0 || !audio) return;
             currentTrackIndex = Math.max(0, Math.min(index, tracks.length - 1));
             audio.src = tracks[currentTrackIndex].src;
             audio.load();
-            initPlaylist(); 
-            
+            initPlaylist();            
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: tracks[currentTrackIndex].title,
@@ -3116,21 +2996,18 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
                 });
             }
         }
-
         function updatePlayState(isPlaying) {
             if (playPauseBtn) playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
             }
         }
-
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
-
         function updateCloudAudioState() {
             if (tracks.length === 0) return;
             const currentTrack = tracks[currentTrackIndex];
@@ -3145,13 +3022,11 @@ if (fileSelector) {
             fileSelector.addEventListener('change', (event) => {
                 const files = event.target.files;
                 if (files.length === 0) return;
-
                 const newTracks = Array.from(files).map(file => ({
                     title: `💾 ${file.name}`,
                     src: URL.createObjectURL(file),
                     fileSize: file.size
                 }));
-
                 tracks.push(...newTracks);
                 currentTrackIndex = tracks.length - files.length;
                 loadTrack(currentTrackIndex);
@@ -3160,7 +3035,6 @@ if (fileSelector) {
                 fileSelector.value = ''; 
             });
         }
-
         if (playPauseBtn && audio) {
             playPauseBtn.addEventListener('click', () => {
                 if (audio.paused) {
@@ -3173,7 +3047,6 @@ if (fileSelector) {
                 updateCloudAudioState();
             });
         }
-
         if (prevBtn && audio) {
             prevBtn.addEventListener('click', () => {
                 if (audio.currentTime > 3) {
@@ -3187,7 +3060,6 @@ if (fileSelector) {
                 updateCloudAudioState();
             });
         }
-
         function getNextIndex() {
             if (isShuffling) {
                 if (tracks.length <= 1) return currentTrackIndex;
@@ -3199,7 +3071,6 @@ if (fileSelector) {
             }
             return (currentTrackIndex + 1) % tracks.length;
         }
-
         if (nextBtn && audio) {
             nextBtn.addEventListener('click', () => {
                 currentTrackIndex = getNextIndex();
@@ -3209,21 +3080,18 @@ if (fileSelector) {
                 updateCloudAudioState();
             });
         }
-
         if (seekBackBtn && audio) {
             seekBackBtn.addEventListener('click', () => {
                 audio.currentTime = Math.max(audio.currentTime - 5, 0);
                 updateCloudAudioState();
             });
         }
-
         if (seekFwdBtn && audio) {
             seekFwdBtn.addEventListener('click', () => {
                 audio.currentTime = Math.min(audio.currentTime + 5, audio.duration);
                 updateCloudAudioState();
             });
         }
-
         if (shuffleBtn) {
             shuffleBtn.addEventListener('click', () => {
                 isShuffling = !isShuffling;
@@ -3231,7 +3099,6 @@ if (fileSelector) {
                 shuffleBtn.style.borderColor = isShuffling ? 'var(--accent-color)' : '';
             });
         }
-
         if (repeatBtn && audio) {
             repeatBtn.addEventListener('click', () => {
                 isRepeating = !isRepeating;
@@ -3240,13 +3107,11 @@ if (fileSelector) {
                 repeatBtn.style.borderColor = isRepeating ? 'var(--accent-color)' : '';
             });
         }
-
         if (volumeSlider && audio) {
             volumeSlider.addEventListener('input', (e) => {
                 audio.volume = e.target.value;
             });
         }
-
         if (audio) {
             audio.addEventListener('timeupdate', () => {
                 const current = audio.currentTime;
@@ -3254,11 +3119,9 @@ if (fileSelector) {
                 if (progressBar) progressBar.style.width = `${(current / duration) * 100}%`;
                 if (timeDisplay) timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
             });
-
             audio.addEventListener('loadedmetadata', () => {
                 if (timeDisplay) timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
             });
-
             audio.addEventListener('ended', () => {
                 if (!audio.loop) {
                     currentTrackIndex = getNextIndex();
@@ -3269,7 +3132,6 @@ if (fileSelector) {
                 }
             });
         }
-
         if (progressContainer && audio) {
             progressContainer.addEventListener('click', (e) => {
                 const rect = progressContainer.getBoundingClientRect();
@@ -3277,20 +3139,17 @@ if (fileSelector) {
                 updateCloudAudioState();
             });
         }
-
         if ('mediaSession' in navigator && audio) {
             navigator.mediaSession.setActionHandler('play', async () => {
                 await audio.play();
                 updatePlayState(true);
                 updateCloudAudioState();
             });
-
             navigator.mediaSession.setActionHandler('pause', () => {
                 audio.pause();
                 updatePlayState(false);
                 updateCloudAudioState();
             });
-
             navigator.mediaSession.setActionHandler('previoustrack', () => {
                 currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
                 loadTrack(currentTrackIndex);
@@ -3298,7 +3157,6 @@ if (fileSelector) {
                 updatePlayState(true);
                 updateCloudAudioState();
             });
-
             navigator.mediaSession.setActionHandler('nexttrack', () => {
                 currentTrackIndex = getNextIndex();
                 loadTrack(currentTrackIndex);
@@ -3400,5 +3258,3 @@ if (fileSelector) {
   setInterval(loadAllInboxes, 180000); // Refresh every 3 minutes
 })();
 </script>
-</body>
-</html>
