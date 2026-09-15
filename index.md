@@ -2392,6 +2392,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
     </div>
     <a href="#top" class="back-to-top" id="backToTopBtn">⬆️ Top</a>
         </div>
+<div markdown="0">		
 <script>
     const BIN_ID = "6aa217ceffd5d16053f4533a";
     const API_KEY = "$2a$10$SA2WYLWEYDaSb42MEjW/5.Ceb5GwRbqOJhUbQlzM1j/JN3ah623O2";
@@ -3257,3 +3258,4 @@ if (fileSelector) {
   setInterval(loadAllInboxes, 180000); // Refresh every 3 minutes
 })();
 </script>
+</div>
