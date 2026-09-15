@@ -8,13 +8,22 @@ permalink: /
 
 <div markdown="0">
 <style>
-    :root {
+	  :root {
         --bg-color: #121214;
         --card-bg: #1e1e24;
         --accent: #7952b3;
         --text-main: #e1e1e6;
         --text-sub: #a8a8b3;
         --code-bg: #0d0d10;
+    }
+	@media (min-width: 50rem) {
+    /* Set narrow width for sidebar */
+    .side-bar {
+        width: 180px !important;
+    }
+    /* Adjust main content positioning to match */
+    .main {
+        margin-left: 180px !important;
     }
     .portal-root {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -37,8 +46,6 @@ permalink: /
         margin-top: 0;
         margin-bottom: 0.4rem;
     }
-
-    /* Widget Styles */
    .portal-root .widget-container { 
         display: flex;
         gap: 0.5rem;
@@ -559,7 +566,6 @@ permalink: /
 </form>
 
 <form action="https://www.google.com/search" method="get" target="_blank">
-  <!-- The parameter triggers or aligns with AI search interfaces depending on current URL structures -->
   <input type="hidden" name="udm" value="50"> 
   <label for="ai-search">Google AI Mode:</label>
   <input type="text" id="ai-search" name="q" placeholder="Ask a complex question..." required>
@@ -1335,7 +1341,6 @@ permalink: /
                 </li>
             </ul>
         </div>
-
         <div class="category" id="film">
             <h2>🎬 Film & Sori</h2>
             <ul>
@@ -1398,7 +1403,6 @@ permalink: /
         <li><a href="https://youtube.com/show/VLPLNIOxu0iT7P6hjLk9q7e2M8T4A-r3HfdL?season=1&sbp=CgExGgBAAUoNUFNOVldaWW4zZGQ3TQ" target="_blank">Nessaj</a></li>
         <li><a href="https://youtube.com/@NessajGaming/videos" target="_blank">Nessaj Gaming</a></li>
         <li><a href="https://youtube.com/user/thevrhu/videos" target="_blank">TheVR</a></li>
-
     <h3>Podcast</h3>
         <li><a href="https://youtube.com/@istenesbence/videos" target="_blank">IstenEst</a></li>
         <li><a href="https://youtube.com/@ATV-Bochkor/videos" target="_blank">Bochkor</a></li>
@@ -1408,10 +1412,8 @@ permalink: /
         <li><a href="https://youtube.com/@markoesbarna" target="_blank">Márkó és Barna Síkideg</a></li>
         <li><a href="https://youtube.com/@Hopp%C3%A1_Show/videos" target="_blank">Hoppá! Show</a></li>
         <li><a href="https://youtube.com/playlist?list=PLRwA8kJKnuX6qoZP4mmoCC6sr_n4uxro1" target="_blank">Miskovits K-OSZ Podcast</a></li>
-
     <h3>Show</h3>
         <li><a href="https://youtube.com/playlist?list=PLRwA8kJKnuX6Q4AyeoOlRwUc1Re_TGBeA" target="_blank">Miskovits K-OSZ TV</a></li>
-
     <h3>Trash</h3>
         <li><a href="https://youtube.com/@AnomalyPapanomaly/videos" target="_blank">Anomaly &amp; Papanomaly</a></li>
         <li><a href="https://youtube.com/@Anomaly/videos" target="_blank">Anomaly</a></li>
@@ -1420,11 +1422,9 @@ permalink: /
         <li><a href="https://youtube.com/@N%C3%A9psz%C3%ADnh%C3%A1zTV/videos" target="_blank">Népszínház TV</a></li>
         <li>Nagy Laci</li>
         <li><a href="https://youtube.com/@MarkoGergelyImre/videos" target="_blank">Markó Gergely Imre</a></li>
-
     <h3>Prank</h3>
         <li><a href="https://youtube.com/@CreatorTV_HU/videos" target="_blank">Csávók</a></li>
         <li>Impractical Jokers</li>
-
     <h3>Comedy</h3>
         <li><a href="https://youtube.com/user/thevrhu/videos" target="_blank">TheVR</a></li>
         <li><a href="https://youtube.com/@mivanaveledshow/videos" target="_blank">Mivanaveled Show</a></li>
@@ -1644,7 +1644,6 @@ permalink: /
         </div>
 
 <a href="#top">⬆️Back to top</a>
-
         <div class="category" id="launchers">
             <h2>🎮 Game Launchers / Downloaders</h2>
             <ul>
