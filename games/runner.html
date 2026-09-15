@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Endless Runner</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #111827;
+      font-family: system-ui, sans-serif;
+    }
+    .game-wrap {
+      width: min(94vw, 900px);
+      text-align: center;
+      color: white;
+    }
+    canvas {
+      width: 100%;
+      display: block;
+      border: 3px solid white;
+      border-radius: 14px;
+      background: #8bd3ff;
+      touch-action: manipulation;
+    }
+    p {
+      margin: 10px 0 0;
+      opacity: .8;
+      font-size: .9rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="game-wrap">
+    <canvas id="game" width="900" height="420"></canvas>
+    <p>Press Space, ↑, or tap to jump</p>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const groundY = H - 70;
+
+    let player, obstacles, score, best, speed, spawnTimer, gameOver, lastTime;
+
+    best = Number(localStorage.getItem("runnerBest") || 0);
+
+    function reset() {
+      player = {
+        x: 100,
+        y: groundY - 54,
+        width: 38,
+        height: 54,
+        velocityY: 0,
+        jumping: false
+      };
+
+      obstacles = [];
+      score = 0;
+      speed = 6;
+      spawnTimer = 900;
+      gameOver = false;
+      lastTime = performance.now();
+    }
+
+    function jump() {
+      if (gameOver) {
+        reset();
+        return;
+      }
+
+      if (!player.jumping) {
+        player.velocityY = -15;
+        player.jumping = true;
+      }
+    }
+
+    function addObstacle() {
+      const height = 28 + Math.random() * 42;
+      const width = 20 + Math.random() * 25;
+
+      obstacles.push({
+        x: W + 20,
+        y: groundY - height,
+        width,
+        height
+      });
+    }
+
+    function hit(a, b) {
+      return (
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
+      );
+    }
+
+    function update(delta) {
+      if (gameOver) return;
+
+      const factor = delta / 16.67;
+
+      player.velocityY += 0.8 * factor;
+      player.y += player.velocityY * factor;
+
+      if (player.y >= groundY - player.height) {
+        player.y = groundY - player.height;
+        player.velocityY = 0;
+        player.jumping = false;
+      }
+
+      spawnTimer -= delta;
+
+      if (spawnTimer <= 0) {
+        addObstacle();
+        spawnTimer = 700 + Math.random() * 850;
+      }
+
+      for (const obstacle of obstacles) {
+        obstacle.x -= speed * factor;
+
+        if (hit(player, obstacle)) {
+          gameOver = true;
+          best = Math.max(best, Math.floor(score));
+          localStorage.setItem("runnerBest", best);
+        }
+      }
+
+      obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
+
+      score += delta / 100;
+      speed += delta / 22000;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Sky
+      ctx.fillStyle = "#8bd3ff";
+      ctx.fillRect(0, 0, W, H);
+
+      // Clouds
+      ctx.fillStyle = "rgba(255,255,255,.65)";
+      ctx.beginPath();
+      ctx.arc(150, 80, 24, 0, Math.PI * 2);
+      ctx.arc(180, 72, 32, 0, Math.PI * 2);
+      ctx.arc(215, 82, 22, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ground
+      ctx.fillStyle = "#294936";
+      ctx.fillRect(0, groundY, W, H - groundY);
+
+      ctx.fillStyle = "#73b85a";
+      ctx.fillRect(0, groundY, W, 8);
+
+      // Player
+      ctx.fillStyle = "#ef476f";
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+
+      ctx.fillStyle = "white";
+      ctx.fillRect(player.x + 24, player.y + 12, 7, 7);
+
+      // Obstacles
+      ctx.fillStyle = "#263238";
+      for (const obstacle of obstacles) {
+        ctx.fillRect(
+          obstacle.x,
+          obstacle.y,
+          obstacle.width,
+          obstacle.height
+        );
+      }
+
+      // Score
+      ctx.fillStyle = "#102027";
+      ctx.font = "bold 22px system-ui";
+      ctx.fillText(`Score: ${Math.floor(score)}`, 24, 38);
+      ctx.fillText(`Best: ${best}`, 24, 68);
+
+      if (gameOver) {
+        ctx.fillStyle = "rgba(0,0,0,.62)";
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.font = "bold 48px system-ui";
+        ctx.fillText("Game Over", W / 2, H / 2 - 15);
+
+        ctx.font = "20px system-ui";
+        ctx.fillText("Tap or press Space to restart", W / 2, H / 2 + 28);
+        ctx.textAlign = "left";
+      }
+    }
+
+    function loop(now) {
+      const delta = Math.min(now - lastTime, 40);
+      lastTime = now;
+
+      update(delta);
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.code === "Space" || event.code === "ArrowUp") {
+        event.preventDefault();
+        jump();
+      }
+    });
+
+    canvas.addEventListener("pointerdown", jump);
+
+    reset();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
