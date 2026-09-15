@@ -2709,7 +2709,7 @@ winget install ClockworkMod.UniversalADBDriver --accept-source-agreements --acce
             const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
             if (!response.ok) throw new Error('Network error');
             const data = await response.json();
-            const temp = data.current_weather.temperature;
+            const temp = data.current=temperature_2m;
             const weatherEl = document.getElementById('weather-info');
             if (weatherEl) weatherEl.innerText = `${temp}°C`;
         } catch (error) {
