@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Note to Grid Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#121214',
+                        cardbg: '#1e1e24',
+                        accent: '#7952b3',
+                        codebg: '#0d0d10'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121214;
+            color: #e1e1e6;
+        }
+        /* Custom scrollbar for modern dark feel */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #121214; }
+        ::-webkit-scrollbar-thumb { background: #323238; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7952b3; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
+
+    <header class="bg-[#111] border-b border-[#323238] px-6 py-4 sticky top-0 z-50 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+            <span class="text-cyan-400 font-mono font-bold text-xl tracking-wider">⚡ PORTAL BUILDER</span>
+            <span class="bg-purple-900/50 text-purple-300 border border-purple-500/30 text-xs px-2.5 py-1 rounded-full font-mono">Note-to-Grid Converter</span>
+        </div>
+        <div class="text-xs text-gray-400 font-mono">
+            Converts raw lists & notes into clean HTML category cards
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        
+        <!-- LEFT PANE: Input Configuration & Raw Text -->
+        <div class="bg-cardbg border border-[#323238] rounded-xl p-5 shadow-2xl flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-[#323238] pb-3">
+                <h2 class="text-lg font-bold text-purple-400 flex items-center gap-2">
+                    <span>📝</span> Category Settings & Raw Notes
+                </h2>
+                <button id="loadSampleBtn" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-cyan-300 px-3 py-1.5 rounded border border-cyan-500/30 transition-all font-mono">
+                    Load Sample Notes
+                </button>
+            </div>
+
+            <!-- Category Metadata Options -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-1">Category Title</label>
+                    <input type="text" id="catTitle" value="AI & Tools" placeholder="e.g. AI, Megathreads" class="w-full bg-darkbg border border-[#323238] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-1">Emoji / Icon</label>
+                    <input type="text" id="catEmoji" value="🤖" placeholder="e.g. ⭐, 🚀" class="w-full bg-darkbg border border-[#323238] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-1">HTML ID (for nav anchor)</label>
+                <input type="text" id="catId" value="AI" placeholder="e.g. ai, top-sites" class="w-full bg-darkbg border border-[#323238] rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-accent">
+            </div>
+
+            <!-- Notes Textarea -->
+            <div class="flex-1 flex flex-col">
+                <div class="flex items-center justify-between mb-1">
+                    <label class="text-xs font-mono uppercase tracking-wider text-gray-400">Paste Your Links / Notes (One per line)</label>
+                    <span class="text-[11px] text-gray-500 font-mono">URLs auto-detect into clickable links</span>
+                </div>
+                <textarea id="notesInput" rows="12" placeholder="https://aistudio.google.com/api-keys My Gemini API key&#10;https://platform.openai.com My ChatGPT API key&#10;https://huggingface.co - Demo Playground" class="w-full bg-codebg font-mono text-xs text-emerald-400 border border-[#323238] rounded-lg p-3 focus:outline-none focus:border-accent resize-y"></textarea>
+            </div>
+
+            <!-- Formatting Options -->
+            <div class="bg-darkbg/50 border border-[#323238] rounded-lg p-3 text-xs flex flex-wrap gap-4 items-center justify-between">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" id="autoDetectUrls" checked class="rounded bg-darkbg border-zinc-700 text-accent focus:ring-accent">
+                    <span>Auto-detect URLs & format subtitles</span>
+                </label>
+                <button id="generateBtn" class="bg-accent hover:bg-purple-600 text-white px-5 py-2 rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2">
+                    <span>⚡ Generate HTML Card</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- RIGHT PANE: Live Preview & Output Code -->
+        <div class="space-y-6">
+            
+            <!-- Visual Preview Card Box -->
+            <div class="bg-cardbg border border-[#323238] rounded-xl p-5 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-[#323238] pb-3 mb-4">
+                    <h2 class="text-lg font-bold text-cyan-400 flex items-center gap-2">
+                        <span>👁️</span> Live Visual Preview
+                    </h2>
+                    <span class="text-xs text-gray-500 font-mono">Matches your portal theme</span>
+                </div>
+                
+                <!-- Preview Container Box -->
+                <div class="bg-darkbg p-6 rounded-xl border border-zinc-800 flex justify-center">
+                    <div id="visualPreviewTarget" class="w-full max-w-sm">
+                        <!-- Rendered card dynamically injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generated HTML Code Box -->
+            <div class="bg-cardbg border border-[#323238] rounded-xl p-5 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-[#323238] pb-3 mb-4">
+                    <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                        <span>💻</span> Generated HTML Snippet
+                    </h2>
+                    <button id="copyCodeBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs px-3 py-1.5 rounded transition-all flex items-center gap-1.5 shadow">
+                        <span>📋</span> Copy HTML Code
+                    </button>
+                </div>
+
+                <div class="relative">
+                    <pre id="outputCode" class="bg-codebg text-emerald-400 font-mono text-xs p-4 rounded-lg overflow-x-auto border border-[#323238] max-h-64"></pre>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-xs text-gray-500 font-mono border-t border-[#323238] mt-12">
+        Portal Note Converter &bull; Compatible with your main grid layout & CSS tokens
+    </footer>
+
+    <script>
+        const sampleText = `https://aistudio.google.com/api-keys My Gemini API key
+Source: aistudio.google.com/api-keys
+https://platform.openai.com My ChatGPT API key
+Source: platform.openai.com
+-web:
+- Demo Playground: huggingface.co`;
+
+        document.getElementById('loadSampleBtn').addEventListener('click', () => {
+            document.getElementById('catTitle').value = 'AI';
+            document.getElementById('catEmoji').value = '🤖';
+            document.getElementById('catId').value = 'AI';
+            document.getElementById('notesInput').value = sampleText;
+            generateCard();
+        });
+
+        // Main conversion parser function
+        function generateCard() {
+            const title = document.getElementById('catTitle').value.trim() || 'Category';
+            const emoji = document.getElementById('catEmoji').value.trim() || '📁';
+            const id = document.getElementById('catId').value.trim().toLowerCase().replace(/\s+/g, '-') || 'category';
+            const rawNotes = document.getElementById('notesInput').value;
+            const autoDetect = document.getElementById('autoDetectUrls').checked;
+
+            const lines = rawNotes.split('\n');
+            let listItemsHtml = '';
+
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return;
+
+                // Check for subheadings or tags like "-web:"
+                if (trimmed.endsWith(':') || trimmed.startsWith('-')) {
+                    if (trimmed.startsWith('-') && !trimmed.includes('http')) {
+                        listItemsHtml += `        <li class="subtext font-semibold text-gray-400 mt-2">${escapeHtml(trimmed)}</li>\n`;
+                    } else {
+                        listItemsHtml += `        <li class="subtext font-semibold text-cyan-300 mt-2">${escapeHtml(trimmed)}</li>\n`;
+                    }
+                    return;
+                }
+
+                let url = '';
+                let label = '';
+
+                if (autoDetect) {
+                    // Try to split URL and label
+                    const parts = trimmed.split(/\s+/);
+                    if (parts[0].startsWith('http://') || parts[0].startsWith('https://') || parts[0].includes('.')) {
+                        url = parts[0];
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        label = parts.slice(1).join(' ') || parts[0].replace(/^https?:\/\//, '');
+                    } else {
+                        label = trimmed;
+                    }
+                } else {
+                    label = trimmed;
+                }
+
+                if (url) {
+                    listItemsHtml += `        <li><a href="${escapeHtml(url)}" target="_blank">${escapeHtml(label)}</a></li>\n`;
+                } else {
+                    listItemsHtml += `        <li class="subtext">${escapeHtml(label)}</li>\n`;
+                }
+            });
+
+            // Construct exact category HTML matching user's portal structure
+            const generatedHtml = `<div class="category" id="${escapeHtml(id)}">\n    <h2>${escapeHtml(emoji)} ${escapeHtml(title)}</h2>\n    <ul>\n${listItemsHtml}    </ul>\n</div>`;
+
+            // Display code
+            document.getElementById('outputCode').textContent = generatedHtml;
+
+            // Render visual preview
+            document.getElementById('visualPreviewTarget').innerHTML = `
+                <div class="bg-[#1e1e24] rounded-lg p-5 shadow-lg border border-[#323238]">
+                    <h2 class="mt-0 text-lg font-bold text-[#7952b3] border-b border-[#323238] pb-2 mb-3 flex items-center justify-between">
+                        <span>${escapeHtml(emoji)} ${escapeHtml(title)}</span>
+                    </h2>
+                    <ul class="space-y-2 text-sm">
+                        ${generatePreviewList(lines, autoDetect)}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function generatePreviewList(lines, autoDetect) {
+            let html = '';
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return;
+                if (trimmed.endsWith(':') || (trimmed.startsWith('-') && !trimmed.includes('http'))) {
+                    html += `<li class="text-xs font-semibold text-gray-400 pt-1">${escapeHtml(trimmed)}</li>`;
+                    return;
+                }
+                let url = '';
+                let label = '';
+                if (autoDetect) {
+                    const parts = trimmed.split(/\s+/);
+                    if (parts[0].startsWith('http://') || parts[0].startsWith('https://') || parts[0].includes('.')) {
+                        url = parts[0];
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+                        label = parts.slice(1).join(' ') || parts[0].replace(/^https?:\/\//, '');
+                    } else {
+                        label = trimmed;
+                    }
+                } else {
+                    label = trimmed;
+                }
+
+                if (url) {
+                    html += `<li><a href="${escapeHtml(url)}" target="_blank" class="text-[#61dafb] hover:underline">${escapeHtml(label)}</a></li>`;
+                } else {
+                    html += `<li class="text-gray-300 text-xs">${escapeHtml(label)}</li>`;
+                }
+            });
+            return html || '<li class="text-gray-500 italic">No items yet...</li>';
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Copy button listener
+        document.getElementById('copyCodeBtn').addEventListener('click', () => {
+            const codeText = document.getElementById('outputCode').textContent;
+            
+            // Fallback for secure iframe copying
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('copyCodeBtn');
+                btn.innerHTML = '<span>✅</span> Copied Successfully!';
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+                btn.classList.add('bg-purple-600');
+                setTimeout(() => {
+                    btn.innerHTML = '<span>📋</span> Copy HTML Code';
+                    btn.classList.remove('bg-purple-600');
+                    btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text', err);
+            }
+            document.body.removeChild(textarea);
+        });
+
+        // Trigger live updates on input change
+        document.getElementById('catTitle').addEventListener('input', generateCard);
+        document.getElementById('catEmoji').addEventListener('input', generateCard);
+        document.getElementById('catId').addEventListener('input', generateCard);
+        document.getElementById('notesInput').addEventListener('input', generateCard);
+        document.getElementById('autoDetectUrls').addEventListener('change', generateCard);
+
+        // Initial generation
+        window.onload = () => {
+            document.getElementById('notesInput').value = "https://menetrend.derke.hu menetrend.derke.hu\nhttps://met.hu met.hu\nhttps://eeszt.gov.hu/hu/e-kortortenet eeszt.gov.hu/hu/e-kortortenet";
+            generateCard();
+        };
+    </script>
+</body>
+</html>
